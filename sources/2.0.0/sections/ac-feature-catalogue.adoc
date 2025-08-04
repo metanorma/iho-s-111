@@ -1,0 +1,228 @@
+
+[[annex-c]]
+[appendix,obligation="informative"]
+== Feature Catalogue
+
+[[sec_C-1]]
+=== Meta Feature Types
+
+++[None]++
+
+[[sec_C-2]]
+=== Geo Feature Types
+
+[[sec_C-2.1]]
+==== Surface Current
+
+*Definition:*:: A current that does not extend more than a few (2-3)
+metres below the surface.
+
+*CamelCase:*:: SurfaceCurrent
+
+*Alias:*
+
+*Super type:*
+
+*Feature use type:*:: geographic
+
+*Primitive:*:: coverage pointSet
+
+*Remarks:*:: No remarks.
+
+*Attribute Bindings:*
+
+[cols="a,a,a,a",options="unnumbered"]
+|===
+h| S-111 Attribute h| Allowable Encoding Value h| Type h| Multiplicity
+
+| Surface Current Speed     | | RE | 1, 1
+| Surface Current Direction | | RE | 1, 1
+| Surface Current Time      | | DT | 0, 1
+| Speed Uncertainty         | | RE | 0, 1
+| Direction Uncertainty     | | RE | 0, 1
+|===
+
+[[sec_C-3]]
+=== Carto Feature Types
+
+++[None]++
+
+[[sec_C-4]]
+=== Information Types
+
+++[None]++
+
+[[sec_C-5]]
+=== Simple Attributes
+
+[[sec_C-5.1.]]
+==== Direction Uncertainty
+
+*Definition*:: The best estimate of the accuracy of a bearing.
+
+*CamelCase*:: directionUncertainty
+
+*Alias*::
+
+*Value type*:: real
+
+*Remarks*:: No remarks.
+
+*Unit of measure name:*:: degree *definition*: Degrees of arc (compass direction) *symbol*: °
+
+*Quantity specification:*:: planeAngle
+
+*Constraints:*
+
+[cols="5",options="unnumbered"]
+|===
+h| String Length h| Text Pattern 2+h| Range h| Precision
+
+.3+| (not specified) .3+| (none) | lowerBound | 0.0 .3+| 1
+| upperBound | 359.9
+| closure    | closedInterval
+
+|===
+
+[[sec_C-5.2.]]
+==== Speed Uncertainty
+
+*Definition*:: Estimate characterising the accuracy of a speed value,
+or of the magnitude component of a velocity.
+
+*CamelCase*:: speedUncertainty
+
+Alias:
+
+*Value type*:: real
+
+*Remarks*:: The estimate is as defined within a particular confidence
+level and expressed as a positive value.
+
+*Unit of measure name:*:: knot *definition*: Nautical miles per hour *symbol*: kn
+
+*Quantity specification:*:: speed
+
+*Constraints:*::
+
+[cols="5",options="unnumbered"]
+|===
+h| String Length h| Text Pattern 2+h| Range h| Precision
+
+.3+| (not specified) .3+| (none) | lowerBound | 0.00 .3+| 2
+| upperBound | (not specified)
+| closure    | geSemiInterval
+
+|===
+
+[[sec_C-5.3]]
+==== Surface Current Direction
+
+*Definition:*:: The direction toward which a surface current is flowing,
+called the set of the surface current.
+
+*CamelCase:*:: surfaceCurrentDirection
+
+*Alias:*::
+
+*Value type:*:: real
+
+*Remarks:*:: No remarks.
+
+*Unit of measure name:*:: degree *definition*: Degrees of arc (compass direction) *symbol*: °
+
+*Quantity specification:*:: planeAngle
+
+*Constraints:*::
+
+[cols="5",options="unnumbered"]
+|===
+h| String Length h| Text Pattern 2+h| Range h| Precision
+.3+| (not specified) .3+| (none) | lowerBound | 0.0 .3+| 1
+| upperBound | 359.9
+| closure | closedInterval
+
+|===
+
+[[sec_C-5.4]]
+==== Surface Current Speed
+
+*Definition:*:: Magnitude of current velocity at the water surface,
+measured or calculated at a depth (or range of depths) consistent
+with the data product.
+
+*CamelCase:*:: surfaceCurrentSpeed
+
+*Alias:*::
+
+*Value type:*:: real
+
+*Remarks:*:: Its units are the units of speed, for example knots.
+
+*Unit of measure name:*:: knot *definition*: Nautical miles per hour *symbol*: kn
+
+*Quantity specification:*:: speed
+
+*Constraints:*
+
+[cols="5",options="unnumbered"]
+|===
+h| String Length h| Text Pattern 2+h| Range h| Precision
+.3+| (not specified) .3+| (none) | lowerBound | 0.00 .3+| 2
+| upperBound | (not specified)
+| closure | geSemiInterval
+
+|===
+
+[[sec_C-5.5]]
+==== Surface Current Time
+
+*Definition:*:: The time of the surface current data, expressed in
+<<ISO_8601_2004>> Date-time format.
+
+*CamelCase:*:: surfaceCurrentTime
+
+*Alias:*
+
+*Value type:*:: dateTime
+
+*Remarks:*:: Unit: Years, months, days, hours, minutes, seconds;
+Resolution: 1 second. Example: 19850412T101530Z denotes 10 hours,
+15 minutes, and 30 seconds, Universal Time on 12 April 1985.
+
+*Constraints*
+
+[cols="45,189,28,29",options="unnumbered"]
+|===
+h| String Length h| Text Pattern h| Range h| Precision
+| (not specified)
+| (((((19)\|(20))\d{2})\|(21([0-4]\d)))(1[0-2]\|0[1-9])(3[01]\|0[1-9]\|[12][0-9])T(2[0-3]\|[01][0-9]):?([0-5][0-9]):?([0-5][0-9])Z)\|(21500101T000000Z)
+| (not specified) | (not specified)
+
+|===
+
+[[sec_C-6]]
+=== Complex Attributes
+
+++[None]++
+
+[[sec_C-7]]
+=== Roles
+
+++[None]++
+
+[[sec_C-8]]
+=== Information Associations
+
+++[None]++
+
+[[sec_C-9]]
+=== Feature Associations
+
+++[None]++
+
+[[sec_C-10]]
+=== Feature Catalogue XML
+
+The feature catalogue is provided as a separate XML file and can be
+downloaded from the IHO Geospatial Information Registry.

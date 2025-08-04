@@ -1,0 +1,314 @@
+
+[[sec_4]]
+== Data Content and Structure
+
+[[sec_4.1]]
+=== Introduction
+
+This clause discusses the Application Schema, which is described in
+UML; the Feature Catalogue; dataset types, in which there is an extensive
+discussion of the current data; and geometry.
+
+Surface current data consist of one basic geographic feature type:
+
+. The current speed and direction near the sea surface. The data may
+either be depth-specific current or layer-averaged surface current.
+Current data usually are represented as a time series of values for
+either a single point (that is, one geographic location) or for an
+array of points. An optional time attribute is also provided for use
+with certain types of surface current information.
+
+[[fig_4-1]]
+.SurfaceCurrent feature class
+image::figure-4-1.png[]
+
+Attribute _surfaceCurrentDirection_ must be populated if _surfaceCurrentSpeed_
+is populated, and vice versa.
+
+[[sec_4.2]]
+=== Application Schema
+
+This Application Schema shall be expressed in UML. The single feature
+type, *SurfaceCurrent*, is depicted in <<fig_4-1>>. The details of
+the Application Schema are given in <<annex-b>>, which also describes
+its relation to the conceptual model of coverage data described in
+<<ISO_19123_2005>> and <<S_100,part=8>>.
+
+[[sec_4.3]]
+=== Feature Catalogue
+
+[[sec_4.3.1]]
+==== Introduction
+
+The S-111 Feature Catalogue describes the feature types, information
+types, attributes, attribute values, associations and roles which
+may be used in a Surface Current Dataset.
+
+The S-111 Feature Catalogue is available in an XML document which
+conforms to the <<S_100>> XML Feature Catalogue Schema and can be
+downloaded from the IHO GI Registry website.
+
+[[sec_4.3.2]]
+==== Feature types
+
+[[sec_4.3.2.1]]
+===== Geographic
+
+Geographic (geo) feature types form the principal content of S-111
+and are fully defined by their associated attributes and information
+types.
+
+[[sec_4.3.2.2]]
+===== Meta
+
+Meta features contain information about other features within a dataset.
+Information defined by meta features override the default metadata
+values defined by the dataset descriptive records. Meta attribution
+on individual features overrides attribution on meta features.
+
+[[sec_4.3.3]]
+==== Feature relationship
+
+A feature relationship links instances of one feature type with instances
+of the same or a different feature type. There are three common types
+of feature relationship: Association, Aggregation and Composition.
+In S-111 there are no relationships used.
+
+[[sec_4.3.4]]
+==== Attributes
+
+<<S_100>> defines feature attributes as either simple or complex.
+In S-111 there are no complex attributes. S-111 uses two types of
+simple attributes, described in <<table_4-1>>.
+
+[[table_4-1]]
+.Simple feature attribute types
+[cols="66,505"]
+|===
+h| Type h| Definition
+| Real
+| A signed Real (floating point) number consisting of a mantissa and
+an exponent
+| Date and Time
+| A DateTime is a combination of a date and a time type. Character
+encoding of a DateTime shall follow <<ISO_8601:1988>>
+
+[example]
+19850412T101530
+
+|===
+
+[[sec_4.3.5]]
+==== Spatial quality
+
+Spatial quality attributes (<<fig_4-2>>) are encoded as horizontal
+and vertical uncertainty values. In <<S_100>> Edition 5.2.0 they are
+encoded at the feature type level (see <<fig_4-2>> and <<table_12-2>>),
+which means they apply uniformly to all *Surface Current* feature
+instances in the dataset and uniformly to all locations
+(grid points or station locations).
+
+[[fig_4-2]]
+.Spatial Quality
+image::figure-4-2.png[]
+
+Note that uncertainty in currents pertains to the quality of data
+values, not to spatial quality as that term is used in <<S_100>>,
+and is encoded differently and at the instance level (see <<table_10-2>>
+and <<sec_10.2.2.4>>).
+
+Surface currents are usually defined at one or more individual locations,
+so spatial quality applies to these locations. Individual uncertainty
+values apply uniformly to all spatial and temporal points.
+
+NOTE: The *Spatial Quality* information type used in S-101 and other
+products is not used in this Edition of S-111 even for station-based
+data formats.
+
+[[sec_4.4]]
+=== Dataset types
+
+Datasets for S-111 include one basic type of dataset:
+
+. HDF5 files, which may contain: (a) time series of predicted or observed
+current velocities at one or more fixed stations; (b) gridded hydrodynamic
+model forecast fields; (c) values at multiple locations not in a regular
+grid (often from hydrodynamic models); or (d) time series of observed
+current velocities from one or more moving stations such as surface
+drifters.
+
+[[sec_4.5]]
+=== Spatial Schema
+
+[[sec_4.5.1]]
+==== Coverages
+
+Surface current data are represented in two ways: arrays of points
+contained in a regular grid, and sets of points not described by a
+regular grid. Further details on the data product are given in
+<<sec_10,style=full%>>.
+
+Surface current data has four basic types, based on their sources:
+
+. Observed or predicted values at a number of stationary locations;
+
+. Predicted values (often from hydrodynamic models) arranged in a
+regular grid;
+
+. Values at multiple locations (often from hydrodynamic models) but
+not in a regular grid; and
+
+. Observed values at a moving station (such as a surface drifter).
+
+The four types of data have structures that can be described by two
+S-100 coverages: S100_IF_PointCoverage and S100_IF_GridCoverage
+(<<S_100,clause=8-7>>).
+
+*Grid Coverage:*:: The class S100_IF_GridCoverage represents a set
+of values assigned to the points in a two-dimensional grid. The spatial
+structure is a regular grid, described by S100_IF_Grid (<<S_100>>
+Edition 5.2.0, clause 8-7.5). The class S100_IF_Grid is a realization
+of CV_RectifiedGrid and CV_GridValuesMatrix from <<ISO_19123_2005>>
+and a component of <<ISO_19123_2005>> continuous quadrilateral grid
+coverages as realized by S100_IF_GridCoverage.
+
+*Point Coverage:*:: The class S100_IF_PointCoverage represents a set
+of values, such as speed and direction values, assigned to a set of
+arbitrary stem:[X,Y] points. The spatial structure is a point set
+described by S100_IF_PointSet. Each point is identified by a horizontal
+coordinate geometry pair stem:[(X,Y)] and assigned one or more values
+as attribute values. These values are organized in a record for each
+point.
+
+The types of data and their corresponding coverages are shown in <<table_4-2>>.
+
+[[table_4-2]]
+.Surface current data types and their coverages
+[cols="4,49,21,27"]
+|===
+h| N h| Type of Data h| Spatial Structure h| Coverage
+
+| a | Time series data at one or more stationary locations               | S100_IF_PointSet | S100_IF_PointCoverage
+| b | Regularly-gridded data at one or more times                        | S100_IF_Grid     | S100_IF_GridCoverage
+| c | Ungeorectified gridded data or point set data at one or more times | S100_IF_PointSet | S100_IF_PointCoverage
+| d | Time series data for one moving platform                           | S100_IF_PointSet | S100_IF_PointCoverage
+
+|===
+
+The spatial representations in S-111 are encoded using the implementation
+specification in <<S_100,part=10c>>, which realises <<S_100,part=8>>
+and <<ISO_19123_2005>> conceptual models. The relationships are depicted
+in <<fig_4-3>> below.
+
+[[fig_4-3]]
+.Coverages and their realisation from <<S_100,part=8>> and <<ISO_19123_2005>>
+image::figure-4-3.png[]
+
+[[sec_4.5.2]]
+==== Regular grids
+
+S-111 regular grid geometry is an implementation of S100_IF_Grid
+(<<S_100,part=8>> -- Imagery and Gridded Data). The spatial grids
+for the regular grid type are two dimensional, orthogonal, and georeferenced
+(with the stem:[X] or longitudinal axis directed toward the east),
+and are defined by several attributes, including grid origin, spacing,
+and grid indexing. Current speed and direction values apply at the
+vertices of the grid; that is, the intersections of the row and column
+lines. These parameters are explained in more detail below. A typical
+regular grid and some of its parameters are shown in <<fig_4-4>>.
+
+[[fig_4-4]]
+.Schematic of the regular grid and some of its attributes
+image::figure-4-4.png[]
+
+Vertices are shown as the filled squares at the intersections of the
+rows and columns. The offsetVectors are shown as the Latitudinal Spacing
+and Longitudinal Spacing. The origin is shown at the lower left corner
+of the grid.
+
+The grid is oriented to the Earth by the Coordinate Reference System
+(CRS), with the variable _coordinateReferenceSystem._The _origin_
+contains the latitude and longitude as a _DirectPosition_ and is located
+at the point at the lower left (southwest) extent of the grid. The
+upper corner is the north easternmost point in the grid. The attribute
+_dimension_ is 2, and the variable_interpolationType_ has the value
+of 'discrete', since there is no spatial interpolation used for surface
+currents.
+
+S-111 grids allow for different spacing of points along the stem:[X]
+(longitudinal) axis and the stem:[Y] (latitudinal) axis. For rectangular
+grids the offset vector establishes the cell size. The attribute _offsetVectors_
+carries the two vectors for grid spacing (Latitudinal Spacing and
+Longitudinal Spacing). The first vector is 90 degrees clockwise from
+CRS north, and represents the distance between grid values on the
+stem:[X] axis. The second vector is 0 degrees clockwise from CRS north,
+and represents the distance between the values on the stem:[Y] axis.
+The distances are given in degrees.
+
+The attribute _extent_ effectively defines a bounding rectangle describing
+where data is provided. The attribute _extent_ carries two sub-attributes;
+_low_ and _high_. The sub-attribute _low_ carries the value "0, 0"
+to indicate the index values at the start of the extent is the southwest
+(lower left) corner of the grid. The sub-attribute _high_, carries
+the value of the highest position along the stem:[X] axis and the
+highest position along the stem:[Y] axis. For example, if the number
+of rows is _numROWS_ and the number of columns is _numCOLS_, then
+the index values for high would be '_numCOLS-1,numROWS-1'_. Together
+they form the grid coordinate of the upper right corner.
+
+The sequence rule for a regular cell size grid is straightforward.
+When the cells all have the same dimensions, the cell index can be
+derived from the position of the Record within the sequence of Records.
+The attribute _sequencingRule_ has two sub-attributes; _type_ and
+_scanDirection_. The sub-attribute _type_ carries the value "linear",
+and the sub-attribute _scanDirection_ carries the value "stem:[X,Y]".
+Together with the value "0,0" stored in the attribute _startSequence_,
+they indicate that for S-111 the grid values along the stem:[X] axis
+at the lowest stem:[Y] axis position are stored first, starting with
+the left most value going right, followed by the values along the
+stem:[X] axis at the next increment upward along the stem:[Y] axis,
+and so on till the top of the stem:[Y] axis. The last value in the
+value sequence of the grid will be at the top rightmost position in
+the grid. In the Figure, first all columns in row 1 are selected,
+then all columns in row 2, and so on.
+
+[NOTE]
+====
+since the origin is at _i_index_ and _j_index_ value 0, the location
+of any longitude and latitude in the grid is computed by:
+
+[[eq_4.1]]
+[stem]
+++++
+"Longitude" = "GridOriginLongitude" + ("i_index")("gridSpacingLongitudinal")
+++++
+
+[[eq_4.2]]
+[stem]
+++++
+"Latitude" = "GridOriginLatitude" + ("j_index")("gridSpacingLatitudinal")
+++++
+====
+
+[[sec_4.5.3]]
+==== Points
+
+The S-111 Point Coverage is quite flexible and is used herein to describe
+three broad categories of spatial data: one or more current stations
+at fixed locations, ungeorectified gridded data, and drifting platform
+data.
+
+For this type of data (<<fig_4-5>>), the _axisNames_ are the same
+as for the regular grid. However, the _origin_ is arbitrary, and the
+_extent_ (cf. the bounding rectangle) may be defined by the minimum
+and maximum of the geographic positions of the stations. The total
+number of locations (tidal current stations, ungeorectified grid points,
+or drifter locations) must be specified. Also, attributes like _gridSpacingLongitudinal_ and _scanDirection_ have no meaning. The position of the locations is carried in the one-dimensional arrays stem:[X] and stem:[Y].
+
+[[fig_4-5]]
+.Schematic of the Point Coverage and some of its attributes. Stations or nodes are denoted as "S1", etc
+image::figure-4-5.png[]
+
+The points, which may represent fixed stations or nodes in an ungeorectified
+grid, appear as filled-in rectangles, are labelled and have a format
+such as 'S1'.

@@ -1,0 +1,104 @@
+
+[[annex-b]]
+[appendix,obligation="informative"]
+== Comprehensive Model Including Application Schema and Carrier Metadata (UML Diagrams)
+
+<<fig_B-1>> depicts the various components of the S-111 model.
+The Meta-features and Exchange Set Metadata components are empty because
+S-111 does not define any meta-features or extend S-100 Exchange Catalogue
+classes. <<fig_B-2>> depicts the derivation of the S-111 packages
+from various <<S_100>> components.
+
+[[fig_B-1]]
+.S-111 Model components
+image::figure-b-1.png[]
+
+[[fig_B-2]]
+.Derivations from <<S_100>>
+image::figure-b-2.png[]
+
+<<fig_B-3>> depicts the coverage types used in S-111 and their realizations
+from the conceptual coverages in <<S_100,part=8>> and <<ISO_19123_2005>>.
+This is a more detailed version of <<fig_4-2>>. Note that the realizations
+are not directly from the Part 8 and <<ISO_19123_2005>> classes, but
+via corresponding notional classes for the HDF5 implementations of
+the various data coding formats (not included in this diagram).
+For example, *S111_RegularGrid* is a notional extension of a notional
+S-100 class Part10c::S100_HDF_RegularGrid which encapsulates the encoding
+of _dataCodingFormat_ 2 in HDF5. The notional classes are omitted
+to reduce diagram clutter.
+
+The implementation of most attributes in the <<S_100,part=8>> model
+by <<S_100,part=10c>> closely follows the names and types of the attributes.
+Certain attributes in the <<S_100,part=8>> and <<ISO_19123_2005>>
+models are simplified in <<S_100,part=10c>> HDF5 implementation,as follows:
+
+* HDF5 Regular Grid and Ungeorectified Grid (data coding formats 2 and 3)
+implement S100_Grid and CV_ReferenceableGrid respectively:
+
+** The attribute _origin_ is implemented in the form of two HDF5 attributes,
+_gridOriginLatitude_ and _gridOriginLongitude_.
+** The attribute _offsetVectors_ is implemented in the form of two
+HDF5 attributes, _gridSpacingLongitudinal_ and _gridSpacingLatitudinal_.
+* The _rangeType_ attribute common to all coverage types is implemented
+implicitly in the S-100 Feature Catalogue's binding of attributes
+to a feature and in the name/datatype information in feature information
+datasets in the Feature Information group (<<S_100,part=10c,table=10c-8>>).
+
+[%landscape]
+<<<
+
+[[fig_B-3]]
+.Spatial Types -- Coverages with Realizations from <<S_100,part=8>> and <<ISO_19123_2005>>
+image::figure-b-3.png[]
+
+[%portrait]
+<<<
+
+<<fig_B-4>> depicts the single domain feature type. The *SurfaceCurrent*
+feature class (<<fig_B-4>>) has two mandatory attributes: _surfaceCurrentSpeed_
+and _surfaceCurrentDirection_. These variables capture the speed of
+current over ground and the general direction of the current at the
+location of the data. It also has three optional attributes: _surfaceCurrentTime_, _speedUncertainty_, and _directionUncertainty_. An instance of *SurfaceCurrent* may be part of a time series, as described in the metadata.
+
+[[fig_B-4]]
+.Surface Current feature class
+image::figure-4-1.png[]
+
+<<fig_B-5>> depicts the external Catalogue metadata classes
+(the same information as <<fig_12-4>>).
+
+<<fig_B-6;to!fig_B-10>> depict the same information as <<fig_12-6;to!fig_12-9>>,
+organised by coverage type instead of structural level. Different
+levels in the HDF5 structure (root, feature type, feature instance,
+and value) are indicated by backgrounds of different colours.
+
+[%landscape]
+<<<
+
+[[fig_B-5]]
+.Exchange Set class details
+image::figure-12-4.png[]
+
+[[fig_B-6]]
+.All carrier metadata for coverage type Fixed Stations (data coding format 1)
+image::figure-b-6.png[]
+
+[[fig_B-7]]
+.All carrier metadata for coverage type Regular Grid (data coding format 2)
+image::figure-b-7.png[]
+
+[[fig_B-8]]
+.All carrier metadata for coverage type Ungeorectified Grid (data coding format 3)
+image::figure-b-8.png[]
+
+[[fig_B-9]]
+.All carrier metadata for coverage type Moving Platform (data coding format 4)
+image::figure-b-9.png[]
+
+[[fig_B-10]]
+.All carrier metadata for coverage type Fixed stations (Stationwise) (data coding format 8)
+image::figure-b-10.png[]
+
+[%portrait]
+<<<

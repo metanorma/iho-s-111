@@ -1,0 +1,657 @@
+
+[[sec_9]]
+== Portrayal
+
+[[sec_9.1]]
+=== Introduction
+
+This clause describes means of displaying surface current vectors
+to support navigation, route planning and route monitoring. Two types
+of data are discussed in depth. They are:
+
+*Point data*, which would apply to historical data, astronomical predictions,
+and real-time data at a small number of locations; and
+
+*Sets of multiple points*, which would apply to analyses, coastal
+radar observations, and model-based hindcasts and forecasts. For multiple
+point data, the current vector portrayal characteristics used for
+single-point data can be adapted to displaying data at individual
+points.
+
+For example, a point portrayal may be provided to display currents
+at significant locations such as turning points or where real-time
+observations are available. A multiple-point portrayal may be provided
+for voyage planning where a Mariner's selection of routes may be influenced
+by an overview of the currents. Note that not each portrayal category
+(single point and multiple point) may be available for all types of
+current data (historical observations, real-time observations, astronomical
+predictions, and forecast total currents).
+
+All recommended sizes are given assuming a minimum size ECDIS display
+of 270 by stem:[270 "unitsml(mm)"].
+
+[[sec_9.2]]
+=== Display of current at a single point
+
+Portrayal of current using single point data should be used for instances
+where the data source is a current meter (for example a historical
+or real-time current measuring device) at a single geographic location.
+
+[[sec_9.2.1]]
+==== Arrow shape
+
+<<fig_9-1>> depicts nominal dimensions for the generalized arrow shape.
+Arrows must be scaled according to the current speed and the display
+area. This shape is unique and so does not conflict with existing
+arrow and arrow-like shapes previously approved for use in ECDIS (<<fig_9-2>>).
+
+The arrow's 'pivot point' is located on the arrow symbol along the
+vertical centreline and is at a distance from the bottom equal to
+one-half the quantity 'al'. The pivot point is placed at the corresponding
+position (longitude and latitude) on the chart image.
+
+The arrow must be drawn with a black border so that the symbol stands
+out against backgrounds of similar colours.
+
+[[fig_9-1]]
+.Standard arrow symbol for use in representing surface currents
+image::figure-9-1.png[]
+
+The coordinates of the vertices stem:[(x, y)] are shown in mm. The
+'+' shows the location of the pivot point at (0.0, 0.0) and the y
+axis is pointing downward. Maximum height is stem:[10 "unitsml(mm)"]
+and maximum width is stem:[4 "unitsml(mm)"].
+
+The nominal dimensions defined above may be adjusted in the portrayal
+catalogue to enhance the user experience and accommodate interoperability
+with other data products on ECDIS.
+
+[[fig_9-2]]
+.Existing arrow types and approximate colours approved for use in ECDIS: (a) and (b) for Traffic Separation Schemes; (c) for recommended (one-way) tracks; (d) and (e) for conical buoys; and (f) and (g) for magnetic variation and anomaly
+image::figure-9-2.png[]
+
+[[sec_9.2.2]]
+==== Arrow direction
+
+The direction of the arrow symbol must be the direction
+(relative to true north) toward which the current is flowing (<<fig_9-3>>).
+If the map projection is Mercator, angles are preserved, so current
+direction is identical to direction on the screen. For other map projections,
+the portrayed direction must be computed.
+
+[[fig_9-3]]
+.Portrayal of the arrow's direction, based on the current direction
+image::figure-9-3.png[]
+
+The dashed line is the arrow's centerline, and the origin of the East-North
+axis is at the arrow's pivot point. True north has a direction of
+0 degrees.
+
+[[sec_9.2.3]]
+==== Arrow colour and speed bands
+
+The colour of the arrow must be based on the speed value of the data,
+and must have 9 bands corresponding to the speed ranges (<<table_9-1>>).
+The range of speeds (<<table_9-1>>) was selected to (a) emphasize
+differences at low speeds (stem:[0.0] to stem:[3 "unitsml(kn)"]);
+and (b) be capable of displaying large currents (stem:[13 "unitsml(kn)"]
+and above).
+
+NOTE: The largest tidal currents may be those in the strait near Saltstrumen,
+Norway, which reach stem:[22 "unitsml(kn)"].
+
+[[table_9-1]]
+.Speed ranges (knots) for the 9-band display
+[cols="^,^,^"]
+|===
+h| Speed Band h| Minimum Speed (kn) h| Width of Band (kn)
+| 1 | 0.00 | 0.50
+| 2 | 0.50 | 0.50
+| 3 | 1.00 | 1.00
+| 4 | 2.00 | 1.00
+| 5 | 3.00 | 2.00
+| 6 | 5.00 | 2.00
+| 7 | 7.00 | 3.00
+| 8 | 10.00 | 3.00
+| 9 | 13.00 | 86.00
+|===
+
+Colours are associated with each speed band, and must be distinguishable
+in the three viewing environments: day, dusk, and night. Colour values
+for day conditions are shown in <<table_9-2>>. Colours for dusk and
+night conditions are given in <<annex-f>> (Colour Tables). (The monitor
+gamma values need to be taken into account -- refer to IHO Standards.
+Also, the portrayal catalogue may adjust colors to enhance the user
+experience and accommodate interoperability with other products displayed
+on the ECDIS.)
+
+[[table_9-2]]
+.Colour Schema for day conditions (informative)
+[cols="^,^,^,^,^,^,^",options="noheader"]
+|===
+.2+h| Speed Band .2+h| Colour 3+h| Colour Scale Intensity .2+h| Hex RBG .2+h| Displayed Colour
+h| Red h| Green h| Blue
+
+| 1 | purple       | 118 | 82  | 226 | 7652E2 |
+| 2 | dark blue    | 72  | 152 | 211 | 4898D3 |
+| 3 | light blue   | 97  | 203 | 229 | 61CBE5 |
+| 4 | dark green   | 109 | 188 | 69  | 6DBC45 |
+| 5 | light green  | 180 | 220 | 0   | B4DC00 |
+| 6 | yellow-green | 205 | 193 | 0   | CDC100 |
+| 7 | orange       | 248 | 167 | 24  | F8A718 |
+| 8 | pink         | 247 | 162 | 157 | F7A29D |
+| 9 | red          | 255 | 30  | 30  | FF1E1E |
+|===
+
+[[sec_9.2.4]]
+==== Arrow size
+
+The arrow size (height and width) must be a function of the current
+speed; and for a given speed must be the same regardless of the source
+of the data. The standard arrow symbol (<<fig_9-1>>) is scaled up
+or down in size, depending on the speed it is intended to represent.
+
+Let stem:[S] represent the value of the current speed. An upper limit on
+the size of the arrow is imposed by requiring the scaling input speed
+value not to exceed a reference high value, stem:[S_{"high"}].
+The recommended value for stem:[S_{"high"}] is the minimum speed in
+the highest group in <<table_9-1>>, which is stem:[13.0 "unitsml(kn)"].
+The value of stem:[S_{"high"}] should be the same for all data sets
+from multiple sources so that the same speed in different data will
+be displayed with the same arrow length.
+
+It is desirable to display a small arrow at a location where data
+is usually available (for example a grid point) but the speed is very
+low. This can be accomplished by setting a minimum reference speed,
+stem:[S_{"low"}], so that, as a result, a 'point' is displayed. When
+the speed stem:[S] falls below stem:[S_{"low"}], then stem:[S_{"low"}] is
+substituted for stem:[S].
+
+It is also desirable that the symbol displayed for weak currents should
+be distinguishable as a current arrow, rather than a generic dark
+point or short line. Applying the results of experimental investigations
+footnote:[Courtesy NAUDEQ.] and a rule of thumb requiring a minimum
+dimension of stem:[3.5 "unitsml(mm)"] for viewing at 1 metre distance
+footnote:[IEC 60945 as cited in S-52 specifies that character size
+in mm be not less than 3.5 x the viewing distance in metres. According
+to this criterion "readable from 1 metre" requires that characters
+be not less than stem:[3.5 "unitsml(mm)"] in size. A stem:[3.5 "unitsml(mm)"] symbol
+or character subtends an angle of approximately 12 arc minutes at
+a distance of 1 metre.], the recommended footnote:[Note that this
+is a recommended value; manufacturers may adjust it as necessary in
+particular circumstances, such as a lower or higher normal viewing
+distance. The basic requirement is that the symbol should be distinguishable
+as an arrow.] value of stem:[S_{"low"}] is set at 2.00 knots
+footnote:[Calculated using Eqn. 9.1 and an allowance for the border
+extending outside the filled area of the arrow symbol.].
+
+A third parameter is the reference speed, stem:[S_{"ref"}], at which
+the arrow symbol has a length equal to the scaling height parameter,
+stem:[H_{"ref"}]. Here stem:[S_{"ref"}] is chosen to be stem:[5 "unitsml(kn)"]
+and stem:[H_{"ref"}] is taken to be stem:[10.0 "unitsml(mm)"]. Let
+stem:[S] be the current speed to be displayed. If stem:[S] exceeds
+stem:[S_{"high"}], then stem:[S_{"high"}] is substituted for that
+speed, since areas of extremely high current speeds are rare and are
+likely to be avoided by navigators anyway. Therefore,a current with
+a speed of stem:[S] will be displayed with a height, stem:[H] (mm),
+computed by:
+
+[[eq_9.1]]
+[stem]
+++++
+H = H_{"ref"} cdot min{max(S_{"low"},S),S_{"high"}}//S_{"ref"}
+++++
+
+The arrow width is scaled in a similar fashion. A summary of recommended
+scaling values is given in <<table_9-3>>. Note that this formula and
+constants apply only to the size of the symbol, not its colour.
+
+[[table_9-3]]
+.Summary of recommended values for arrow display size (see Eqn 9.1). With these values, an arrow representing stem:[5 "unitsml(kn)"] will have a length of stem:[10 "unitsml(mm)"]
+[cols="<,<,^"]
+|===
+h| Constant h| Description h| Recommended Value
+
+| stem:[H_{"ref"}]  | Reference height for arrow scaling                     | stem:[10 "unitsml(mm)"]
+| stem:[S_{"ref"}]  | Reference speed for arrow scaling                      | stem:[5 "unitsml(kn)"]
+| stem:[S_{"low"}]  | Minimum speed to be used for arrow length computations | stem:[2.00 "unitsml(kn)"]
+| stem:[S_{"high"}] | Maximum speed to be used for arrow length computations | stem:[13 "unitsml(kn)"]
+
+|===
+
+[[sec_9.2.5]]
+==== Numerical values
+
+Current speed and direction, and additional data related to uncertainty
+and other metadata, should be visible when selected by placing the
+cursor within the solid area of the arrow shape (<<fig_9-4>>). The
+data are invisible initially, and when the cursor is placed on the
+arrow, the data will be shown temporarily. If the arrow is clicked,
+data will be shown continuously until another point is clicked. The
+information shown when the arrow is clicked will be displayed in black
+text inside a box with a white (or other colour for dusk and/or night
+viewing) background and a black border. The box will normally have
+zero transparency.
+
+[[fig_9-4]]
+.Example of the display of the first level of numerical information available by cursor selection. Note: Arrow length is not to scale
+image::figure-9-4.png[]
+
+There should be at least three levels of detail of information (<<table_9-4>>).
+In the first level, speed (kn) and direction (arc-degrees clockwise
+from true north) shall be displayed. In the second level, there are
+six additional items, each with appropriate units: data source/station
+name, latitude, longitude, date, time, and current depth or layer
+thickness. In the third level, there are at least five additional
+items: uncertainty in speed; direction; horizontal position; vertical
+position; and time. A sample image showing a vector with the first
+level of information is shown in <<fig_9-4>>.
+
+The additional levels are accessed by a cursor pick capability
+(cf. S-101 -- IHOElectronic Navigational Chart Product Specification).
+
+[[table_9-4]]
+.Sample of numerical information displayed in text at the location of a current vector, organised into levels of priority
+[cols="94,465"]
+|===
+h| Priority Level h| Text Information Displayed
+| 1 | Speed, Direction
+| 2 | Data source, Latitude, Longitude, Depth of current, Valid Date, Valid Time
+| 3 | Uncertainty in speed, Uncertainty in direction, Uncertainty
+in horizontal position, Uncertainty in vertical position, Uncertainty
+in time
+
+|===
+
+[NOTE,keep-separate=true]
+====
+The text box in <<fig_9-4>> requires the use of two additional colours:
+black for the text and box outline, and white for the interior of
+the box. Standard ISO colours are to be used. The interior of the
+box will normally have zero transparency.
+====
+
+[[sec_9.2.6]]
+==== Transparency
+
+The symbol transparency must be adjusted according to the background
+chart/image used (<<table_9-5>>). The value alpha represents the level
+of opaqueness (relative to the background image) of the arrow and
+the numerical values displayed. An alpha value of 1 denotes zero transparency
+and an alpha value of 0 denotes 100% transparency.
+
+[[table_9-5]]
+.Alpha (opaqueness) values for arrows with various display backgrounds. Transparency is 1.0 minus the alpha value
+[cols="^,^"]
+|===
+h| Background h| Alpha
+| Satellite image | 1.0
+| Raster Nautical Chart | 1.0
+| ENC Day | 1.0
+| ENC Dusk | 0.4
+| ENC Night | 0.2
+
+|===
+
+[[sec_9.2.7]]
+==== Scalable Vector Graphics
+
+In ECDIS, the arrow symbol (for example <<fig_9-5>>) is drawn using
+Scalable Vector Graphics (SVG) instructions according to the <<S_100>>
+SVG profile described in <<S_100,part=9,annex=9-B>>. SVG allows a
+symbol of any given size, orientation, and colour to be displayed
+by only a few instructions. See <<annex-g>> (Scalable Vector Graphics
+(SVG) Coding) for more details.
+
+[[sec_9.2.8]]
+==== Symbol placement
+
+The arrow symbol is placed on the georeferenced background so that
+the pivot point of the symbol (<<fig_9-1>>) is positioned at the geographic
+coordinates of the current station or grid point.
+
+NOTE: The Producer must ensure that the arrow's pivot point does not
+lie on the displayed representation of land; that is, that the current
+data and the shoreline are consistent.
+
+NOTE: The Producer must ensure that thearrow's pivot point does not
+lie in a geographic area designated as intertidal when the time-varying
+water depth has gone to zero.
+
+However, since some stations or grid points are near land, and depending
+on arrow size, on occasion it is unavoidable that occasionally some
+part of the arrow symbol will overlie the land or intertidal area.
+
+[[sec_9.2.9]]
+==== Application to time series and moving platform data
+
+The portrayal described in this clause applies to all non-gridded
+coverage types. The following guidelines must be applied for values
+selection and display:
+
+* Time series at fixed stations (dataCodingFomat 1): Display arrows
+at the locations of the stations, using the temporal rules described
+in <<sec_9.4>> and <<annex-h>>.
+* Moving platform (dataCodingFomat 4): Display arrows at the platform
+location closest to the selected time as well as preceding and following
+points within user or system selected spatial and temporal buffers
+(the same buffers as for route monitoring or planning as appropriate).
+Arrows may be thinned if necessary using the point-by-point method
+described at the end of <<sec_9.3.2>>, using the distance to preceding
+displayed location as the cell spacing.
+* Stationwise time series (dataCodingFomat 8): Display arrows at station
+locations for the selected time, using the temporal rules described
+in <<sec_9.4>> and <<annex-h>>.
+
+Cursor pick at a platform or station location should display current
+information in any format determined by the application developer.
+An informative format is described in <<annex-h>> (<<sec_H-7,style=full%>>
+-- Pick Report for Time Series Data).
+
+[[sec_9.3]]
+=== Display of regularly gridded data
+
+The display of gridded data depicts a surface current field of multiple
+arrows (<<fig_9-5>>), with each individual arrow having the qualities
+described in <<sec_9.2>>. The acceptable arrowhead style for gridded
+arrows is the style defined in <<fig_9-1>>. As with single-point data,
+the speed and direction values at individual vectors must be available
+when the cursor is placed over a vector.
+
+NOTE: Current direction angles cannot be interpolated (in either space
+or time) directly, but must be derived using the stem:[X] and stem:[Y]
+components of speed. That is, interpolation must be of the east/west
+and north/south components of speed separately, with the interpolated
+components then used to calculate speed and direction.
+
+[[sec_9.3.1]]
+==== High resolution
+
+A high-resolution display (that is, zooming in) of regularly gridded
+data display produces a lower density of data (<<fig_9-6>>). It is
+not recommended that spatial interpolation be used to estimate current
+values at locations between grid points or point coverage locations.
+
+[[fig_9-5]]
+.Arrows representing gridded surface current data, with length increasing with speed, and stem:[S_{"ref"}] is stem:[5 "unitsml(kn)"], stem:[H_{"ref"}] is stem:[20 "unitsml(mm)"], and the maximum speed in the data in the image is stem:[3.15 "unitsml(kn)"]. Coastline added for clarity. (Data courtesy of St. Lawrence Global Observatory, Canada)
+image::figure-9-5.png[]
+
+NOTE: Although some portions of the arrow symbol lie over land, the
+pivot point does not.
+
+[[fig_9-6]]
+.Display of surface current data (see <<fig_9-5>>) but at a higher resolution (data courtesy of St. Lawrence Global Observatory, Canada)
+image::figure-9-6.png[]
+
+[[sec_9.3.2]]
+==== Low resolution
+
+Displaying at a low resolution (that is, zooming out) increases the
+density of symbols (<<fig_9-7>>a). However, by applying a thinning
+algorithm, the number of vectors may be reduced (<<fig_9-7>>b).
+In this case, every fourth vector was plotted.
+
+An example of thinning of regularly gridded data is as follows. Suppose
+that the grid cell's diagonal as displayed has a distance of
+stem:[D "unitsml(mm)"] and represents the grid spacing. Note that
+stem:[D] is dependent on the specific geographic area and the size
+of the viewing monitor. If every n^th^ cell is displayed, the displayed
+spacing is stem:[nD]. Next, suppose the length of the arrow representing
+the maximum speed in the displayed field is stem:[L_{"smax"} "unitsml(mm)"].
+Then the ratio of the maximum arrow length to the displayed grid spacing
+is constrained to be less than a prescribed maximum value, stem:[R_{"max"}],
+here taken to be 0.5. Thus:
+
+[[eq_9.2]]
+[stem]
+++++
+R = L_{"smax"}/(nD) <= R_{"max"}
+++++
+
+[[fig_9-7]]
+.(a) Surface current vectors (see <<fig_9-6>>) displayed with identical parameters, but at low resolution. (b) Current vectors as in (a), but 'thinned' by plotting every fourth point. Note that the coastline data in the Figure may differ from that used to determine model boundaries; in practice, the arrow pivot point must not be placed over land. (Data courtesy of St. Lawrence Global Observatory, Canada
+====
+.(a)
+image::figure-9-7a.png[]
+
+.(b)
+image::figure-9-7b.png[]
+====
+
+If the above inequality cannot be met with increment stem:[n] equal
+to 1, then a new value for n is computed by the following formula:
+
+[[eq_9.3]]
+[stem]
+++++
+n = 1 + "fix"(L_{"smax"}//(DR_{"max"}))
+++++
+
+Where fix() is a function that returns the truncated integer value.
+For plotting, arrows at every n^th^ column and every n^th^ row are
+drawn, making sure that the row and column with the maximum vector
+is drawn (<<fig_9-7>>b).
+
+Thinning of irregularly-spaced vectors is more difficult. For each
+on-screen point the distance to all other on-screen points would have
+to be calculated, so that the closest point can be determined. The
+size and direction of the arrow symbols at the point and its nearest
+point would be compared for overlap. If overlap occurred, one of the
+symbols would be eliminated. This procedure would be carried out for
+all on-screen points, keeping track of which points and their symbols
+had been eliminated. An alternate solution would be to reduce the
+reference height stem:[H_{"ref"}] or increase the reference speed
+stem:[S_{"ref"}] (<<table_9-3>>).
+
+[[sec_9.3.3]]
+==== Application to ungeorectified grid data
+
+Portrayal for ungeorectified grids must also display a field of multiple
+arrows using the same principles as for regular grids, with thinning
+based either on the point-by-point method described at the end of
+<<sec_9.3.2>> or the same method as for regular grids but using an
+average resolution, calculated either over the whole grid or sections
+of the grid. Application developers may substitute their own thinning
+heuristics for the methods described in <<sec_9.3.2>>.
+
+[[sec_9.4]]
+=== Temporal rules
+
+The metadata variables related to time are the _dateTimeOfFirstRecord_,
+_dateTimeOfLastRecord_, _timeRecordInterval_, and _numberOfTimes_.
+The time selected for display (that is past, present, or future) of
+the surface currents by the display system will typically not correspond
+exactly to the timestamp of the input data. For a correct display,
+the ECDIS will have to select the correct data.
+
+For data with only a single record (where the timestamp of the earliest
+value equals that of the latest value) such as real-time data, the
+surface current values are displayed only if the display time is later
+than the timestamp and the absolute time difference between the display
+time and the data timestamp is less than a discrimination interval
+(for example 5 minutes). For a single record, the variable _timeRecordInterval_
+(see <<sec_12.3>>) can be used to set the discrimination interval.
+
+For data with multiple times, if the selected display time is later
+than the first timestamp and earlier than the last timestamp, then
+the closest but immediately preceding values in the data are displayed.
+However, if the selected display time is earlier than the first timestamp
+then the data is not displayed. If the selected time is later than
+the last timestamp, then surface current values at that time are displayed
+only if the absolute time difference between the display time and
+the data timestamp is less than a discrimination interval (for example
+the value of the variable _timeRecordInterval_)_._
+
+[[sec_9.5]]
+=== Placement of legend
+
+The legend, which is to be displayed as an option, must show the relationship
+between the arrow colours and the speed values. A sample is shown
+in <<fig_9-8>>. The precise position of the legend if it appears on
+the monitor will be determined so as to minimize the obscuring of
+other important navigational information.
+
+[[fig_9-8]]
+.Sample surface current speed scale based on the colours and speed bands in <<table_9-2>> (informative)
+image::figure-9-8.png[]
+
+[[sec_9.6]]
+=== Interoperability
+
+Interoperability principles determine priority in display of elements
+so that important image elements, such as depth numerals, are not
+obscured by current vectors. Surface current portrayal must conform
+to interoperability rules established in <<S_98>>.
+
+[[sec_9.6.1]]
+==== Symbol priority
+
+Details about symbol priority will be determined in accordance with
+<<S_100>> standards when they are developed.
+
+One example involves the use of the older charting symbol for currents.
+When an S-111 dataset is displayed, symbols from the S-101 ECDIS nautical
+charting suite, in the area where the new data is displayed, must
+not be displayed. Such symbols include those for tidal stream tables
+(plus their points and boundary areas); flood and ebb tide stream
+arrows and their values and boundary areas; and other symbols for
+rip currents, eddies, breakers, and non-tidal currents.
+
+[[sec_9.6.2]]
+==== Colour discrimination
+
+Another criterion is that the arrows colours be distinct when displayed
+against a background of similar colour. <<table_9-6>> shows the background
+colours for various water depth types, and <<fig_9-9>> shows typical
+arrows for the nine speed bands. The black arrow border allows the
+arrow symbol to stand out against the blue and green backgrounds.
+
+[[table_9-6]]
+.Chart background colours in two colour scales (courtesy of Korean Hydrographic and Oceanographic Administration)
+[cols="147,46,46,46,46,46,46,57",options="noheader"]
+|===
+.2+h| Name 3+h| sRGB 3+h| xyL .2+h| Displayed Colour
+h| Red h| Green h| Blue h| x h| y h| L
+
+| Deep Water           | 201 | 237 | 255 | 0.28 | 0.31 | 80 |
+| Medium Deep Water    | 167 | 218 | 252 | 0.26 | 0.29 | 65 |
+| Medium Shallow Water | 130 | 202 | 255 | 0.23 | 0.25 | 55 |
+| Very Shallow Water   | 97  | 184 | 255 | 0.21 | 0.22 | 45 |
+| Intertidal           | 88  | 175 | 156 | 0.26 | 0.36 | 55 |
+| No Values            | 147 | 174 | 187 | 0.28 | 0.31 | 40 |
+|===
+
+[[fig_9-9]]
+.Arrows displayed against the (daytime) background colours in <<table_9-6>>. Arrows (a) with borders and (b) without borders. (Figures courtesy of University of New Hampshire)
+====
+.(a)
+image::figure-9-9a.png[]
+
+.(b)
+image::figure-9-9b.jpeg[]
+====
+
+[[sec_9.7]]
+=== Sample representation
+
+Surface current vectors comprise a layer to be displayed on demand
+and, possibly, on top of other data and layers. Consideration must
+be made so as not to obscure critical navigational data nor create
+confusion by using symbols or colours similar to those in other layers.
+<<fig_9-10>> shows a sample display.
+
+[[fig_9-10]]
+.Sample depiction of gridded surface current data in an electronic chart. Note that arrow height in scale may not strictly conform to the portrayal rules. (Image courtesy of the University of New Hampshire, US)
+image::figure-9-10.png[]
+
+[[sec_9.8]]
+=== Portrayal rules
+
+A summary of the portrayal rules appears in <<annex-h,style=full%>>
+-- Surface Current Portrayal Rules.
+
+[[sec_9.9]]
+=== Construction and packaging of Portrayal Catalogues
+
+The Portrayal Catalogue must be constructed as a main Portrayal Catalogue
+XML file (see <<S_100,part=9,clause=9-13>>) and other files in subfolders.
+The structure is described in <<S_100,clause=9-13.2>>. The main Portrayal
+Catalogue XML file and portrayal subfolders described in <<S_100>>
+must be placed in a single subfolder named 111_E_R_C_PC/YYYYMMDD
+footnote:[stem:[E, R, C] represent the edition, revision, and clarification
+numbers of this edition of the Product Specification (for example,
+for S-111 Edition 2.1.0, stem:[E = 2, R = 1, C = 0]. YYYYMMDD is a
+build suffix for the catalogue as year, month, and day in numeric
+form, for example 202301015 for January 15, 2023. It is not necessary
+that the build suffix be precisely the date the catalogue was compiled,
+only that it follow the previous build and precede the next build
+of the portrayal catalogue for this edition of S-111.]. When distributed
+within an Exchange Set, the entire Portrayal Catalogue may be packaged
+as a zip archive named 111_E_R_C_PC_YYYYMMDD.ZIP. The YYYYMMDD component
+in the folder and archive names denotes a "build date" and allows
+distinguishing Portrayal Catalogues corresponding to the same version
+of the S-111 Product Specification (for example, correcting a discrepancy
+between a portrayal rule and a stable version of the S-111 Product
+Specification).
+
+<<fig_9-11>> depicts a hypothetical S-111 Edition 1.2.0 Portrayal
+Catalogue, with the build date 01 January 2023. The Portrayal Catalogue
+is located under the folder 111_2_0_0_PC which is a container for
+all S-111 Edition 2.0.x Portrayal Catalogues. If a new Portrayal Catalogue
+is defined for the same Edition of S-111, it must receive a new build
+date and would be placed under 111_2_0_0_PC in a folder named with
+the new build date. S-111 uses the same layout with updated numbering
+components and dates.
+
+[[fig_9-11]]
+.Typical structure for S-111 Portrayal Catalogue
+image::figure-9-11.png[]
+
+Note that some of the sub-folders will be empty since S-111 defines
+only coverage features and does not need all the components definable
+in <<S_100>> Portrayal Catalogues.
+
+[[sec_9.10]]
+=== Portrayal Catalogue citation information
+
+Citation information for the Portrayal Catalogue is provided in <<table_9-10>>
+below.
+
+When selecting a portrayal catalogue to use or distribute, the first
+two components of the edition number of the portrayal catalogue used
+must match the edition and revision numbers of this edition of the
+Product Specification. Build numbers may be provided in otherCitationDetails
+to distinguish successive releases corresponding to the same edition
+of the Product Specification. If there are multiple builds for the
+same edition, the most recent build should be selected in order to
+use the most recent portrayal catalogue.
+
+[example]
+PC version 2.0.1 may be used with datasets for S-111 Edition 2.0.0.
+
+[[table_9-10]]
+.Portrayal Catalogue citation
+[cols="7,24,21,48"]
+|===
+h| No. h| ISO class or attribute h| Type h| Value
+
+| --    | CI_Citation           | Class                          | --
+| 1     | title                 | CharacterString                | S-111 Portrayal Catalogue
+| 2     | date                  | CI_Date (class)                | --
+| 2.1   | date                  | DateTime                       | 2024-07-15T00:00:00 or later
+| 2.2   | dateType              | CI_DateTypeCode (ISO codelist) | publication
+| 3     | edition               | CharacterString                | 2.0.x
+| 4     | editionDate           | DateTime                       | 2024-07-15T00:00:00 or later
+| 5     | citedResponsibleParty | CI_Responsibility (class)      | --
+| 5.1   | role                  | CI_RoleCode (ISO codelist)     | publisher
+| 5.2   | party                 | CI_Organisation (class)        | --
+| 5.2.1 | name                  | CharacterString                | International Hydrographic Organization
+| 6     | otherCitationDetails  | CharacterString                | (reserved, build date as YYYYMMDD)
+| 7     | onlineResource        | CI_OnlineResource (class)      | --
+| 7.1   | linkage               | CharacterString (URL)          | https://registry.iho.int/
+| 7.2   | name                  | CharacterString                | S-111 Portrayal Catalogue
+| 7.3 | description | CharacterString
+| XML Portrayal Catalogue accompanied by related files for symbols,
+colour profiles, rules, etc
+
+|===

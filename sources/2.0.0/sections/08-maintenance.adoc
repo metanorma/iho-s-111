@@ -1,0 +1,348 @@
+
+
+[[sec_8]]
+== Maintenance
+
+[[sec_8.1]]
+=== Maintenance and update frequency
+
+Surface currents change rapidly, so more-or-less continual revision
+or updating of the data is essential. For real-time observations,
+new values are periodically collected (on the order of once every
+5 minutes). For a forecast, the entire field of currents is created
+one or more times per day. New issues of real-time observations or
+forecasts are not considered New Editions, but new datasets. New Editions
+may occur in predicted time series data. New dataset may distinguished
+by a unique datetime in the file name.
+
+<<table_8-1>> summarizes this information.
+
+[[table_8-1]]
+.Typical update/revision intervals and related information for S-111 products produced by a single Producer
+[cols="150,69,144,181"]
+|===
+h| Data Types h| Update Interval h| Number Of Spatial Locations h| Typical Number Of Time Values Per Location in a Dataset
+
+| Astronomical Predictions | 1 year | 10 to 1,000 | 8,760 (hourly data)
+| Model Forecasts | 6 hr | 100,000 to 1,000,000 | 1 to 48
+| Real-time Observations | 0.1 hr | 1 to 10 | 1 to 240
+| HF Radar Observations | 0.1 hr | 10,000 to 100,000 | 1 to 24
+
+|===
+
+NOTE: Population of the resource maintenance information in metadata
+will indicate to the ECDIS when new data can be expected to be available.
+
+*Data Source:* Data is produced by the Producing Authority by collecting
+observational values, predicting astronomical tides, or running analysis
+or hindcast/forecast models. These data are typically quality-controlled
+and reformatted to conform to file size limitations and the S-111
+standard encoding.
+
+*Production Process:* S-111 data sets, including the metadata and
+the coverages for current speed and direction, are updated by replacement
+of the entire data product. Producers routinely collect observational
+data and maintain an analysis and/or forecast capability. When new
+data becomes available (often several times per day), the data is
+reformatted and made available for dissemination.
+
+[[sec_8.1.1]]
+==== Update of tidal atlases and harmonic constants (informative)
+
+Tidal atlas or harmonic constant data are updated much less often,
+typically on an annual basis.
+
+Harmonic constants change their values if the environment changes
+(typically the bathymetry). Since this rarely happens an update of
+the harmonic constants has to be made only in rare occasions. If a
+long time series of level data is available, a statistical analysis
+of the harmonic constants can be made in order to use their standard
+deviations to decide if an update is really necessary, for example
+if their differences exceed three times the standard deviations.
+
+Tidal atlas or harmonic constant data should be updated only if the
+values of the harmonic constants differ from previous ones by a given
+amount (for example three times their standard deviations).
+
+Since this Edition of S-111 does not include harmonic constants in
+datasets, updates to harmonic constants will affect S-111 datasets
+only as and when the updated harmonic constants are used in generating
+S-111 datasets. Producers may use the _comment_ attribute of dataset
+discovery blocks in the exchange catalogue to indicate which version
+of harmonic constants was used for the dataset.
+
+[[sec_8.2]]
+=== Metadata related to dataset maintenance
+
+[[sec_8.2.1]]
+==== Elements used in S-111
+
+S-100 Edition 5.2.0 metadata related to maintenance that may be used
+in S-111 metadata consists of metadata elements specifying:
+
+* The purpose (of issuing the dataset);
+* The Edition number of the dataset;
+* When its successor will be available;
+* The issue date and time of the dataset; and
+* The date of the metadata record for the dataset.
+
+Some types of S-111 datasets use only some of these elements. <<sec_8.2.2>>
+_ff._ provide guidance for selecting the values of these elements
+for the corresponding discovery metadata blocks in the Exchange Catalogue.
+
+[[sec_8.2.2]]
+==== New datasets
+
+[[sec_8.2.2.1]]
+===== Classification as new datasets
+
+<<S_100,part=17>> (Table S100_Purpose) defines a new dataset as a
+"Brand new dataset" with a remark clarifying that "No data has previously
+been produced for this area". The factors that should be considered
+in determining whether a dataset should be classified as a new dataset
+are:
+
+* Whether any S-111 surface current datasets are currently being produced
+for the region.
+* Whether a new type of information (<<table_7-1>>) is being made
+available. For example, if real-time observations are made available
+for a region where only astronomical predictions were formerly issued,
+the real-time dataset should be considered a new dataset.
+* Changes to spatiotemporal representations:
+
+** Changes in the grid spacing for gridded data (without changing
+the grid extent) should not be considered a new dataset.
+** Minor changes to the time interval in time series data should not
+be considered a new dataset. For example, changing from six-hourly
+to three-hourly forecasts need not be considered a new dataset.
+** Minor adjustments to spatial extent such as a small adjustment
+to a grid's boundaries or the addition of a new station to station-based
+data (DCFs 1 and 8) should not be considered new datasets.
+** Significant adjustments to spatial extent or time interval should
+be considered for classification as a new dataset.
+** The determination of whether an adjustment to spatial extent or
+time series interval is minor or significant is left to the Producer.
+* Additional factors: The effect on the end user, change of designation
+("not for navigation" vs. "for navigation"), change of navigation
+purpose, effects on data distribution and data management on ECDIS.
+* Local factors, such as the S-111 cell scheme used by the Producer.
+
+In case of doubt, Producers are encouraged to seek advice from the
+TWCWG.
+
+[[sec_8.2.2.2]]
+===== Metadata for new datasets
+
+Dataset discovery metadata (<<sec_12.2>>) for a new dataset must be
+encoded as follows:
+
+* _editionNumber_ in dataset discovery metadata (<<sec_12.2.4>>) must
+be 1.
+* _purpose_ in dataset discovery metadata must be _newDataset_.
+
+[[sec_8.2.3]]
+==== New Editions
+
+[[sec_8.2.3.1]]
+===== Classification as New Edition
+
+<<S_100,part=17>>, clause 17-4.5 (S100_Purpose) states that a New
+Edition "Includes new information which has not been previously distributed
+by updates".
+
+New Editions of S-111 datasets are issued either when part or all
+the dataset is erroneous and must be replaced, or when better data
+become available. In either case, the dataset is replaced as a whole.
+
+New Editions are not used for successor datasets (for example, when
+a forecast for a specific period is followed by a forecast for a later
+period). Instead, S-111 provides for a dataset naming convention that
+distinguishes successive datasets in a temporal series.
+
+[[sec_8.2.3.2]]
+===== Metadata for new editions
+
+For a New Edition, set:
+
+* _purpose_ = _newEdition_
+* edition number: increment by 1
+
+[[sec_8.2.4]]
+==== Cancellations
+
+[[sec_8.2.4.1]]
+===== Classification as cancellation
+
+<<S_100,part=17>>, clause 17-4.5 (S100_Purpose) states that a cancellation
+"Indicates the dataset or Catalogue should no longer be used and can
+be deleted".
+
+S-111 datasets are cancelled only when a dataset or data sequence
+(such as a sequence of forecasts) is terminated. This might happen
+for various reasons, for example if Producers reorganise their S-111
+cell scheming or replace one type of currents information by another.
+
+Cancellation of a dataset in S-111 is interpreted consistently with
+<<S_100,part=17>>, with additional conditions arising from the time-dependent
+nature of surface currents datasets. Cancellation of an S-111 dataset
+must be treated as described below:
+
+. Surface current information in the cancelled dataset for times beginning
+and after the effective date and time of cancellation must not be
+used. The effective date and time are the issue date and time in the
+discovery metadata for the cancellation footnote:[Since cancellations
+cannot always be predicted, this requirement obviously cannot be put
+into effect until the cancellation arrives on the system.].
+
+. Surface current information in the cancelled dataset for times preceding
+the effective date/time of cancellation may be used only in the absence
+of an uncancelled dataset covering the area and time in question.
+
+. Cancellation of a dataset that is part of a sequence also cancels
+the sequence. The sequence should be treated as terminated - there
+can be no successors to the cancelled dataset in the same sequence.
+
+. There may be a successor sequence that starts with a new dataset.
+If there is, the fields _dataReplacement_ and _replacedData_ should
+be populated accordingly in the cancellation record.
+
+NOTE: Populating _dataReplacement_ and _replacedData_.provides the
+end-user system with sufficient information to supersede a cancelled
+dataset with its replacement and avoid spurious errors for apparently
+overlapping datasets.
+
+[start=5]
+. If a replacement dataset is being issued, producers should consider
+whether there will be a temporal discontinuity between the cancelled
+and replacement datasets footnote:[This Product Specification does
+not mandate maintenance of temporal continuity between cancelled and
+replacement datasets. External factors such as production constraints,
+producers' own data standards or ECDIS performance standards may be
+determinative and must be taken into account.]. A temporal discontinuity
+means that current information from S-111 will not be available to
+the mariner during the time gap. Maintaining temporal continuity requires
+the following:
+.. the replacement dataset be available when the cancellation takes
+effect, and
+.. data records in the replacement dataset begin no later than the
+issue date and time of the cancellation.
+
+. If a sequence is being cancelled, cancellations should be issued
+simultaneously for all datasets in the sequence whose temporal extents
+overlap the time the cancellation is issued. (This ensures that cancelling
+a forecast dataset (for example) does not leave active predecessor
+forecasts which extend after the time of cancellation.)
+. The retention, archiving or removal of cancelled datasets or sequences
+from the system shall be according to the common principles for retention,
+archiving or removal set forth in <<S_98>> or other applicable documents.
+
+Cancellations should not be issued for time-expired forecast or prediction
+datasets unless the relevant dataset series is being terminated. If
+the series is being terminated a cancellation must be issued so the
+transfer/distribution system is informed whether or not it should
+expect or attempt to obtain successors or replacement datasets.
+
+[[sec_8.2.4.2]]
+===== Metadata for cancellation
+
+S-111 uses the fileless cancellation method described in <<S_100>>
+5.2.0 Part 17 clause 17-4.4.1:
+
+_Fileless cancellation may be achieved by using a dataset metadata
+entry with the filename and original digital signature specifying
+the resource to be cancelled, and with all other mandatory metadata
+fields also set to the same values as the original, with the exception
+of the issueDate, which must be set to the issue date of the fileless
+cancellation itself._
+
+The "dataset metadata entry" means the S100_DatasetDiscoveryMetadata
+block in exchange catalogues. For a cancellation, set:
+
+* _fileName_ = _fileName_ of the cancelled dataset
+* _digitalSignatureValue_ = (same as that of the cancelled dataset)
+* _purpose_ = _cancellation_
+* _editionNumber_ = (same as that of the cancelled dataset)
+* _issueDate_ and _issueTime_ = the issue date and time of the cancellation
+* _replacedData_ = _true_ if and only if the cancelled dataset or
+sequence is replaced by another dataset/sequence, otherwise _false_.
+This attribute must be populated for a cancellation.
+* _dataReplacement_ = _fileName_ of the replacement dataset (if and
+only if the cancelled dataset/sequence is replaced by another dataset/sequence).
+This attribute must be populated when _replacedData_ = _true_.
+* all other mandatory attributes to the same values as in the discovery
+metadata block for the dataset being cancelled.
+
+NOTE: (informative): _fileName_ means the _fileName_ entry in S100_DatasetDiscoveryMetadata, which may not be identical to the dataset file name (for example, fileName may be a URI that includes the data file name as a component -- see <<S_100,part=17>>).
+
+[[sec_8.2.4.3]]
+===== Production of a cancellation
+
+S-111 uses only the fileless cancellation method described in <<S_100,part=17>>.
+In order to cancel a dataset, the cancelling authority (generally
+the producer of the original dataset) must:
+
+. Prepare an exchange catalogue with an S100_DatasetDiscoveryMetadata
+block with field values as described in <<sec_8.2.4.2>>).
+. If a sequence of datasets is being terminated, ensure that the exchange
+catalogue also contains dataset discovery metadata blocks cancelling
+any predecessor datasets in the same sequence whose temporal extents
+include the expected issue time for the cancellation.
+. Complete other parts of the exchange catalogue as required by <<sec_12.2>>
+(for example, provide discovery metadata for a replacement dataset
+if such is included in the same exchange set).
+. Sign and distribute the exchange catalogue in a normally structured
+exchange set. Do not include HDF files for the cancelled datasets
+in the exchange set.
+
+[[sec_8.2.5]]
+==== Other _S100_Purpose_ values (Informative)
+
+S-111 does not use the _reissue, update_ and _delta_ values of the
+*S100_Purpose* enumeration.
+
+<<S_100,part=17>>, 17-4.5 (S100_Purpose) states that a re-issue "Includes
+all the updates applied to the original dataset up to the date of
+the re-issue. A re-issue does not contain any new information additional
+to that previously issued by updates". Since S-111 does not include
+a format for dataset updates, S-111 datasets are not reissued. Corrections
+to datasets, if required, should be addressed by cancellation of the
+old dataset accompanied by a New Edition with the same name and an
+incremented Edition number.
+
+<<S_100,part=17>>, 17-4.5 (S100_Purpose) states that an update is
+for "Changing some information in an existing dataset". S-111 does
+not provide for replacing part of a dataset; instead, if changing
+information is necessary, the whole dataset is replaced.
+
+[[sec_8.2.6]]
+==== Maintenance of support files
+
+The Edition number is 1 for the first issue of a support file for
+a particular dataset. In the event that the file is updated or replaced
+(for example for a correction) the Edition number is incremented by 1.
+
+The Edition number for language packs changes if and only if the language
+pack file is updated.
+
+[[sec_8.2.7]]
+==== Encoding update frequency
+
+The encoding of information about when the next update to a dataset
+will be released (cf. <<sec_12.2.4>> - _resourceMaintenance_) is mandatory
+for datasets that are updated or replaced monthly or more frequently.
+
+The provision of this information for datasets that contain information
+updated less frequently than monthly (such as astronomical predictions
+when these are issued annually) is left to the discretion of the Producer,
+with the expectation that if it is not encoded in discovery metadata
+the expected release dates will be communicated to distributors and
+end-users by other means.
+
+For datasets that are continually updated on a fixed cycle, timing
+information should be encoded as the interval from the issue date
+and time of the current dataset (that is, using the
+_userDefinedMaintenanceFrequency_ sub-attribute - cf.
+<<S_100,part=17,clause=17-4.9>>).
+
+Data Producers or metadata compilers must consult <<S_100,clause=17-4.9>>
+for the rules on encoding information about release timing.

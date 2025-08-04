@@ -1,0 +1,302 @@
+
+[[annex-h]]
+[appendix,obligation="informative"]
+== Surface Current Portrayal Rules
+
+[[sec_H-1]]
+=== Introduction
+
+This Annex summarizes the rules and formulae discussed in <<sec_9>>
+(Portrayal) for display of the surface current arrow symbol. The placement
+of the colour scale and the pick report boxes are not discussed.
+
+The surface current feature is characterized by (1) a speed (knots)
+and (2) a direction (arc-degrees clockwise from north). Speed values
+are given to the nearest 0.01 knot, and direction values to the nearest
+0.1 arc-degree. The speed and direction values are stored in the HDF
+file as a dataset (DS). The current speed and direction values are
+applicable to a specific geographic location, denoted by (1) a longitude
+(arc-degrees) and (2) a latitude (arc-degrees). The current is valid
+for a specific depth, or as a vertical average over a depth. The depth
+and datum, or the averaging depth, are given in the Carrier Metadata
+(<<sec_12.3>>). The current is also valid for a specific date and
+time, the values of which are given either as an attribute of the
+DS (a time stamp) or must be calculated using the time of the first
+value, the length of time interval, and the number in the series.
+
+[[sec_H-2]]
+=== The Surface Current Symbol
+
+[underline]#Rule 1:# The basic symbol for SVG is as shown in <<fig_G-1>>.
+The nominal height of the symbol is stem:[10.0 "unitsml(mm)"].
+
+[[fig_H-1]]
+.Surface current arrow symbol, showing x- and y-coordinates of the vertices (stem:["unitsml(mm)"]) and the pivot point (+)
+image::figure-h-1.png[]
+
+[underline]#Rule 2:# A null value for speed and direction (see <<table_10-3>>)
+means that the point represents land, or the value is missing. In
+either case, no arrow symbol is displayed.
+
+[underline]#Rule 3:# The colour of the arrow is set by the band within
+which the speed falls. The colours for nine speed bands are shown
+in <<table_H-1>>.
+
+NOTE: Within any speed band, the lower speed is given as the Minimum
+Speed in <<table_H-1>>, and the upper speed is just less than the
+Minimum Speed in the next higher band. Therefore in Band 2,
+
+[[eq_H.1]]
+[stem]
+++++
+0.5 < "speed in Band 2" < 1.0
+++++
+
+NOTE: As an option, the speed bands may be adjusted to provide more
+colour contrast. For example, to emphasize lower speeds, the bands
+3 and 4 could be 1.00 to 01.50 and 1.50 to 2.00. Of course, in this
+example, the minimum speed for band 5 would have to be reduced to
+2.00 to maintain coverage for all speeds. (Such adjustments to speed
+bands should only be in portrayal catalogues, differentiated by edition
+or version numbering of portrayal catalogues, and reflected in the
+relevant legends.)
+
+[[table_H-1]]
+.Speed bands, colour names, RGB colour values, and resulting day colours for current speeds (informative)
+[cols="a,a,a,a,a,a,a,a",options="noheader"]
+|===
+.2+h| Speed Band .2+h| Min Speed (kn).2+h| Speed BandWidth (kn).2+h| Colour 3+h| RGB Colour Scale Intensity .2+h| Displayed Colour
+| Red | Green | Blue
+
+| 1 | 0.0  | 0.5  | purple       | 118 | 82  | 226 |
+| 2 | 0.5  | 0.5  | dark blue    | 72  | 152 | 211 |
+| 3 | 1.0  | 1.0  | light blue   | 97  | 203 | 229 |
+| 4 | 2.0  | 1.0  | dark green   | 109 | 188 | 69  |
+| 5 | 3.0  | 2.0  | light green  | 180 | 220 | 0   |
+| 6 | 5.0  | 2.0  | yellow-green | 205 | 193 | 0   |
+| 7 | 7.0  | 3.0  | orange       | 248 | 167 | 24  |
+| 8 | 10.0 | 3.0  | pink         | 247 | 162 | 157 |
+| 9 | 13.0 | 86.0 | red          | 255 | 30  | 30  |
+|===
+
+[underline]#Rule 4:# Colours for dusk and night are given in <<annex-f>>
+(Colour Tables). Note that adjustments to the values in <<annex-f>>
+may be made in the IHO portrayal catalogue to improve the visual experience
+on ECDIS and accommodate interoperability. Applications should use
+the colors in the published portrayal catalogue.
+
+[underline]#Rule 5:# There is a separate symbol for each speed band.
+Each symbol has a unique colour.
+
+[[sec_H-3]]
+=== Symbol Size and Orientation
+
+[underline]#Rule 6:# The size of the arrow symbol is scaled in proportion
+to the current speed. The height of the arrow, stem:[H] (stem:["unitsml(mm)"]),
+is a function of the speed of the current, stem:[S] (knots). Allowances
+are made to (a) display a small symbol even if the speed to near zero
+and (b) enforce a maximum arrow size. The scaling relationship is:
+
+[stem]
+++++
+H = H_{"ref"} cdot min{max(S_{"low"},S),S_{"high"}}//S_{"ref"}
+++++
+
+The following table gives the nominal values for the four constants.
+
+[[table_H-2]]
+.Summary of recommended values for arrow display size. With these values, an arrow representing stem:[5 "unitsml(kn)"] will have a length of stem:[10 "unitsml(mm)"]
+[cols="80,335,143"]
+|===
+h| Constant h| Description h| Recommended Value
+
+| stem:[H_{"ref"}]  | Reference height for arrow scaling                     | stem:[10 "unitsml(mm)"]
+| stem:[S_{"ref"}]  | Reference speed for arrow scaling                      | stem:[5 "unitsml(kn)"]
+| stem:[S_{"low"}]  | Minimum speed to be used for arrow length computations | stem:[2.00 "unitsml(kn)"]
+| stem:[S_{"high"}] | Maximum speed to be used for arrow length computations | stem:[13 "unitsml(kn)"]
+|===
+
+[underline]#Rule 7:# The arrow is rotated to show the direction of
+current using the value for direction (<<fig_H-2>>).
+
+[[fig_H-2]]
+.Portrayal of the arrow's direction, based on the current direction. The dashed line is the arrow's centerline, and the origin of the East-North axis is at the arrow's pivot point. True north has a direction of 0 degrees
+image::figure-h-2.png[]
+
+[[sec_H-4]]
+=== Placement of the Symbol
+
+[underline]#Rule 8:# The surface current arrow is placed in the display
+so that the pivot point corresponds to the given values of longitude
+and latitude.
+
+[underline]#Rule 9:# The Data Producer must ensure that the pivot
+point shall not be located over land. That a portion of the arrow
+symbol lies over land is acceptable.
+
+[underline]#Rule 10:# The Data Producer must ensure that if the arrow's
+pivot point lies in a geographic area designated as intertidal, then
+when the time-varying water depth has gone to zero the symbol is not
+displayed.
+
+[[sec_H-5]]
+=== Thinning of a Field of Arrows
+
+Displaying at a low resolution that is, zooming out) increases the
+density of symbols. However, by applying a thinning algorithm, vector
+symbol overlap can be reduced. The algorithm discussed below works
+for regularly gridded data only.
+
+Suppose that the grid cell has a width of _gridSpacingLongitudinal_
+and height of _gridSpacingLatitudinal_ (see <<table_12-3>>), and has
+a diagonal distance of stem:[D "unitsml(mm)"]. Note that stem:[D]
+is dependent on the map scale of the display. Also suppose that the
+height of the arrow symbol for the maximum speed in the display area
+is stem:[H_{"max"}].
+
+[underline]#Suggested Rule 11:# For thinning regularly gridded data,
+arrows at every n^th^ column and every n^th^ row are drawn, but making
+sure that the row and column with the maximum vector is drawn. With
+a stem:[R_{"max"}] value of 0.5,
+
+[stem]
+++++
+n = 1 + "fix"{H_{"max"}//(0.5D)} 
+++++
+
+The value of stem:[n] must be calculated by the ECDIS.
+
+<<S_98>> contains a detailed description of a suggested algorithm
+for implementing thinning by drawing symbols at only stem:[n xx n]
+grid points.
+
+[underline]#Suggested Rule 12:# For thinning non-regularly spaced
+data, one potential solution would be to either reduce the reference
+height stem:[H_{"ref"}] or increase the reference speed stem:[S_{"ref"}]
+(<<table_H-2>>), so as to make each symbol smaller. Thus either stem:[S_{"ref"}]
+of stem:[H_{"ref"}], or both, must be user-selectable.
+
+Another method, based on the fact that non-regularly spaced data values
+are ordered in a nearly random manner, would be to reduce the number
+of symbols by plotting only every n^th^ vector. This method would
+require that the value of stem:[n] be entered by the user.
+
+[[sec_H-6]]
+=== Temporal Rules
+
+Let stem:[T_{"s"}] be the time selected by the user or the ENC for
+display of data, and let stem:[T_{"E"}] be equal to _dateTimeOfLastRecord_
++ _timeRecordInterval._
+
+[underline]#Rule 13a:# If stem:[T_{"s"}] is _earlier_ than the timestamp
+of the first data in the series, _dateTimeOfFirstRecord,_ no arrows
+are displayed.
+
+[underline]#Rule 13b:# If stem:[T_{"s"}] is _later_ than stem:[T_{"E"}],
+no arrows are displayed.
+
+[underline]#Rule 13c:# If stem:[T_{"s"}] is _later_ than the first
+timestamp and_earlier_ than stem:[T_{"E"}], then the arrows for the
+data are plotted if the timestamp is (a) later than Ts, but (b) less
+than stem:[T_{"s"}] + _timeRecordInterval._
+
+[[sec_H-7]]
+=== Pick Report for Time Series Data (informative)
+
+In the absence of specific guidance in <<S_98,annex=C>>, the tidal
+stream panel display described in <<S_98,annex=C>> (for example, clause
+15 4 in <<S_98>> Edition 1.0.0) may be adapted for the purpose of
+displaying time series current information in response to a cursor
+pick by the user. A simple adaptation might consist of using the tabular
+format described in <<S_98,annex=C>> but replacing the "reference
+tide" attribute by the timestamp selected in the previous paragraph
+and omitting the "reference tide type" attribute. <<fig_H-3>> depicts
+the concept. The table in <<fig_H-3>> is an adaptation of the depiction
+of tidal stream tables for paper charts described in S-4 (B-407.3).
+
+[[fig_H-3]]
+.Notional pick report structure for data at multiple times
+[cols="4",options="noheader"]
+|===
+4+| Tidal Station: (_station name_)
+2+| Tidal Station Identifier: (_station identifier_) 2+| Data From: SURF CUR (S-111)
+
+| | Hours | Direction of stream (degrees) | Rates (knots)
+
+.6+| Before
+| -6 | |
+| -5 | |
+| -4 | |
+| -3 | |
+| -2 | |
+| -1 | |
+
+| YYYY-MM-DD HH:MM:SS Z | 0 | |
+
+.6+| After
+| +1 | |
+| +2 | |
+| +3 | |
+| +4 | |
+| +5 | |
+| +6 | |
+
+|===
+
+The time display ("Hours" column), the selection of time-value combinations
+to display, and the number of rows should be adapted to the time interval
+and number of records in the time series, so as to cover suitable
+periods before and after the selected display time.
+
+NOTE: S-111 does not mandate a tabular display of data for any of
+its time series types. The tabular display described in this clause
+is intended only as a guideline for ECDIS developers desiring to implement
+a tabular format.
+
+Since cancellations cannot always be predicted, this requirement obviously
+cannot be put into effect until the cancellation arrives on the system.
+
+This Product Specification does not mandate maintenance of temporal
+continuity between cancelled and replacement datasets. External factors
+such as production constraints, producers' own data standards or ECDIS
+performance standards may be determinative and must be taken into
+account.
+
+<<IEC_60945>> as cited in <<S_52>> specifies that character size in
+stem:["unitsml(mm)"] be not less than 3.5 x the viewing distance in
+metres. According to this criterion "readable from 1 metre" requires
+that characters be not less than stem:[3.5 "unitsml(mm)"] in size.
+A stem:[3.5 "unitsml(mm)"] symbol or character subtends an angle of
+approximately 12 arc minutes at a distance of 1 metre.
+
+Calculated using <<eq_9.1>> and an allowance for the border extending
+outside the filled area of the arrow symbol.
+
+stem:[E, R, C] represent the edition, revision, and clarification
+numbers of this edition of the Product Specification (for example,
+for S-111 Edition 2.1.0, stem:[E = 2, R = 1, C = 0]. YYYYMMDD is a
+build suffix for the catalogue as year, month, and day in numeric
+form, for example 202301015 for January 15, 2023. It is not necessary
+that the build suffix be precisely the date the catalogue was compiled,
+only that it follow the previous build and precede the next build
+of the portrayal catalogue for this edition of S-111.
+
+Producer Codes may be obtained from the IHO Producer Code Register
+in the IHO GI Registry. The four-character S-100 "Alpha" codes must
+be used.
+
+Exceptions: (1) Producer Codes must use the same case as the IHO Producer
+Code Register. (2) A name component taken from an external Specification,
+must follow the rules in that Specification (for example, "20190703T00Z"
+for a time component in <<ISO_8601_2004>> basic format, not "20190703t00z").
+
+Temporarily suspended; <<S_97>> 1.1.0 states digital signatures are
+essential only for technical readiness level 3.
+
+See the guidance on HDF5 datatypes (https://support.hdfgroup.org/HDF5/Tutor/datatypes.html,
+retrieved 20 August 2021) for more information on the use of standard
+vs native types when creating a dataset and for memory operations
+(read/write).
+
+For moving platforms, these are technically additional attributes
+defined by S-111.

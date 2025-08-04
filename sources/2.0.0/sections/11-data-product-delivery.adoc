@@ -1,0 +1,341 @@
+
+
+[[sec_11]]
+== Data Product Delivery
+
+[[sec_11.1]]
+=== Introduction
+
+This clause describes how the Surface Current Data Product is to be
+delivered from the Producer to the end user (that is navigation officer,
+route planner, etc.).
+
+Method of transfer will be primarily web-based, including ftp, although
+some products (astronomical predictions) may be delivered via storage
+media. The data will be supplied either directly from the Producer
+or through a third party supplier.
+
+Due to the cost of transmitting data via the internet, it is desirable
+to limit file size and updating frequency whenever possible. Considerations
+here are the size of each transfer as well as the total volume of
+data transferred over time (the latter particularly applies to datasets
+which are issued daily or more frequently, such as forecasts). The
+following recommendations are therefore proposed:
+
+. Each exchange data file, as created by the Producer and after compression,
+is recommended to be limited to stem:[10 "unitsml(Mbyte_B)"].
+
+. The "cell scheming" (geographic extents covered) for datasets, especially
+datasets which are issued frequently (for example, daily or more frequent
+forecasts) should be determined so as to reduce the transfer of unnecessary
+data (information not needed for route planning or monitoring within
+reasonable time windows). It is recommended that cell scheming and
+grid density take into account the navigation purposes defined in
+S100_NavigationPurpose, reproduced below:
+.. port - For port and near shore operations
+.. transit - For coast and planning purposes
+.. overview - For ocean crossing and planning purposes
+
+<<S_100,part=15,clause=15-5.2>> allows one data compression scheme:
+Zip (note that this may not provide a significant reduction due to
+internal compression applied within the HDF file). In addition, the
+file may be encrypted.
+
+Updating of files typically means issuing a new forecast, or disseminating
+the latest observed current data for a specific geographic region.
+This may occur several times per day. Therefore, all files must contain
+a date-time of issuance of the product. Because of the potentially
+high frequency (that is, hourly or less) availability of new datasets,
+the ECDIS system may need to check for new data at a similar frequency.
+The "resource maintenance" information in external metadata and "delivery
+interval" in internal metadata should therefore be populated whenever
+possible.
+
+[[sec_11.2]]
+=== HDF5 Dataset Packaging
+
+The HDF5-formatted datasets are packaged with metadata and an Exchange
+Catalogue, and then combined into an Exchange Set. HDF5 files for
+time series or gridded current data may require internet transmission,
+since they change several or more times a day.
+
+[[sec_11.2.1]]
+==== Exchange Sets
+
+Exchange Sets produced by the Producer consist of files containing
+an XML Exchange Catalogue, the HDF5 data products, and auxiliary files
+(<<fig_11-1>>). The auxiliary files include an XML Feature Catalogue,
+an XML Portrayal Catalogue, SVG files, and additional supporting XML
+files for alarms and indications, and for interoperability.
+
+The data products include one or more data sets (but of the same <<S_100>>
+Product Specification types), with each product covering a specific
+geographic region and specific period of time. The Exchange Catalogue
+lists the products and contains the discovery metadata.
+
+[[fig_11-1]]
+.Schematic diagram of the Exchange Set
+[cols="^"]
+|===
+h| Exchange Set
+|
+h| Exchange Catalogue
+| Metadata (includes list of files in Exchange Dataset)
+|
+h| Exchange Catalogue Signature
+|
+| Signature File
+|
+h| Other Catalogues
+| Auxiliary files (Feature and Portrayal Catalogue, SVG Files, etc.)
+|
+h| Data Products
+| Data Product No. 1
+| Data Product No. 2
+| Data Product No. 3
+| Etc
+|
+h| Support Files
+| Language packs, dictionaries
+|
+|===
+
+Since the transfer of large amounts of data may pose a problem for
+recipients with limited network bandwidth, it is suggested that the
+maximum size of exchange sets be approximately 10MB. This suggested
+limit may be varied up or down depending on transfer channel capabilities
+and constraints on producers, distributors, aggregators, and recipients.
+
+The size of datasets (HDF5 data files) can vary widely, depending
+on the data. Exchange files may be compressed using the DEFLATE compression
+algorithm commonly used in ZIP archives (cf. <<S_100,part=15,clause=15-5.2>>).
+Doing so can reduce file size by 80% or more.
+
+[[sec_11.2.1.1]]
+===== Exchange Set structure
+
+The structure of an S-111 Exchange Set must be according to the structure
+described below, which is based on <<S_100,part=17,clause=17-4.2>>.
+The S-111 Exchange Set structure is depicted in <<fig_11-2>>.
+
+. All content must be placed inside a top root folder named S100_ROOT.
+This is the only top level root folder in an Exchange Set containing
+only <<S_100>> products.
+
+. The S100_ROOT folder must contain a subfolder for S-111 which holds
+content specific to S-111.
+
+. An S-111 Exchange Set must contain an Exchange Set Catalogue, CATALOG.XML,
+its digital signature CATALOG.SIGN and may contain any number of S-111
+conformant dataset files and Catalogue files.
+. The S-111 subfolder must contain subfolders for the component dataset
+files (DATASET_FILES) and Catalogues (CATALOGUES) as required:
+.. The DATASET_FILES subfolder is required if and only if the Exchange
+Set contains an S-111 HDF5 dataset.
+.. The CATALOGUES subfolder is required if and only if the Exchange
+Set contains a Feature or Portrayal Catalogue. (This Edition of S-111
+does not include Interoperability Catalogues, which are described
+by <<S_98>> and will be part of the exchange set structure described
+in that specification.)
+
+. The DATASET_FILES folder must contain a subfolder named according
+to the Producer Code.
+. Individual data files must be placed under the Producer subfolder,
+either directly in the Producer folder, or within a lower-level subfolder
+hierarchy. Individual data files may be optionally placed in their
+own subfolders or grouped with other data files.
+. An Exchange Set may carry Feature and Portrayal Catalogues in different
+versions, which should also be grouped together in the CATALOGUES
+folder.
+. If a Portrayal Catalogue is included in the Exchange Set, it should
+be packaged as either a ZIP archive containing all Portrayal Catalogue
+files, or a filesystem structure of folders and files. The structure
+of Portrayal Catalogues is described in <<S_100,part=9,clause=9-13.2>>
+and guidance on packaging Portrayal Catalogues is provided in <<sec_9.9>>.
+. Except for the signature of the Exchange Catalogue file (CATALOG.XML),
+which is in the CATALOG.SIGN file, all digital signatures are included
+within their corresponding resource metadata records in CATALOG.XML.
+. Dataset and Catalogue file and/or folder names should be such as
+to avoid inadvertent overwriting of files.
+. Digital signatures are required for Exchange Sets and datasets intended
+for navigation on ECDIS. All resources included within an Exchange
+Set intended for navigation, including support files and catalogues,
+must be signed (<<S_100,part=17>>).
+. It is not necessary for an Exchange Set to contain more than one
+build of a Feature or Portrayal Catalogue for the same version of
+a Product Specification. For example, an Exchange Set will not contain
+both 111_2_0_0_FC/20210630/ and 111_2_0_0_FC/20220101/ folders for
+Edition 2.0.0 Feature Catalogues. The presence of both in <<fig_11-2>>
+is only for illustrative purposes.
+. Inclusion of the dictionary of enumerations in any particular Exchange
+Set is optional, since it will be the same for all datasets from all
+producers. For similar reasons, inclusion of the Feature Catalogue
+and Portrayal Catalogue in any particular Exchange Set is optional.
+Producers may distribute dummy Exchange Sets containing only the Feature
+Catalogue, Portrayal Catalogue, and enumerations dictionary, when
+any of them is updated or when a new version of the Product Specification
+is released. Validation checks should ensure that these files are
+present on the system if they are not included in any particular Exchange
+Set.
+
+[[fig_11-2]]
+.Typical Exchange Set structure
+image::figure-11-2.png[]
+
+General guidelines for Exchange Set structure are included in <<S_100,part=17>>.
+
+Note that the names and locations of files are coded within the CATALOG.XML
+or Portrayal Catalogue files, and therefore files and folders should
+not be renamed or relocated by Producers or end-user systems unless
+these references can be updated. Portrayal and Feature Catalogues
+can be relocated to a common system location if their internal structure
+is maintained.
+
+[[sec_11.2.2]]
+==== Exchange Catalogue
+
+The Exchange Catalogue which is in XML format acts as the table of
+contents for the Exchange Set. The catalogue file of the Exchange
+Set must be named CATALOG.XML (as specified in <<S_100,part=17>>);
+no other file in the Exchange Set may have the same name. The contents
+of the Exchange Catalogue are described in <<sec_12>>.
+
+The Exchange Catalogue Schemas for S-111 are the same as for <<S_100>>
+and may be obtained from the IHO S-100 Schema server: https://schemas.s100dev.net.
+The S-111 Exchange Catalogue uses an additional product-specific constraints file
+implementing product-specific restrictions, which is also available from the
+same site. Use of the additional product-specific constraints file is optional;
+developers may implement the constraints using any convenient method.
+
+[[sec_11.2.3]]
+==== Dataset file naming
+
+The dataset file contains both metadata and one or more sets of speed
+and direction arrays (see <<sec_10,style=full%>>). The dataset name
+must begin with the three-character Product Specification, followed
+by the four-character Producer Code (CCCC) footnote:[Producer Codes
+may be obtained from the IHO Producer Code Register in the IHO GI
+Registry. The four-character S-100 "Alpha" codes must be used.]. Thus
+surface current datasets begin with the seven-character string '111CCCC'.
+
+The characters between this string and the extension are nominally
+unrestricted in <<S_100>> and <<S_97>> Edition 1.1.0. However, S-111
+restricts the "unrestricted" characters as follows:
+
+* Alphabetic characters in the "Latin alphabet"; that is, A-Z and
+a-z;
+* Numeric characters; that is, the characters 0-9;
+* The hyphen and underscore characters ("-" and "_").
+
+The unrestricted characters may be used to denote geographical region,
+valid time, source of the data, version numbers, and/or any other
+relevant information. Characters may be lower or upper case
+footnote:[Exceptions: (1) Producer Codes must use the same case as
+the IHO Producer Code Register. (2) A name component taken from an
+external Specification, must follow the rules in that Specification
+(for example, "20190703T00Z" for a time component in <<ISO_8601_2004>>
+basic format, not "20190703t00z").]. For real-time and forecast data,
+it is recommended that the dateTime of the first record be part of
+the dataset name, to help distinguish the most recent files.
+
+The filename extension for HDF5 (.h5) must be used to denote the file
+format.
+
+The total length of the file name shall be no more than 64 characters,
+including the extension.
+
+[example]
+111US00_CHES_TYPE1_20210630_0600.HDF5 for observational data
+(see <<sec_12.3.5>>, <<table_12-10>>) produced by NOAA for Chesapeake
+Bay (CHES), observations beginning from 06:00 UTC on 30 June 2021.
+
+[example]
+111US00_ches_dcf8_20190703T00Z.h5 for a dataset produced by NOAA containing
+data for NOAA fixed stations in the Chesapeake Bay (ches) organised
+stationwise (dcf8) beginning from midnight at the beginning of 3 July
+2019.
+
+Each producer should adopt a naming scheme that is consistent across
+its entire S-111 product line. While the examples above are hypothetical,
+they illustrate how the principles of this clause can be applied by
+Producers.
+
+[[sec_11.2.3.1]]
+===== Dataset MRN (Informative)
+
+The dataset file name may be mapped to an MRN as follows:
+
+urn:mrn:iho:s111:<ver>:<cccc>:<region>:<type>:<dtg>
+
+where:
+
+* The first part "urn:mrn:iho:s111" is common to all dataset URNs
+for S-111;
+* The product specification version is represented by the "<ver>"
+part, for example, "2:0:0" for Edition 2.0.0;
+* <cccc> represents the 4-character Producer Code;
+* <region> represents the geographical region;
+* <type> represents the data coding format, for example "type2" for
+regular grids;
+* <dtg> represents the date/time component in the name.
+
+This is an interim rule pending definition of an "S-100-wide" rule
+for MRNs and will be superseded by the "S-100-wide" rule when it is
+published.
+
+[[sec_11.2.4]]
+==== Support Files
+
+Only the following types of support files are allowed in S-111:
+
+* Optional 'language packs' for Feature Catalogues. Each language
+pack contains a translation of the Feature Catalogue into a specified
+language.
+* Dictionary resource files listing the allowed values and codes of
+enumerations. There will generally be a single dictionary file for
+each version of the Product Specification (corrections, if any, will
+be issued through the usual mechanism for corrections). Inclusion
+of the dictionary resource file in Exchange Sets is optional, since
+the Internet location is standardised and manufacturers are permitted
+to obtain it by other means and install it in an application-specific
+location.
+
+[[sec_11.2.5]]
+==== Support File Naming
+
+[[sec_11.2.5.1]]
+===== General
+
+Support file names are subject to the same naming rules as dataset
+file names (<<sec_11.2.3>>), except that the extension is determined
+by the support file format.
+
+This clause covers names of language packs and enumeration dictionaries,
+which are the only support files allowed in this Edition of S-111.
+Producers who discover a need for other types of support files should
+conform to the general rule above and consult TWCWG as necessary.
+
+[[sec_11.2.5.2]]
+===== Names of language packs
+
+If a language pack created by a data Producer for the S-111 Feature
+Catalogue is included, it must have the standard 7-character "111CCCC"
+prefix and the same base name as the standard IHO-issued Feature Catalogue
+with the 3-letter ISO 639-2/T language code suffixed. The language
+codes must be exactly those in the S-100 codelist for languages
+(*S100_MD_LanguageCode*, which can be found in the S-100 Schema distribution).
+The file extension must be ".XML".
+
+NOTE: A language pack issued by the IHO for the IHO Feature Catalogue
+will use the IHO Producer Code.
+
+[[sec_11.2.5.3]]
+===== Names of enumeration dictionaries
+
+Enumeration dictionaries are supplied by IHO as part of this Product
+Specification and should not be renamed.
+
+NOTE: (informative): Substitute or extended enumeration dictionaries
+may be developed if translations are needed. Producers who desire
+to provide translations of enumeration dictionaries with S-111 Exchange
+Sets should consult with TWCWG.

@@ -1,0 +1,79 @@
+
+[[sec_3]]
+== Dataset Identification
+
+A surface current dataset that conforms to this Product Specification
+uses the following general information for distinction:
+
+*Title:*:: Surface Current Data Product
+
+*Alternate Title:*:: None
+
+*Abstract:*:: The data product is a file containing surface water
+current data for a particular geographic region and set of times,
+along with the accompanying metadata describing the content, variables,
+applicable times and locations, and structure of the data product.
+Surface current data includes speed and direction of the current,
+and may represent observed or mathematically-predicted values. The
+data may consist of currents at a small set of points where observations
+and/or predictions are available, or may consist of numerous points
+organized in a grid as from a hydrodynamic model forecast. Measures
+of the quality of position, speed, direction, and time data are included.
+
+*Topic Category:*:: Producing Authority to choose the most appropriate
+from the list below:
+
+[cols="17,13,16,26,28",options="unnumbered"]
+|===
+h| Concept Name h| <<ISO_19115_1>> Topic Category Number h| <<ISO_19115_1>> Topic Category Code h| Definition h| Remarks
+
+| Inland Waters | 012 | inlandWaters
+| Inland water features, drainage systems and their characteristicsExamples:
+rivers and glaciers, salt lakes, water utilization plans, dams, currents,
+floods, water quality, hydrologic information | Use for datasets covering
+navigation on inland waterways
+| Oceans | 014 | oceans
+| Features and characteristics of salt water bodies
+(excluding inland waters)Examples: tides, tsunamis, coastal information, reefs
+| Use for datasets intended for coastal, offshore, or ocean navigation.
+| Transportation | 018 | transportation
+| Means and aids for conveying persons and/or goods Examples: roads,
+airports/airstrips, shipping routes, tunnels, nautical charts, vehicle
+or vessel location, aeronautical charts, railways
+| Use for datasets intended for navigation (inland or maritime)
+|===
+
+*Geographic Description:*:: Areas specific to marine navigation
+
+*Spatial Resolution:*:: Varies (for example, stem:[0.1 "unitsml(km)"]
+to stem:[1000 "unitsml(km)"]). The spatial resolution varies according
+to the model and the size of grid spacing, or on the number of observing
+locations adopted by the producer (HydrographicOffice)
+
+*Purpose:*:: Surface current data are intended to be used as stand-alone
+data or as a layer in an ENC.
+
+*Language:*:: English (mandatory)
+
+*Classification:*::
++
+--
+Data can be classified as one of the following:
+
+. Unclassified;
+. Restricted;
+. Confidential;
+. Secret;
+. Top Secret;
+. Sensitive but Unclassified;
+. For Official Use Only;
+. Protected; or
+. Limited Distribution.
+--
+
+*Spatial Representation Types:*:: Coverage
+
+*Point of Contact:*:: Producing Authority.
+
+*Use Limitation:*:: Invalid over land. Some datasets may be designated
+as not for navigation.

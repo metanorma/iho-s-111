@@ -1,0 +1,417 @@
+
+[[annex-e]]
+[appendix,obligation="informative"]
+== Surface Current Data
+
+This Annex describes the sources of data, methods of organizing surface
+current data (the time series and the grid), how the data product
+format is derived. In the last part of this Annex we discuss additional
+features of current data.
+
+[[sec_E-1]]
+=== Data Sources
+
+For the purposes of this Product Specification, surface current data
+is categorized as one of three types, depending on the source of production.
+These are:
+
+* Historical and real-time observation;
+* Astronomical prediction; and
+* Model-based forecast or prediction.
+
+An historical observation consists of a time series of values at a
+specific location or area, often at a specific elevation above the
+bottom or below the surface. Observations can be for a fixed point
+(current meter), a moving point (for example, a Lagrangian drifter),
+along a vertical or horizontal line (Doppler profiler), or an area
+(coastal radar). A real-time (or near-real-time) observation is actually
+a historical observation but for the very recent past. The astronomical
+tidal current prediction is often a time series computed by a mathematical
+formula using harmonic constants. This prediction applies to a specific
+location and depth, and is often produced many months ahead of time.
+
+The astronomical predictions for multiple stations are often combined
+into a digital tidal atlas, and the individual predicted currents
+are usually keyed to the time and amplitude of tidal water levels
+at a nearby station.
+
+Finally, model-based forecasts or predictions are usually produced
+by a two- or three-dimensional numerical hydrodynamic model, and include
+astronomical tide, meteorological forcing, river inflow, spatially
+varying water density, and open ocean boundary inputs. A model-based
+hindcast, including an analysis, is based on historically-observed
+conditions. A forecast is usually produced to predict conditions a
+few hours or days ahead into the future.
+
+[[sec_E-2]]
+=== Data Organization
+
+Data are usually organized by the Data Producer into either (a) a
+time series of values, such as for historical and real-time observations
+at a single point; or (b) a gridded set of values, such as from a
+model-based forecast or sea-surface analysis.
+
+[[sec_E-2.1]]
+==== Time series data
+
+An historical observation consists of a time series of values at a
+specific location or area, often at a specific elevation above the
+bottom or below the surface. Observations can be for a single point
+(current meter), along a line (Doppler profiler), or an area
+(coastal radar).
+
+The data for individual current meter stations are most conveniently
+organized in a time series.
+
+For example, for historical observations and astronomical predictions,
+each record in the series consists of a time for which the data are
+valid and the water current data itself: speed and direction. Descriptive
+data may be contained in a metadata block at the beginning of the
+file.
+
+Real-time data is similar to historical data in that, in addition
+to dataset metadata, they include either a single near-real-time value
+or a time series of values for speed and direction, with the most
+recent being the near-real-time value. A sample file containing observations
+is shown in <<fig_E-1>>.
+
+[[fig_E-1]]
+.Portion of an actual text file containing surface current observations at 6-minute intervals. The native format is ASCII text (other options were available). Data courtesy of the Centre for Operational Oceanographic Products and Services, US
+[source]
+--
+# Station ID: cb1101
+# # Orientation: Down (Buoy-Mounted)
+# # Time Zone: UTC
+# # Approx. Depth: Near Surface
+# # Blank rows indicate missing data. See our data
+# # disclaimer online.
+# #
+# # Date Time Speed (knots) Dir (true)
+# 2014-12-01 00:00:00 1.08 215
+# 2014-12-01 00:06:00 1.00 225
+# 2014-12-01 00:12:00 0.83 226
+# 2014-12-01 00:18:00 0.73 230
+# 2014-12-01 00:24:00 0.80 223
+# 2014-12-01 00:30:00 0.77 236
+# 2014-12-01 00:36:00 0.73 229
+# 2014-12-01 00:42:00 0.61 224
+# 2014-12-01 00:48:00 0.71 224
+# 2014-12-01 00:54:00 0.71 220
+# 2014-12-01 01:00:00 0.67 230
+--
+
+The sample file contains (a) a metadata block, with information on
+the station, location, instrument type, and depth, and (b) a header
+line followed by multiple lines of values which include the date and
+time, the current speed, and the current direction.
+
+The file shown in <<fig_E-1>> can be reformatted so that the metadata
+appears at the beginning of the file, and the speed at direction data
+is group for each time (<<fig_E-2a>>).
+
+[[fig_E-2a]]
+.Reformatted time series or real-time data
+[source]
+--
+[Metadata block for station # 1]
+Value of Time 1: 2014-12-01 00:00:00
+Speed at Time 1 = 1.08
+Direction at Time 1 = 215
+Value of Time 2: 2014-12-01 00:06:00
+Speed at Time 2 = 1.00
+Direction at Time 2 = 225
+Value of Time 3: 2014-12-01 00:12:00
+Speed at Time 3 = 0.83
+Direction at Time 3 = 226
+--
+
+The data in <<fig_E-2a>> can be rearranged so that all the speeds
+and all the directions appear in a sequence, as in <<fig_E-2b>>.
+
+[[fig_E-2b]]
+.Reformatted time series data
+[source]
+--
+[Metadata block for station # 1]
+Value of Time 1: 2014-12-01 00:00:00
+Speed = 1.08, 1.00, 0.83
+Direction = 215, 225, 226
+--
+
+[[sec_E-2.2]]
+==== Gridded data
+
+For certain data products that cover a specific geographic area, the
+data are most likely to be gridded. Examples are hindcasts and forecasts
+produced by a hydrodynamic model; currents derived from the analysis
+of sea-surface topography; and currents derived from high-frequency
+coastal radar observations.
+
+Many spatial grids are regular (that is, having uniform spacing in
+each direction) and geodetic (with the stem:[X] axis directed toward
+the east and stem:[Y] axis directed toward the north). Such grids
+are defined by several parameters: the origin (longitude and latitude
+of a geographic point); the grid spacing along each axis (degrees);
+and the number of points along each axis. Given an uncertainty in
+the location of the origin and in the spacing, there will be an uncertainty
+on the precise position of the grid points. A portion of the metadata
+and the current speed data from a forecast model is shown in <<fig_E-3>>.
+There are similar data for the current direction grid.
+
+NOTE: some datasets contain a land mask array, for the purpose of
+determining whether a grid point represents land or water. Herein
+the Product Specification uses a land mask value (for example -99.999),
+which is substituted for a gridded value which is on land, to represent
+land, thus reducing the number of arrays required.
+
+[[fig_E-3]]
+.A portion of the actual metadata and the gridded current speed data produced by the Canadian Meteorological Service from a model-based forecast. The native format is HDF5
+[source]
+--
+Dataset 'speed(knots)'
+ Size: 500x325
+ MaxSize: 500x325
+ Datatype: H5T_IEEE_F32LE (single)
+ ChunkSize: 1x325
+ Filters: deflate(9)
+ FillValue: 0.000000
+ Attributes:
+   'organization': 'Center Canadian Meteorological Service - Montreal (RSMC) (54) '
+   'Delta_Longitude': '0.02993999933078885 '
+   'Delta_Latitude': '0.019938461092802194 '
+   'forecastDateTime': '20140611_180000 '
+   'Product': 'Type: Forecast products Status: Operational products '
+   'Minimum_Latitude': '45.5 '
+   'Maximum_Latitude': '51.97999985516071 '
+   'Maximum_Longitude': '-56.030000334605575 '
+   'Number_Of_Cells_South_North': '325 '
+   'Minimum_Longitude': '-71.0 '
+   'Number_Of_Cells_West_East': '500 '
+   'generatedDateTime': '20140611_000000 '
+   'units': 'mm/s '
+speed(knots) =
+  0, 0, 0, 0.5191959, 0.5159838, 0.5159435, 0.5186388,
+  0.5209069, 0.5167338, 0.5114825, 0.4738558, 0.378551, 0.2911682,
+  0.204335, 0.1294665, ...
+--
+
+Note that the data for current speed in <<fig_E-3>> is organized similarly
+to that for time series: (a) metadata followed by (b) a header record
+and then the data. However, unlike the time series, the data are valid
+for a single time (the value of which appears elsewhere in the metadata).
+
+Current data produced on ungeorectified grids or on unstructured grids,
+or for surface drifters, may be incorporated by spatially referencing
+each individual velocity location by explicitly giving its latitude
+and longitude in the metadata.
+
+For gridded data in general, the metadata for both speed and direction
+will be the same, so only one metadata block is required to describe
+both the speed and direction data (<<fig_E-4>>). The data for speed
+in <<fig_E-3>> is a series of values at grid points, starting from
+the lower left corner of the grid and proceeding along the first row
+until the end, then starting with the first point in the second row,
+and so on. Note that for the two fields (speed and direction) in this
+example, the memory required is stem:[0.325 "unitsml(Mbyte_B)"].
+
+[[fig_E-4]]
+.A portion of a generalized file with the metadata and the gridded current speed and direction data at one specific time from a model-based forecast shown in <<fig_E-3>>
+[cols="a"]
+|===
+| [Metadata block for gridded fields]
+
+Value of Time 1
+
+Speed at T1 = 0, 0, 0, 0.5191959, 0.5159838, 0.5159435, 0.5186388,
+0.5209069, 0.5167338, 0.5114825, 0.4738558, 0.378551, 0.2911682, 0.204335,
+0.1294665, ...
+
+Direction at T1 = 0, 0, 0, 32.7725, 30.33029, 27.84417, 26.28601,
+26.46908, 26.46744, 26.56505, 25.9423, 24.28312, 23.54004, 24.69553,
+28.52312, ...
+|===
+
+[[sec_E-3]]
+=== Digital Tidal Atlas Data
+
+A digital tidal atlas typically contains speed and direction information
+for a number of locations, the valid time of which is expressed as
+a whole number of hours before and/or after either time of high water
+at a reference tidal water level station or time of maximum flood
+current at a reference station. Often the speed and direction are
+given for both neap and spring tide conditions (<<table_E-1>>).
+
+Data in the atlas format, when used with daily predictions of tidal
+water levels or currents at a reference station, can be converted
+into time series data (see <<fig_E-2b>>), and thus into the S-111
+format. This conversion is to the responsibility of the Data Producer.
+
+[[table_E-1]]
+.Example of digital tidal data for a station off the French coast. Speed and direction vary by hour relative to high water at a reference station, and by tide range. Data courtesy of Service Hydrographique et Océanographique de la Marine, France.
+[cols="5"]
+|===
+.2+| Hour 2+| Speed (ms-1) 2+| Direction (deg)
+| Neap | Spring | Neap | Spring
+
+| -6 | 0.924 | 0.991 | 234.0 | 232.8
+| -5 | 0.991 | 1.047 | 235.4 | 233.5
+| -4 | 1.015 | 1.104 | 233.1 | 234.8
+| -3 | 0.939 | 1.132 | 233.4 | 233.0
+| -2 | 0.447 | 0.947 | 233.7 | 233.3
+| -1 | 0.302 | 0.061 | 232.8 | 200.1
+| 0  | 0.444 | 0.292 | 232.5 | 56.0
+| 1  | 0.562 | 0.044 | 232.5 | 68.2
+| 2  | 0.596 | 0.469 | 232.4 | 231.2
+| 3  | 0.620 | 0.662 | 232.5 | 231.3
+| 4  | 0.705 | 0.779 | 232.7 | 231.6
+| 5  | 0.797 | 0.886 | 233.0 | 232.1
+| 6  | 0.876 | 0.967 | 233.5 | 232.6
+|===
+
+[[sec_E-4]]
+=== Moving Platform Data
+
+[[sec_E-4.1]]
+==== Drifting platforms
+
+Moving platforms (for example, surface Lagrangian drifters) float
+along with the currents and represent the motion at some depth depending
+on the specific design. The data are often available, in the raw form,
+as a list with locations and (usually non-equally-spaced) times (<<fig_E-5>>).
+The data are often telemetered from the drifter to a collection station.
+
+[[fig_E-5]]
+.Portion of an Argos System CLS file describing the positions and times of a specific Lagrangian drifter
+[source]
+--
+OBJECTID,ARID,YR,MON,DD,HH,MM,SS,LAT,LON,ACC
+127134,52299,2005,9,25,7,18,16,15.57400000000,142.82200000000,2
+127135,52299,2005,9,25,8,58,0,15.57400000000,142.80000000000,2
+127136,52299,2005,9,25,18,47,37,15.54300000000,142.72100000000,2
+127137,52299,2005,9,25,19,47,45,15.54100000000,142.71100000000,2
+127138,52299,2005,9,25,21,27,29,15.53300000000,142.69200000000,2
+	127139,52299,2005,9,26,6,55,6,15.49900000000,142.65500000000,1
+127140,52299,2005,9,26,8,34,6,15.48600000000,142.64400000000,2
+127141,52299,2005,9,26,18,35,27,15.43800000000,142.59300000000,1
+127142,52299,2005,9,26,19,23,51,15.43300000000,142.59000000000,2
+telemetered from the drifter to a collection station.
+--
+
+In the raw form, the data must be converted into speed and directions.
+This can be accomplished by cubic spline interpolation of the longitudes
+and latitudes separately, then dividing the difference in position
+by the differences in time. The data can be converted into time series
+data (see <<fig_E-2b>>), and thus into the S-111 format.
+
+[[sec_E-4.2]]
+==== Propelled platforms
+
+Other moving platforms such as ships or wave riders may be self-propelled
+to some degree or use a means of propulsion independent of drift,
+in which case instantaneous positions cannot be used to determine
+current speed and direction. Such platforms may carry hydroacoustic
+current meters which can be used to determine current speed and direction,
+such asacoustic Doppler current profilers. Data from such platforms
+includes locations associated with time stamped current speed and
+direction values, obtained after cleaning and processing of the raw
+sensor data. Time stamps may be at non-uniform intervals for various
+reasons. Such data can be carried in S-111 datasets as non-uniform
+moving platform data, with time stamps associated to each observation
+instead of a uniform time interval for the whole series.
+
+[[sec_E-5]]
+=== Preliminary Data Product Format
+
+Two forms of data (<<fig_E-2b;and!fig_E-4>>) are similar, the main
+difference being that the multiple values for each variable in <<fig_E-4>>
+correspond to multiple grid points, rather than the multiple times
+in <<fig_E-2b>> (at a single station). Thus the two forms can be combined
+into a single form (<<fig_E-6>>, although the data are interpreted
+differently. Other forms of data (<<fig_E-4;and!fig_E-5>>) must be
+processed to fit the format.
+
+[[fig_E-6]]
+.Schematic of the preliminary product data set. The product can represent either a time series at a number of stations or gridded data
+[cols="1"]
+|===
+|
+| Metadata Block
+| Location Data
+|
+| Time and Location 1
+| Surface current speed(s)
+| Surface current direction(s)
+|
+| Time and Location 2
+| Surface current speed(s)
+| Surface current direction(s)
+|
+|===
+
+[[sec_E-6]]
+=== Additional Features of the Data
+
+The following clauses described additional features of current data
+and types.
+
+[[sec_E-6.1]]
+==== Vertical Reference Datums
+
+The vertical location of the current in the water column is normally
+referenced to some vertical datum. In this Product Specification,
+the datum is selectable: it can be the sea surface, the sea bottom,
+or any of 30 standard tidal datums. The coordinate system axis is
+directed upward, so if the level of the current is below the datum,
+the depth will have a negative value. Levels referenced above the
+sea bottom will have a positive value. For a layer average, the thickness
+of the layer is specified as a positive value.
+
+In principle, it is possible to transform elevations between the different
+datums. The separation between a standard tidal datum and the sea
+surface varies with time, and can be obtained by a prediction of the
+water level at the location of the current. In the case of a hydrodynamic
+model for currents, the model itself usually includes a water level
+prediction. The separation between the sea bottom and the standard
+tidal datum is often contained automatically in bathymetric data that
+is reference to a chart datum. If chart datum and the selected currents
+datum are different, an estimation of the difference in elevation
+is required.
+
+[[sec_E-6.2]]
+==== Uncertainty
+
+Uncertainty is the estimate of the error in any measurement or value;
+since the error (difference between true and observed value) depends
+on true value, which can never be measured. For practical purposes,
+the confidence level is 95% and the uncertainty is defined herein
+as 1.96 times the standard deviation of the differences between observed
+and predicted values (cf. <<S_44>>. _IHO Standards for Hydrographic
+Surveys_, 5th Edition February 2008). For multiple sources of uncertainty,
+the total propagated uncertainty is the relevant value.
+
+For example, the comparison between a predicted speed and the observed
+speed is normally based on an analysis using the time series for each.
+The standard deviation of the speed differences at each point in the
+series can be computed by the common formula. The calculation is similar
+for direction. It should be noted that for model-based predictions,
+uncertainty usually increases with the projection into the future.
+
+Uncertainty for location is somewhat different. Horizontal locations
+of fixed or drifting observing stations are determined by surveying
+or GPS. The inherent uncertainties in these types of measurements
+are normally documented. For gridded hydrodynamic model data, uncertainties
+are based on the precision of the grid parameters (origin and spacing)
+and, if used, on any transformation from Cartesian (flat plane) position
+to geographic location. For coastal radar, uncertainty in position
+may be estimated by the local geometry and radar's accuracy in computing
+distances and angles.
+
+Vertical locations of fixed or drifting observing stations are determined
+by surveying or GPS, and by configuration geometry. For gridded hydrodynamic
+model data, uncertainties are determined in a manner similar to the
+horizontal positions, but with consideration for uncertainties in
+instantaneous sea surface height, actual water depth, and vertical
+(if used).
+
+Uncertainties in time are based on instrumentation and GPS parameters,
+record keeping, and computer/processing accuracy.

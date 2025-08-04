@@ -1,0 +1,156 @@
+
+[[sec_5]]
+== Coordinate Reference Systems (CRS)
+
+To define the location of features using the <<S_100>> Framework,
+one first needs to define a Coordinate Reference System (CRS). A Coordinate
+Reference System in two dimensions uses a coordinate pair, either
+stem:[X] and stem:[Y] for a Cartesian system or latitude and longitude
+for a geodetic/geographic system to define the location of a feature
+on a 2-D grid. However, if one wants to plot features in a 3-dimensional
+Coordinate Reference System, where we now want to include depths on
+a nautical chart or elevations on a map, one needs to assign the depth
+or elevation as the third component. For Cartesian systems, one would
+use stem:[X, Y, Z] as the triplet or for geodetic/geographic systems,
+one would use latitude, longitude and height. The height can be the
+ellipsoid height or any of the other vertical references (see Vertical
+Reference System below). Geodetic/geographic coordinates are more
+intuitive for positioning and navigation applications on or near the
+Earth's surface while Cartesian coordinates are more appropriate if
+vectors are needed to accurately illustrate a graphical relationship
+between two or more points. If geodetic/geographic coordinates are
+specified, then the IHO recommends using the latest realisation of
+the World Geodetic System of 1984 (WGS 84).
+
+[[sec_5.1]]
+=== Horizontal reference system
+
+For products based on the <<S_100>> Framework, including this Standard
+for S-111 products, the geodetic/geographic Coordinate Reference System
+must be of the form EPSG:xxxx (with WGS 84 as base datum). The generic
+form/code for the WGS 84 frame is EPSG:4326 while the latest and most
+widely adopted realisation of the WGS 84 reference frame as of 2022
+was EPSG:9057. The full reference to EPSG can be found at https://epsg.org/
+and other EPSG references for recent WGS 84 realisations are given
+below:
+
+[cols="3",options="unnumbered"]
+|===
+| WGS 84 (generic)                 | ESPG:4326                |
+| WGS 84(G2296)                    | EPSG:10606               |
+| WGS 84(G2139)                    | EPSG:9755                | Valid epoch 2016:0
+| WGS 84(G1762)                    | EPSG:9057                | Valid epoch 2005.0
+| WGS 84(G1674)                    | EPSG:9056                | Valid epoch 2005.0
+| WGS 84(G1150)                    | EPSG:9055                | Valid epoch 2001.0
+| WGS 84 / UTM Zone 1N to Zone 60N | EPSG:32601 -- EPSG:32660 |
+| WGS 84 / UTM Zone 1S to Zone 60S | EPSG:32701 -- EPSG:32760 |
+| WGS 84 / UPS North (E,N)         | EPSG:5041                |
+| WGS 84 / UPS South (E,N)         | EPSG:5042                |
+|===
+
+*Coordinate Reference System:*:: EPSG:9057 (WGS 84) or another reference
+system listed above
+
+*Datum:*:: WGS 84 defined by NGA
+
+*Projection:*:: None / UTM / UPS
+
+*Horizontal Units:*:: Decimal degrees / Easting and northing
+
+*Coordinate Reference System Registry:*:: EPSG Geodetic Parameter
+Registry
+
+*Date type (according to <<ISO_19115_1>>):*:: 002 - publication
+
+*Responsible party:*:: International Association of Oil and Gas Producers (IOGP)
+
+Producers of S-111 data must use the same CRS/projection as the underlying
+S-101 dataset and should endeavour to use the same realisation.(Reference
+system information encoded in datasets must be such that application
+software can automatically match reference system information encoded
+in different data products, especially S-101/S-104.)
+
+[[sec_5.2]]
+=== Vertical reference system
+
+For positioning and navigation applications, it is desirable to accurately
+plot depths, bathymetry, elevations and terrain on nautical charts
+and maps using one or more vertical reference systems. To do so, a
+vertical datum is defined and serves as a reference surface for vertical
+positions. Vertical datums come in three categories: 1) those based
+on Mean Sea Level (MSL); 2) tidal datums; and 3) 3-D datums (ellipsoid)
+which are realised through space-based systems such as GPS. Vertical
+datums can be regional (geoid, tidal, chart) or global (ellipsoid)
+in nature. The vertical axis of a vertical reference system is defined
+upwards (away from the Earth's centre) from its origin (EPSG code
+6499) or downwards (EPSG code 6498) and is perpendicular to the horizontal
+surface where the observations or measurements are taken. As an example,
+a positive value for the level of water above the vertical datum in
+a vertical reference system with upward orientation (EPSG code 6499)
+means that the water level is above the vertical reference surface.
+For nautical charts, depths and tides are measured relative to a chart
+datum such as Lowest Astronomical Tide (LAT) or Mean Lower Low Water
+(MLLW).
+
+*Coordinate Reference System:*:: Vertical component of a 3-D reference system
+
+*Datum:*:: Chart, tidal, geoid, ellipsoid (WGS 84)
+
+*Projection:*:: None
+
+*Horizontal Units:*:: metres
+
+*Coordinate Reference System Registry:*:: EPSG Geodetic Parameter Registry
+
+*Date type (according to <<ISO_19115_1>>):*:: 002 - publication
+
+*Responsible party (vertical datums):*:: National hydrographic and geodetic agencies
+
+The vertical coordinate system is defined by three components. The
+first component defines the positive vertical direction (either an
+upward height or a downward depth). The second refers to the base
+or origin that is, the zero value) of the vertical coordinate; if
+the base is a tidal datum, the specific datum is defined from either
+the <<S_100>> list of vertical datums (for example LAT, MLLW, MSL,
+etc) or the EPSG list. Finally the specific datum number from the
+appropriate list is given. The components are summarised in <<table_5-1>>.
+
+For surface currents, the vertical reference system would apply to
+currents at a specific depth/height relative to a vertical datum,
+but not to vertically-averaged currents; these are an average from
+the surface down to a given depth.
+
+[[table_5-1]]
+.Attributes describing the vertical coordinate system
+[cols="a,a"]
+|===
+h| Name h| Remarks
+| Vertical Coordinate System
+| EPSG Code; Allowed Values
+
+* 6498 (Depth -- Metres -- Orientation Down)
+* 6499 (Height -- Metres -- Orientation Up)
+
+| Vertical Datum Reference | 1 -- S-100 vertical datum2 -- EPSG
+| Vertical Datum
+| If verticalDatumReference = 1 this is a value from S100_VerticalAndSoundingDatumIf verticalDatumReference = 2 this is an EPSG code for vertical datum
+
+|===
+
+In S-111, the vertical datum is relevant only if the dataset encodes
+the nominal depth at which the current values are recorded or predicted.
+If this nominal depth is encoded, producers should endeavour to use
+a vertical datum consistent with the CRS in the underlying S-101 and
+S-102 datasets, except when the S-111 datum is in terms of water surface
+or sea bottom.
+
+[[sec_5.3]]
+=== Temporal reference system
+
+The temporal reference system is the Gregorian calendar for date and
+UTC for time. Time is measured by reference to TM_Calendar dates and
+TM_Clock time in accordance with <<ISO_19108_2002>>, Temporal Schema
+clause 5.4.4. A date variable will have the following 8-character
+format (<<ISO_8601_2004>>): _yyyymmdd_. A time variable will have
+the following 7-character format: _hhmmssZ_. A date-time variable
+will have the following 16-character format: _yyyymmddThhmmssZ_.

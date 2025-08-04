@@ -1,0 +1,543 @@
+
+[[sec_10]]
+== Data Product Format (Encoding)
+
+[[sec_10.1]]
+=== Introduction
+
+The Surface Current Data Product must be encoded using the Hierarchical
+Data Format Standard, Version 5 (HDF5).
+
+*Format:*:: HDF-5
+
+*Character Set:*:: MD_CharacterSetCode (<<ISO_19115>>) should be set
+to utf8
+
+*Specification:*:: <<S_100>> profile of HDF-5
+
+[[sec_10.2]]
+=== HDF5 product structure
+
+The key idea at the core of the S-111 data product structure is this:
+The organization of the information is substantially the same for
+each of the four types of surface current data, but the information
+itself will be interpreted differently.
+
+[[sec_10.2.1]]
+==== Data type definition
+
+These data types and their codes are shown in <<table_10-1>>.
+
+[[table_10-1]]
+.S-111 data types and values of the variable _dataCodingFormat_ (see <<S_100>> Edition 5.2.0, Table 10c-20)
+[cols="35,149"]
+|===
+h| dataCodingFormat h| Type of Data
+
+| 1 | Time series data at one or more fixed stations (organized by time)
+| 2 | Regularly-gridded data at one or more times
+| 3 | Ungeorectified gridded data or point set data at one or more times
+| 4 | Time series data for one moving platform
+| 8 | Stationwise time series at one or more fixed stations (organised by station) - type (a)
+
+|===
+
+For the use of HDF5, the following key concepts (10c-5.1) are important:
+
+* _File_ - a contiguous string of bytes in a computer store
+(memory, disk, etc), and the bytes represent zero or more objects
+of the model;
+* _Group_ - a collection of objects (including groups);
+* _Dataset_ - a multidimensional array of data elements with attributes
+and other metadata;
+* _Dataspace_ - a description of the dimensions of a multidimensional
+array;
+* _Datatype_ - a description of a specific class of data element including
+its storage layout as a pattern of bits;
+* _Attribute_ - a named data value associated with a group, dataset,
+or named datatype;
+* _Property List_ - a collection of parameters (some permanent and
+some transient) controlling options in the library;
+* _Link_ - the way objects are connected.
+
+In addition, a dataset may have one, two, or more dimensions, and
+each element in the dataset may be a compound. That is, each element
+may itself be an array of possibly different datatypes (float, integer,
+string, etc).
+
+[[sec_10.2.2]]
+==== Product structure
+
+The structure of the data product follows the form given in
+<<S_100,part=10c>> -- HDF5 Data Model and File Format. The general
+structure, which was designed for several S-100 products, not just
+surface currents, is given in <<fig_10-1>>.
+
+[[fig_10-1]]
+.Outline of the data file structure for S-111 data files, showing the realisation of S-111 structure from the generic structure described in S-100 (see Part 10c, Figure 10c-7). Note that there are four levels from top to bottom
+image::figure-10-1.png[]
+
+In <<fig_10-1>> there are four levels:
+
+*Level 1:*:: At the top level lies the Root Group, and it contains
+the Root Metadata (<<table_12-1>>) and two subsidiary groups.
+The Root Metadata applies to all S-100 type products.
+
+*Level 2:*:: The next level contains the Feature Information Group
+and the Feature Container Group. The Feature Information Group contains
+two datasets: the _featureCode_, which has the name of the S-100 feature
+(here *SurfaceCurrent*), and the feature information dataset (_SurfaceCurrent_)
+which contains a compound array with eight parameters for each S-100
+feature attribute (speed and direction). The Feature Container Group
+contains the Feature Metadata (<<table_12-2>>) and one or more Feature
+Instance Groups. The Feature Metadata is common to all surface current
+products.
+
+*Level 3:*:: This contains one or more Feature Instances. A feature
+instance is, for example, a time series of gridded data for a single
+region; or a time series of astronomical predictions for a set of
+stations.
+
+*Level 4:*:: This contains the actual data for the feature. S-111
+uses only the Values Group and, for only some data, the Positioning
+Group.
+
+The basic structure of the S-111 data product is shown in <<table_10-2>>.
+Levels refer to HDF5 structuring. (C.f. <<S_100,part=10c,figure=10c-9>>).
+Naming in each box below header line is as follows: *Generic name*;
+S-100 or S-111 name; and (_HDF5 type_) group, attribute or attribute
+list, or dataset.
+
+[[table_10-2]]
+.Overview of an S-111 dataset
+[cols="142,143,143,142"]
+|===
+h| LEVEL 1 (ROOT) CONTENT h| LEVEL 2 CONTENT h| LEVEL 3 CONTENT h| LEVEL 4 CONTENT
+
+| *General Metadata* +
+(see <<table_12-1>>) +
+_(h5_attribute)_
+| | |
+
+| *Feature Codes* +
+Group_F +
+(_h5_group)_
+| *Feature Type Name* +
+SurfaceCurrent +
+_(h5_dataset)_
+| |
+
+| | *Feature Type Codes* +
+featureCode +
+_(h5_dataset)_
+| |
+
+| *Feature Type* +
+SurfaceCurrent +
+_(h5_group)_
+| *Feature Type Metadata* +
+(see <<table_12-2>>) +
+_(h5_attribute)_
+| |
+
+| | *Horz. & vert. Axis Names* +
+axisNames +
+_(h5_dataset)_
+| |
+
+| | *First Feature Instance* +
+SurfaceCurrent.01 +
+_(h5_group)_
+| *Feature Instance Metadata* +
+(see <<table_12-3>>) +
+_(h5_attribute)_ |
+
+| | | *Location Data* +
+Positioning +
+_(h5_group)_
+| *Lon+lat Array* +
+geometryValues +
+_(h5_dataset)_
+
+| | | *Uncertainty Data* +
+uncertainty +
+_(h5_dataset)_
+|
+
+| | | *First data group* +
+Group_001 +
+_(h5_group)_
+| *Time Attribute* +
+timePoint +
+_(h5_attribute)_
+
+| | | | *Speed+direction Array* +
+values +
+_(h5_dataset)_
+
+| | | *Second data group* +
+Group_002 +
+_(h5_group)_
+| *Time Attribute* +
+timePoint +
+_(h5_attribute)_
+
+| | | | *Speed+direction Array* +
+values +
+_(h5_dataset)_
+
+| | | *Third data group* +
+Group_003 +
+_(h5_group)_
+| *Time Attribute* +
+timePoint +
+_(h5_attribute)_
+
+| | | | *Speed+direction Array* +
+values +
+_(h5_dataset)_
+
+| | *Second Feature Instance* +
+SurfaceCurrent.02 +
+_(h5_group)_
+| *Feature Instance Metadata*, etc., as for first instance |
+
+|===
+
+The following clauses explain entries in <<table_10-2>> in more detail.
+
+[[sec_10.2.2.1]]
+===== Root group
+
+The Root group contains the Feature Codes group, the Feature
+Type group, and the simple attributes shown in <<table_12-1>>.
+
+[[sec_10.2.2.2]]
+===== Feature type codes (Group_F)
+
+This group specifies the S-100 feature to which the data applies.
+The group has no attributes and consists of two components:
+
+*featureCode* -- a dataset with the name(s) of the S-100 feature(s)
+contained in the data product. For S-111, the dataset has a single
+element, the string "SurfaceCurrent".
+
+*SurfaceCurrent* -- this is a dataset with the name contained in the
+*featureCode* dataset. The dataset contains a one-dimensional compound
+array of length two to five (one for each of the two mandatory current
+attributes: speed and direction, and an additional optional entry
+for each of the three optional attributes for time and speed/direction
+uncertainty). Each of the five elements of string values has 8 values,
+as shown in <<table_10-3>>.
+
+An entry for an optional attribute must be encoded here if the values
+record for SurfaceCurrent feature instances in this HDF5 file contains
+that attribute. Conversely, if an attribute is encoded here all SurfaceCurrent
+instances must include that attribute in their values records, even
+if it is populated only with fill values. These requirements amount
+to mandating a 1/1 correspondence between this array and the structure
+of values record entries in SurfaceCurrent feature instances.
+
+NOTE: Values provided in <<table_10-3>> are mandatory if the attribute
+is encoded.
+
+[%landscape]
+<<<
+
+[[table_10-3]]
+.Sample contents of the one-dimensional compound array (length=3, compound elements=8) SurfaceCurrent. All values are strings
+[cols="3,8,13,16,17,14,14,14"]
+|===
+h| N h| Name h| Explanation h| Attribute 1 h| Attribute 2 h| Attribute 3 (optional) h| Attribute 4 (optional) h| Attribute 5 (optional)
+
+| 1 | code | Camel Case Name | surfaceCurrentSpeed | surfaceCurrentDirection | surfaceCurrentTime | speedUncertainty | directionUncertainty
+| 2 | name | Plain text | Surface Current Speed | Surface Current Direction | Surface Current Time | Speed Uncertainty | Direction Uncertainty
+| 3 | uom.name | Units of Measurement | knot | degree | (empty) | knot | degree
+| 4 | fillValue | Denotes missing data | -9999.00 | -9999.0 | 00010101T000000Z | -1.0 | -1.0
+| 5 | datatype | HDF5 datatype | H5T_FLOAT | H5T_FLOAT | H5T_STRING | H5T_FLOAT | H5T_FLOAT
+| 6 | lower | Lower bound on attribute | 0.00 | 0.0 | 19000101T000000Z | 0.00 | 0.0
+| 7 | upper | Upper bound on attribute | 99.00 | 359.9 | 21500101T000000Z | 99.00 | 359.9
+| 8 | closure | Open or Closed data interval. See S100_IntervalType in <<S_100,part=1>> | geSemiInterval | closedInterval | closedInterval | geSemiInterval | closedInterval
+
+|===
+
+[%portrait]
+<<<
+
+The values in this array must be consistent with the corresponding
+entries in the Feature Catalogue, with the exception that Attribute
+3 has no uom.name value in the Feature Catalogue.
+
+Optional attributes (here, surfaceCurrentTime, speedUncertainty and
+directionUncertainty) are encoded in Group_F only for strict conformance
+to <<S_100>> 5.2.0 clause 10c-9.5. (Planned <<S_158_100>> validation
+checks may emit a warning or error if attributes included in the feature
+catalogue are not found in Group_F.) If encoded in Group_F, they must
+be present (populated with the fill value, if necessary) in all feature
+instances in this dataset.
+
+[[sec_10.2.2.3]]
+===== Type group (SurfaceCurrent)
+
+This group contains a dataset called _axisNames_ and one or more instances
+of the single feature *SurfaceCurrent*. A single instance may contain
+a gridded forecast at multiple hours, a set of time series predictions
+at several stations, or moving station data for a single station.
+This group has the simple attributes shown in <<table_12-2>>. For
+S-111, _axisNames_ consists of two elements, the strings 'longitude'
+and 'latitude'. The contents of the _axisNames_ array must be exactly
+the same as the axis names used by the appropriate registry entry
+for the coordinate system specified in the metadata; for EPSG, the
+axis names in the corresponding EPSG registry entry must be used.
+
+[[sec_10.2.2.4]]
+===== Instance group (SurfaceCurrent.nn)
+
+This group contains a single instance of the feature (see <<sec_10.2.2.3>>).
+The groups are numbered from 01 to 99. This group has the simple attributes
+shown in <<table_12-3>>, as well as the (speed and direction) values
+groups, the (conditional) positioning group, and a dataset called
+'uncertainty'.
+
+*Uncertainty Dataset* -- The (optional) uncertainty data is contained
+in a compound HDF5 dataset named 'uncertainty'. There is a name and
+an uncertainty value for surface current speed and direction, which
+are, respectively, _surfaceCurrentSpeed_ and _surfaceCurrentDirection_.
+The units of speed uncertainty are knots and the units of direction
+are arc-degrees.
+
+The default, denoting a missing value, is -1.0.
+
+[[sec_10.2.2.5]]
+===== Value groups (Group_nnn)
+
+These groups each contain an attribute (the date-time stamp), and
+the compound data arrays containing surface current speed and direction
+and optionally surface current time. These groups have the simple
+attributes shown in <<table_12-4>>. These components are explained
+below.
+
+*Date-Time Stamp* - The date-time stamp is an attribute named _timePoint_
+with a single (string) value. For gridded (regular and ungeorectified:
+_dataCodingFormat_ = 2 or 3), the time stamp is the time of validity
+for all points in the grid. For a time series at moving platforms
+(_dataCodingFormat_ = 4), the time stamp is the time of the first
+value.
+
+*Value Arrays -* The speed and direction values (surfaceCurrentSpeed
+and surfaceCurrentDirection) are stored in arrays named _values,_
+with a prescribed number of rows (_numROWS_) and, if two-dimensional,
+columns (_numCOLS_). If Group_F also describes an optional attribute,
+the optional attribute must also be present in the values record (populated
+with fill values if information is not available).
+
+For a time series of fixed or moving stations
+(_dataCodingFormat_ = 1, 4, and 8), the speed and direction values
+will be for times in the series as determined by the starting date-time
+and the data time interval. If the time intervals are non-uniform
+(only for _dataCodingFormat_ = 4 or 8), then the time for each speed
+and direction value is given by surfaceCurrentTime.
+
+For a regular grid (_dataCodingFormat_ = 2), the speed and direction
+values will be for each point in the grid, the data array _values_
+is two-dimensional, and for the time for all points in the grid given
+by the date-time stamp.
+
+For an ungeorectified grid (_dataCodingFormat_ = 3), the speed and
+direction values will be for each point in the grid, the data array
+_values_ is one-dimensional, and for the time for all points in the
+grid given by the date-time stamp.
+
+NOTE: The requirement that the values record include all the attributes
+described in Group_F means that all feature instances in the dataset
+must:
+
+* include any optional attribute encoded in Group_F; and
+* omit any optional attribute not encoded in Group_F.
+
+[[sec_10.2.2.6]]
+===== Conditional geography group (Positioning)
+
+The group named *Positioning* contains all the locations (longitude
+and latitude values) that have associated data values. This group
+has no attributes. In S-111, this group is present in the data product
+only for _dataCodingFormat_ values of 1, 3, 4, or 8.
+
+The geographic values are stored in the single, one-dimensional compound
+array named _geometryValues_, of size _numPOS_. Each element in the
+compound array _geometryValues_ contains the pair of float values
+(longitude, latitude). The value of _numPOS_ and the interpretation
+of the kinds of locations depends on the _dataCodingFormat_ as well.
+The values and number of stations/drifters (respectively) for each
+data type are explained in <<table_10-4>>.
+
+NOTE: the variable names in this Group (longitude, latitude) must
+match in case and spelling those in axisNames.
+
+[[table_10-4]]
+.Values of _numPOS_ for the group Positioning
+[cols="79,213,141,110"]
+|===
+h| Data Coding Format h| Data Type h| Location Data h| Array Size: Value of numPOS
+
+| 1 | Time series at fixed stations             | Position of stations          | _numberOfStations_
+| 2 | Regular grid                              | (Not applicable)              | (Not applicable)
+| 3 | Ungeorectified gridded data               | Location of the grid nodes    | _numberOfNodes_
+| 4 | Time series at a single moving station    | Position of station over time | _numberOfTimes_
+| 8 | Stationwise time series at fixed stations | Position of stations          | _numberOfStations_
+|===
+
+[[sec_10.2.2.7]]
+===== Summary of generalized dimensions
+
+To summarize, there are data groups containing the speed and direction
+data, which are stored in either one-dimensional arrays of size _numROWS_
+or two-dimensional arrays of size _numROWS_ by _numCOLS_. The total
+number of data Groups is _numGRP_.
+
+The four variables that determine the array sizes (_numROWS_, _numCOLS,
+numPOS,_ and _numGRP)_ are different, depending upon which coding
+format is used. Their descriptions are given in <<table_10-5>>.
+
+[[table_10-5]]
+.The array dimensions used in the data product
+[cols="6",options="noheader"]
+|===
+.2+h| Data Coding Format .2+h| Data Type h| Positioning 3+h| Data Values
+h| numPOS h| numCOLS h| numROWS h| numGRP
+
+| 1 | Fixed Stations             | numberOfStations | 1                     | numberOfStations     | numberOfTimes
+| 2 | Regular Grid               | (not used)       | numPointsLongitudinal | numPointsLatitudinal | numberOfTimes
+| 3 | Ungeorectified Grid        | numberOfNodes    | 1                     | numberOfNodes        | numberOfTimes
+| 4 | Moving Platform            | numberOfTimes    | 1                     | numberOfTimes        | 1
+| 8 | Stationwise Fixed Stations | numberOfStations | 1                     | numberOfTimes        | numberOfStations
+
+|===
+
+[[sec_10.2.2.8]]
+===== Mandatory naming conventions
+
+The following group and dataset names are mandatory in <<S_100>>:
+'Group_F', 'featureCode', and (for S-111) 'SurfaceCurrent', 'axisNames',
+'Positioning', (for S-111) 'SurfaceCurrent.nn', and 'Group_nnn'
+(stem:[n] is an integer from 0 to 9) Attribute names shown in <<sec_12.3>>
+are also mandatory.
+
+[[sec_10.2.2.9]]
+===== Summary of product structure
+
+For regularly gridded data, the Surface Current array is two dimensional,
+with dimensions _numPointsLongitudinal_ and _numPointsLatitudinal_.
+These attributes are part of feature instance metadata described in
+<<table_12-3>> and <<S_100,part=10c,table=10c-12>>. By knowing the
+grid origin and the grid spacings, the position of every point in
+the grid can be computed by simple formulae.
+
+However, for time series data, moving platforms, and ungeorectified
+gridded data (that is, when _dataCodingFormat_ is 1, 3, 4, or 8),
+the location of each point must be specified individually. This is
+accomplished by the data in Positioning Group, which gives the individual
+longitude (X) and latitude (Y) for each location. For time series
+data, the X and Y values are the positions of the stations; the number
+of stations is _numberOfStations._ For ungeorectified-gridded data,
+the X and Y values are the positions of each point in the grid; the
+number of grid points is _numberOfNodes_. For moving platforms, the
+stem:[X] and stem:[Y] values are successive positions of the platform,
+the number of positions is _numberOfTimes_.
+
+NOTE: If _dataCodingFormat_ is 2, the Positioning group is not present.
+
+The remaining groups each contain a title, a date-time value (attribute
+_timePoint_, except for _dataCodingFormat_ = 8), and the current data
+array. The title can be used to identify each individual station with
+time-series data. For _dataCodingFormat_ = 2 or 3, the date-time is
+for the entire grid. The current data array is two dimensional, with
+a number of columns (_numCOLS_) and rows (_numROWS_). For a time series,
+the current data value record will be for each time in the series.
+For a grid, the data record will be for each point in the grid.
+
+The format allows features encoding data stationwise (dataCodingFormat=8)
+or for a moving platform (dataCodingFormat=4) to be encoded with either
+uniform or non-uniform time intervals.
+
+* For non-uniform time intervals, each record has a date-time encoded
+in the current data array.
+* For uniform time intervals, the time interval is encoded as an attribute
+of the Values group. In this case, the date-time of individual records
+is omitted from the current data array.
+
+The groups are numbered 1, 2, etc, up to the maximum number of groups,
+_numGRP_. For fixed station stationwise data (_dataCodingFormat_ = 8),
+the number of groups is the number of stations. For regular and ungeorectified
+grids and TINs (_dataCodingFormat_ = 2, 3, and 7), and for fixed station
+timewise data (_dataCodingFormat_ = 1) the number of groups is the
+number of time records.
+
+The overall structure of the data product is created by assembling
+the data and metadata. The product structure is compliant with the
+HDF5 data architecture, which allows multi-dimensional arrays of data
+to be grouped with metadata. The format of the data product (cf. <<fig_10-1>>)
+described above is portrayed in <<fig_10-2>>. The Carrier Metadata
+is discussed in <<sec_12.3>> (<<table_12-1;to!table_12-4>>), and the
+Values group attributes are discussed in <<sec_12.3>> (<<table_12-4>>).
+
+NOTE: The name of each Group is the 'Group_nnn', where nnn is numbered
+from 1 to _numGRP_.
+
+[[fig_10-2]]
+.Schematic of the S-111 HDF5 data product structure. The four parameters _numPOS_, _numCOLS_, _numROWS_, and _numGRP_ are explained in <<table_10-5>>. Group 'Positioning' appears only for _dataCodingFormat_ = 1, 3, 4, or 8 (<<table_10-5>>). Valid Date-Time~1,2,...numGRP~ have different meanings and encodings for _dataCodingFormat_=1, 2, and 3 compared to _dataCodingFormat_=8 (see <<table_12-4>>)
+[cols="a"]
+|===
+^h| HDF5 Dataset
+| File Metadata (<<table_12-1>>)
+|
+^h| _Group:_ SurfaceCurrent
+| Feature Type Metadata (<<table_12-2>>)
+|
+^h| _Group:_ SurfaceCurrent.01
+| Feature Instance Metadata (<<table_12-3>>)
+|
+^h| _Group_: Positioning (conditional)
+| stem:[X + Y] values array (stem:[m = 0, "numPOS" - 1])
+|
+^h| _Group_: Group_001
+| Values Group attributes (<<table_12-4>>)
+| Valid stem:["Date-Time"_1]
+| Speed + Direction Array (stem:[i = 0, "numCOLS" - 1, j = 0, "numROWS" - 1)])
+|
+^h| _Group:_ Group_002
+| Values Group attributes
+| Valid Dstem:["Date-Time"_2]
+| Speed + Direction Array (stem:[i = 0, "numCOLS" - 1, j = 0, "numROWS" - 1])
+|
+^h| _Group_: __Group__nnn
+| Values Group attributes
+| Valid stem:["Date-Time"_{"numGRP"}]
+| Speed + Direction Array (stem:[i = 0, "numCOLS" - 1, j = 0, "numROWS" - 1])
+
+|===
+
+[[sec_10.2.2.10]]
+===== Digital Certification Block
+
+Information here is used to certify the validity or integrity of the
+data.
+
+This Edition does not provide for inclusion of certificates or digital
+signatures within the HDF5 file. When necessary, certificates and
+digital signatures must be provided for the HDF5 file as a whole,
+using the mechanisms described in <<S_100>> Parts 15 and 17.
+
+[[sec_10.2.2.11]]
+===== Feature identifiers
+
+Individual instances of features within a dataset are identified by
+the name of the instance group, for example, SurfaceCurrent.01,
+SurfaceCurrent.02, etc. Unique feature identifiers are constructed
+by combining the file name of the HDF5 dataset with the name of the
+instance group, separated by a ":" (colon).
+
+[example]
+111NL00_DENHELDER_TYPE8_20210630_0600:SurfaceCurrent.02 identifies
+the feature instance coded in the SurfaceCurrent.02 instance group
+in the file named 111NL00_DENHELDER_TYPE8_20210630_0600.h5.

@@ -1,0 +1,6 @@
+
+[[sec_13]]
+== Language
+
+The language used for the Discovery Metadata and the Carrier Metadata
+is English.
