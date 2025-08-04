@@ -1,0 +1,1034 @@
+
+[[sec_1]]
+== Overview
+
+From ancient times of exploration to modern day shipping, surface
+currents have played an important role in navigation. With the advent
+of electronic navigation, surface current data and updates are more
+accessible and easier to integrate into navigation displays. This
+integration of the chart with other supplemental data improves decision
+making and results in more efficient navigation.
+
+[[sec_1.1]]
+=== Introduction
+
+The S-111 Product Specification describes the feature _Surface Current_
+and its two attributes _Surface Current Speed_ and _Surface Current
+Direction_ (see <<annex-a>> - Data Classification and Encoding Guide),
+and the relationships of surface currents and their mapping to a dataset.
+The Surface Current represents the water velocity at one or more geographic
+locations at either (a) a given depth relative to a named vertical
+datum, or (b) an average from the sea surface (that is, air-sea interface)
+down to a given depth. The 'surface' (in the definition of Surface
+Current) is defined here as roughly the top 25 metres. The current
+values are obtained through in situ or remote measurement or by analytic
+methods or hydrodynamic modelling. The Product Specification includes
+general information for data identification as well as for data content
+and structure, reference system, data quality aspects, data capture,
+maintenance, encoding, delivery, metadata and portrayal.
+
+[[sec_1.1.1]]
+==== Data types
+
+A dataset containing Surface Current data describes a set of values
+distributed over an area. The structure containing the values is either
+a Grid Coverage or a Point Coverage.
+
+* Gridded data consists of a set of attribute values organized in
+a grid together with metadata to describe the meaning of the attribute
+values and spatial referencing information to position the data. An
+essential characteristic of a regular grid is that the geographic
+position of any node can be computed from the values of the origin
+and point spacing. Therefore, a Grid Coverage is appropriate for this
+type of data. A Coverage includes a function which provides values
+at geographic locations within the extent of the grid. A continuous
+function provides values at all locations, while a discrete function,
+which is used for Surface Currents, provides values at only specific
+points (for example grid nodes).
+* Another type of structure is a Point Coverage, which also contains
+metadata and attribute values, although the locations of the points
+are not organized into a regular grid. The location of all points
+must be explicitly specified. There is no coverage function.
+
+[[sec_1.1.2]]
+==== Display
+
+This Product Specification describes one way of displaying surface
+current information, as an arrow shape pointing in the direction of
+current flow whose colour and size are determined by the velocity
+of the current. This arrow shape is used by both gridded and point
+data types. For gridded data, the symbol is placed at the points constituting
+the grid and represents the speed and direction of currents at the
+grid point.
+
+[[sec_1.1.3]]
+==== Encoding
+
+The Hierarchical Data Format version 5 (HDF5) promotes compatible
+data exchange due to its common neutral encoding format, and is the
+format used for this data product. HDF5 is object oriented and suitable
+for many types of data and forms the basis of the Network Common Data
+Form (NetCDF), a popular format used for scientific data.
+
+[[sec_1.2]]
+=== Scope
+
+This document describes an <<S_100>> compliant Product Specification
+for surface currents and it specifies the content, structure, and
+metadata needed for creating a fully compliant S-111 product and for
+its portrayal within an <<S_100>> electronic charting environment.
+This Product Specification includes the content model, the encoding,
+the Feature Catalogue and metadata. The surface current product may
+be used either alone or combined with other <<S_100>> compatible data.
+
+[[sec_1.3]]
+=== References
+
+[[sec_1.3.1]]
+[bibliography]
+==== Normative
+
+* [[[HDF5,1]]] _Hierarchical Data Format version 5_ -- _http://www.hdfgroup.org/[www.hdfgroup.org]_
+
+* [[[M_3,IHO M-3]]] _Resolutions of the International Hydrographic Organization, IHO Publication M-3,_ 2^nd^ Edition, 2010 (updated July 2023)
+
+* [[[Res_3_1919,1]]] IHO Resolution 3/1919 (as amended), IHO Publication M-3
+
+* [[[S_44,IHO S-44]]] _IHO Standards for Hydrographic Surveys,_ 6^th^ Edition, September 2020
+
+* [[[S_62,IHO S-62]]] List of Data Producer Codes (online), IHO GI registry, URL: https://registry.iho.int
+
+* [[[S_97,IHO S-97]]] _IHO Guidelines for Creating S-100 Product Specifications_, Edition 1.1.0, June 2020
+
+* [[[S_98,IHO S-98]]] _Data Product Interoperability in S-100 Navigation Systems_, Edition 2.0.0 (in preparation)
+
+* [[[S_100,IHO S-100]]] _IHO Universal Hydrographic Data Model_, Edition 5.2.0, June 2024
+
+* [[[S_158,IHO S-158]]] Validation Checks. In preparation
+
+* [[[S_158_100,IHO S-158:100]]] Validation Checks (Universal Hydrographic Data Model). In preparation
+
+* [[[S_158_111,IHO S-158:111]]] Validation Checks -- Surface Currents (in preparation)
+
+* [[[S_158_98,IHO S-158:98]]] Validation Checks (Interoperability). In preparation
+
+NOTE: Titles and numbers for publications in preparation are provisional pending publication by the IHO.
+
+[[sec_1.3.2]]
+[bibliography]
+==== Informative
+
+* [[[CO_OPS,1]]] _Tide and Current Glossary 2000_
+
+* [[[ITALA_G1143,IALA G1143]]] _Unique Identifiers for Maritime Resources, Edition 3.0._ International Association of Marine Aids to Navigation and Lighthouse Authorities, June 2021.
+
+* [[[IOC_14_4,IOC 14-4]]] _Manual on Sea-level Measurements and Interpretation, Volume IV : An update to 2006._ Paris, Intergovernmental Oceanographic Commission of UNESCO. (IOC Manuals and Guides No.14, vol. IV; JCOMM Technical Report No.31; WMO/TD. No. 1339).
+
+* [[[ISO_3166_1_1997,ISO 3166-1:1997]]] _Country Codes_
+
+* [[[ISO_8601_2004,ISO 8601:2004]]]_Data elements and interchange formates - Information interchange - Representation of dates and times._ 2004
+
+* [[[ISO_19101_2002,ISO 19101:2002]]]_Geographic information - Reference model._ 2002
+
+* [[[ISO_TS_19103_2005,ISO/TS 19103:2005]]] _Geographic information -- Conceptual schema language_
+
+* [[[ISO_19105_2000,ISO 19105:2000]]] _Geographic information -- Conformance and testing._ 2000
+
+* [[[ISO_19107_2003,ISO 19107:2003]]]_Geographic information -- Spatial schema._ 2003
+
+* [[[ISO_19108_2002,ISO 19108:2002]]]_Geographic information -- Temporal schema._ 2002
+
+* [[[ISO_19109_2005,ISO 19109:2005]]]_Geographic information -- Rules for application schema._ 2005
+
+* [[[ISO_19110_2005,ISO 19110:2005]]]_Geographic information -- Methodology for feature cataloguing._ 2005
+
+* [[[ISO_19111_2003,ISO 19111:2003]]] _Geographic information -- Spatial referencing by coordinates_
+
+* [[[ISO_19113_2002,ISO 19113:2002]]]_Geographic information - Quality principles._ 2002
+
+* [[[ISO_19115_1,ISO 19115-1]]] _Geographic information -- Metadata -- Part 1 -- Fundamentals_. As amended by Amendment 1, 2018
+
+* [[[ISO_19115_2_2009,ISO 19115-2:2009]]] _Geographic information -- Metadata: Extensions for imagery and gridded data_
+
+* [[[ISO_19115_3,ISO 19115-3]]] _Geographic information -- Metadata - XML schema implementation for fundamental concepts_. 2016
+
+* [[[ISO_19116_2004,ISO 19116:2004]]]_Geographic information - Positioning services._ 2004
+
+* [[[ISO_19117_2005,ISO 19117:2005]]]_Geographic information - Portrayal._ 2005
+
+* [[[ISO_19118_2005,ISO 19118:2005]]]_Geographic information - Encoding._ 2005
+
+* [[[ISO_19123_2005,ISO 19123:2005]]] _Geographic information -- Schema for coverage geometry and functions_
+
+* [[[ISO_19128_2005,ISO 19128:2005]]]_Geographic information - Web Map Server interface._ 2005
+
+* [[[ISO_19129_2009,ISO 19129:2009]]] _Geographic information -- Imagery gridded and coverage data framework_
+
+* [[[ISO_TS_19130_2010,ISO/TS 19130:2010]]]_Geographic information - Imagery sensor models for geopositioning._ 2010
+
+* [[[ISO_TS_19130_2_2010,ISO/TS 19130-2:2010]]]_Geographic information - Imagery sensor models for geopositioning - Part 2._ 2010
+
+* [[[ISO_19131_2007,ISO 19131:2007]]] _Geographic information -- Data product specifications_
+
+* [[[ISO_19132_2007,ISO 19132:2007]]]_Geographic information - Location-based services -- Reference model._ 2007
+
+* [[[ISO_19133_2005,ISO 19133:2005]]]_Geographic Information - Location-based services - Tracking and navigation._ 2005
+
+* [[[ISO_19136_2007,ISO 19136:2007]]]_Geographic information - Geography Markup Language (GML)._ 2007
+
+* [[[ISO_TS_19138_2006,ISO/TS 19138:2006]]]_Geographic information - Data quality measures._ 2006
+
+* [[[ISO_19142_2010,ISO 19142:2010]]]_Geographic information - Web Feature Service._ 2010
+
+* [[[ISO_19144_1_2009,ISO 19144-1:2009]]]_Geographic information - Classification systems -- Part 1: Classification system structure._ 2009
+
+* [[[ISO_19145_2010,ISO 19145:2010]]]_Geographic information - Registry of representations of geographic point location._ 2010
+
+* [[[ISO_19153_2010,ISO 19153:2010]]]_Geographic information - Geospatial Digital Rights Management Reference Model (GeoDRM RM) 1)._ 2010
+
+* [[[ISO_19156_2010,ISO 19156:2010]]]_Geographic information - Observations and measurements._ 2010
+
+* [[[ISO_19157_2013,ISO 19157:2013]]] _Geographic information -- Data Quality._ As amended by Amendment 1, 2018
+
+* [[[ISO_19158_2010,ISO 19158:2010]]]_Geographic Information - Quality assurance of data supply._ 2010
+
+* [[[ISO_IEC_19501_1,ISO/IEC 19501-1]]] , _Information technology -- Open Distributed Processing -- Unified Modelling Language Version 2.4.1_
+
+* [[[ISO_19505_2,ISO 19505-2]]]
+
+* [[[netCDF,netCDF]]] _Network Common Data Form Unidata_ - http://www.unidata.ucar.edu/software/netcdf
+
+* [[[NGA_2021,NGA 2021]]] _Recent Update to WGS 84 Reference Frame and NGA Transition to IGS ANTEX_, NGA Office of Geomatics / GNSS Division, St. Louis, National Geospatial-Intelligence Agency, 2021.
+
+* [[[NGA_2023,NGA 2023]]] _WGS 84 (G2296) Terrestrial Reference Frame Realization_, Office of Geomatics, National Geospatial-Intelligence Agency, NGA-U-2023-02846, 2023.
+
+* [[[RFC_3986,IETF RFC 3986]]] _Uniform Resource Identifier (URI): Generic Syntax. T. Berners-Lee, R. Fielding, L. Masinter. Internet Standard 66, IETF_. URL: http://www.ietf.org/rfc/rfc3986.txt or http://www.rfc-editor.org/info/std66
+
+* [[[RFC_2141,IETF RFC 2141]]] _URN Syntax. R. Moats. IETF RFC 2141_, May 1997. URL: http://www.rfc-editor.org/info/rfc2141
+
+* [[[S_32,IHO S-32]]] _International Hydrographic Dictionary_. URL: http://iho-ohi.net/S32/index.php
+
+* [[[S_101,IHO S-101]]] _IHO Electronic Navigational Chart Product Specification_, Edition 2.0.0 (in preparation)
+
+* [[[S_102,IHO S-102]]] _IHO Bathymetric Surface Product Specification_, Edition 3.0.0 (in preparation)
+
+* [[[S_104,IHO S-104]]] _IHO Water Level Information for Surface Navigation Product Specification_, Edition 2.0.0, (n preparation)
+
+* [[[XML_Schema_2,W3C xmlschema-2]]] _Datatypes_, Second Edition, W3C Recommendation, 28 October 2004, URL: https://www.w3.org/TR/xmlschema-2/
+
+* [[[ISO_19115,hidden(ISO 19115)]]]
+
+* [[[IEC_61966_2_1_1999,hidden(IEC 61966-2-1:1999)]]]
+
+* [[[IEC_60945,hidden(IEC 60945)]]]
+
+* [[[S_52,hidden(IHO S-52)]]]
+
+* [[[ISO_3166_2,hidden(ISO 3166-2)]]]
+
+* [[[ISO_639_2_T,hidden(ISO 639-2)]]]
+
+[[sec_1.4]]
+=== Terms, definitions and abbreviations
+
+[[sec_1.4.1]]
+[heading="terms and definitions"]
+==== Terms and definitions
+
+The <<S_100>> framework is based on the ISO 19100 series of geographic
+standards. The terms and definitions provided here are used to standardize
+the nomenclature found within that framework, whenever possible. They
+are taken from the references cited in <<sec_1.3>>; modifications
+were made when necessary.
+
+===== accuracy
+
+closeness of agreement between an observed value and the true value
+or a reference value accepted as true
+
+[.source]
+<<ISO_19157_2013>>
+
+[.source]
+<<ISO_19116_2004>>
+
+NOTE: A test result can be observations or measurements
+
+NOTE: For positioning services, the test result is a measured value
+or set of values
+
+NOTE: For observations and measurements, true values are not obtainable.
+In their place reference values which are accepted as true values
+are used
+
+===== application schema
+
+conceptual schema for data required by one or more applications
+
+[.source]
+<<ISO_19101_2002>>
+
+===== confidence level
+
+the probability that the value of a parameter falls within a specified
+range of values
+
+===== continuous coverage
+
+coverage that returns different values for the same feature attribute
+at different direct positions within a single geometric object in
+its spatiotemporal domain
+
+[.source]
+<<ISO_19123_2005>>
+
+NOTE: Although the spatiotemporal domain of a continuous coverage
+is ordinarily bounded in terms of its spatial extent, it can be subdivided
+into an infinite number of direct positions.
+
+===== coordinate
+
+one of a sequence of numbers designating the position of a point in
+N-dimensional space
+
+NOTE: In a {{coordinate reference system}}, the {{coordinate}} numbers
+are qualified by units.
+
+===== coordinate reference system
+
+coordinate system that is related to an *object* by a {{datum}}
+
+NOTE: For geodetic and {{vertical datum,vertical datums}}, the *object*
+will be the Earth.
+
+===== coverage
+
+{{feature}} that acts as a {{function}} to return values from its
+{{range <coverage>,range}} for any {{direct position}} within its
+spatial, temporal, or spatiotemporal {{domain}}
+
+[example]
+Examples include a raster *image*, polygon overlay, or digital elevation
+matrix.
+
+NOTE: In other words, a {{coverage}} is a {{feature}} that has multiple
+values for each *attribute* type, where each {{direct position}} within
+the geometric representation of the {{feature}} has a single value
+for each *attribute* type.
+
+===== coverage geometry
+
+configuration of the {{domain}} of a {{coverage}} described in terms
+of {{coordinate,coordinates}}
+
+===== data product
+
+{{dataset}} or {{dataset series}} that conforms to a
+*data product specification*
+
+NOTE: The S-111 data product consists of metadata and one or more
+sets of speed and direction values.
+
+===== data quality
+
+a set of elements describing aspects of quality, including a measure
+of quality, an evaluation procedure, a quality result, and a scope
+
+===== data quality element
+
+quantitative component documenting the quality of a dataset
+
+[.source]
+<<ISO_19101_2002>>
+
+NOTE: The applicability of a data quality element to a dataset depends
+on both the dataset's content and its product specification, the result
+being that all data quality elements may not be applicable to all
+datasets
+
+===== data quality evaluation procedure
+
+the whole of operations used in applying and reporting quality evaluation
+methods and their results
+
+[.source]
+<<ISO_19113_2002>>
+
+===== data quality measure
+
+an evaluation of a data quality sub-element
+
+[.source]
+<<ISO_19113_2002>>
+
+===== data quality overview element
+
+the non-quantitative component documenting the quality of a dataset.
+Information about the purpose, usage, and lineage of a dataset is
+non-quantitative quality information
+
+NOTE: Information about the purpose, usage and lineage of a dataset
+is non-quantitative quality information.
+
+[.source]
+<<ISO_19101_2002>>
+
+===== data quality result
+
+a value or set of values resulting from applying a data quality measure
+or the outcome of evaluating the obtained value or set of values against
+a specified conformance quality level
+
+[example]
+A data quality result of "90" with a data quality value type of "percentage"
+reported for the data quality element and its data quality subelement
+"completeness, commission" is an example of a value resulting from
+applying a data quality measure to a data specified by a data quality
+scope. A data quality result of "true" with a data quality value type
+of "Boolean variable" is an example of comparing the value (90) against
+a specified acceptable conformance quality level (85) and reporting
+an evaluation of a kind, pass or fail.
+
+[.source]
+<<ISO_19113_2002>>
+
+===== data quality scope
+
+the extent or characteristic(s) of the data for which quality information
+is reported
+
+[.source]
+<<ISO_19113_2002>>
+
+NOTE: A data quality scope for a dataset can comprise a dataset series
+to which the dataset belongs, the dataset itself, or a smaller grouping
+of data located physically within the dataset sharing common characteristics.
+Common characteristics can be an identified feature type, feature
+attribute, or feature relationship; data collection criteria; original
+source; or a specified geographic or temporal extent.
+
+[.source]
+<<S_100,annex=A>>
+
+===== data quality sub-element
+
+a component of a data quality element describing a certain aspect
+of that data quality element
+
+[.source]
+<<ISO_TS_19103_2005>>
+
+===== dataset
+
+identifiable collection of data
+
+[.source]
+<<ISO_19115>>
+
+NOTE: A dataset may be a smaller grouping of data which, though limited
+by some constraint such as spatial extent or feature type, is located
+physically within a larger dataset. Theoretically, a dataset may be
+as small as a single feature or feature attribute contained within
+a larger dataset. A hardcopy map or chart may be considered a dataset.
+
+===== dataset series
+
+collection of datasets sharing the same product specification
+
+[.source]
+<<ISO_19115>>
+
+===== datum
+
+parameter or set of parameters that define the position of the origin,
+the scale, and the orientation of a coordinate system
+
+[.source]
+<<ISO_19111_2003>>
+
+[.source]
+<<ISO_19116_2004>>
+
+NOTE: A datum defines the position of the origin, the scale, and the
+orientation of the axes of a coordinate system
+
+NOTE: A datum may be a geodetic datum, a vertical datum, an engineering
+datum, an image datum, or a temporal datum
+
+===== depth-specific current
+
+the water current at a specified *depth* below the *sea surface*
+
+===== direct position
+
+*position* described by a single set of {{coordinate,coordinates}}
+within a {{coordinate reference system}}
+
+===== domain
+
+well-defined set. *Domains* are used to define the *domain* set and
+{{range <coverage>,range}} set of *attributes*, operators, and {{function,functions}}
+
+NOTE: _Well-defined_ means that the definition is both necessary and
+sufficient, as everything that satisfies the definition is in the
+set and everything that does not satisfy the definition is necessarily
+outside the set.
+
+===== feature
+
+abstraction of real-world phenomena
+
+[example]
+The phenomenon named _Eiffel Tower_ may be classified with other similar
+phenomena into a *feature type* named _tower_.
+
+NOTE: A {{feature}} may occur as a *type* or an *instance*.
+*Feature type* or feature instance shall be used when only one is
+meant.
+
+NOTE: In UML2, a {{feature}} is a property, such as an operation or
+*attribute*, which is encapsulated as part of a list within a classifier,
+such as an interface, *class*, or *data type*.
+
+===== feature attribute
+
+*characteristic* of a {{feature}}
+
+[example]
+A *feature attribute* named _colour_ may have an *attribute* value
+_green_ which belongs to the *data type* _text_.
+
+[example]
+A *feature attribute* named _length_ may have an *attribute* value
+_82.4_ which belongs to the *data type* _real_.
+
+NOTE: A {{feature}} attribute may occur as a *type* or an *instance*.
+*Feature attribute* type or *feature attribute* instance is used when
+only one is meant.
+
+NOTE: A *feature attribute* type has a name, a *data type*, and a
+{{domain}} associated to it. A *feature attribute* instance has an
+*attribute* value taken from the {{domain}} of the *feature attribute*
+type.
+
+NOTE: In a *$1*, a *feature attribute* may include a value {{domain}}
+but does not specify *attribute* values for {{feature}} instances.
+
+===== function
+
+rule that associates each element from a {{domain}} (source, or {{domain}}
+of the {{function}}) to a unique element in another {{domain}}
+(target, codomain, or {{range <coverage>,range}})
+
+===== geometric object
+
+spatial *object* representing a geometric set
+
+NOTE: A *geometric object* consists of a *geometric primitive*,
+a collection of *geometric primitives*, or a *geometric complex* treated
+as a single entity. A {{geometric object}} may be the spatial representation
+of an *object* such as a *_feature_* or a significant part of a *_feature_*.
+
+===== georectified
+
+corrected for positional displacement with respect to the surface
+of the Earth
+
+[.source]
+<<ISO_19115_2_2009>>
+
+===== georeferenced grid
+
+{{grid}} for which cells can be located geographically by the use
+of specific algorithms or additional data
+
+===== grid
+
+network composed of a set of elements, or cells, whose vertices, or
+nodes, have defined positions within a coordinate system. See also
+{{georeferenced grid}}, {{regular grid}}, {{rectangular grid}},
+{{ungeorectified grid}}, {{node}} and {{grid point}}.
+
+===== grid cell
+
+element of a grid defined by its vertices, or {{node,nodes}}
+
+===== grid coordinates
+
+sequence of two or more numbers specifying a position with respect
+to its location on a {{grid}}
+
+===== grid point
+
+point located at the intersection of two or more
+{{grid cell,grid cells}} in a {{grid}}. Also called a {{node}}.
+
+===== gridded data
+
+data whose attribute values are associated with positions on a grid
+coordinate system
+
+[.source]
+<<ISO_19115_2_2009>>
+
+===== layer-averaged surface current
+
+the water current averaged over the vertical, from the surface to
+a specified *depth* below the sea surface
+
+[example]
+The current averaged from 0 metres (sea surface) down to 10 metres.
+
+===== measurement
+
+the (detailed) dimensions of a physical quantity
+
+[.source]
+<<S_32>>
+
+===== node
+
+a point located at the vertex of a grid cell. Also called a
+{{grid point}}
+
+===== observation
+
+the act or practice of noting and recording facts and events as for
+some scientific study. The measure of a quantity whose value is desired.
+The DATA so noted and recorded. A single measure, at a single setting
+of an apparatus
+
+[.source]
+<<S_32>>
+
+===== point
+
+zero-dimensional geometric primitive, representing a position
+
+NOTE: The boundary of a point is the empty set
+
+[.source]
+<<ISO_19107_2003>>
+
+===== point coverage
+
+coverage that has a domain composed of points
+
+[.source]
+<<ISO_19123_2005>>
+
+===== point set 
+
+set of 2, 3 or n dimensional points in space.
+
+[.source]
+<<S_100>>
+
+===== point set coverage
+
+coverage function associated with point value pairs in 2 dimensions.
+
+[.source]
+<<S_100>>
+
+NOTE: a coverage function is driven by a set of points
+(with stem:[X], stem:[Y] position) together with a record of one or
+more values at that position.
+
+===== portrayal
+
+presentation of information to humans
+
+[.source]
+<<ISO_19109_2005>>
+
+[.source]
+<<ISO_19117_2005>>
+
+===== portrayal catalogue
+
+collection of defined portrayals for a feature catalogue
+
+NOTE: Content of a portrayal catalogue includes portrayal functions,
+symbols, and portrayal context.
+
+[.source]
+<<ISO_19117_2005>>
+
+===== portrayal context
+
+circumstances, imposed by factors extrinsic to a geographic dataset,
+that affect the portrayal of that dataset.
+
+[example]
+Factors contributing to portrayal context may include the proposed
+display or map scale, the viewing conditions (day/night/dusk), and
+the display orientation requirements (north not necessarily at the
+top of the screen or page), among others
+
+NOTE: Portrayal context may influence the selection of portrayal functions
+and construction of symbols
+
+[.source]
+<<ISO_19117_2005>>
+
+===== portrayal function
+
+function that maps geographic features to symbols
+
+NOTE: Portrayal functions can also include parameters and other computations
+that are not dependent on geographic feature properties
+
+[.source]
+<<ISO_19117_2005>>
+
+===== portrayal rule
+
+specific kind of portrayal function expressed in a declarative language
+
+NOTE: A declarative language is rule based and includes decision and
+branching statements
+
+[.source]
+<<ISO_19117_2005>>
+
+===== positional accuracy
+
+closeness of coordinate value to the true or accepted value in a specified
+reference system
+
+NOTE: The term absolute accuracy is sometimes used for this concept
+to distinguish it from relative positional accuracy. Where the true
+coordinate value may not be perfectly known, accuracy is normally
+tested by comparison with available values that can best be accepted
+as true
+
+[.source]
+<<ISO_19116_2004>>
+
+===== range <coverage>
+
+set of {{feature attribute}} values associated by a {{function}} with
+the elements of the {{domain}} of a {{coverage}}
+
+===== record
+
+finite, named collection of related items (*objects* or values)
+
+NOTE: Logically, a {{record}} is a set of pairs <name, item>.
+
+===== rectangular grid
+
+an orthogonal grid whose cells are rectangles
+
+===== regular grid
+
+a georeferenced {{rectangular grid}} with geodetic coordinates, with
+the stem:[X]-axis directed eastward, the stem:[Y]-axis directed northward,
+and uniform spacing of points in each direction. Spacing units are
+degrees of arc
+
+===== result scope
+
+scope of the (data quality) result
+
+NOTE: Result scope is a subset of the data quality scope.
+
+[.source]
+<<S_97>>
+
+===== sea surface
+
+a two-dimensional (in the horizontal plane) field representing the
+air-sea interface, with high-frequency fluctuations such as wind waves
+and swell, but not astronomical tides, filtered out
+
+[example]
+sea surface, river surface, and lake surface.
+
+NOTE: This implies marine water, lakes, waterways, navigable rivers,
+etc.
+
+===== sequence
+
+finite, ordered collection of related items (objects or values) that
+may be repeated
+
+NOTE: Logically, a sequence is a set of pairs <item, offset>. LISP
+syntax, which delimits sequences with parentheses and separates elements
+in the sequence with commas, is used in this international standard
+
+[.source]
+<<ISO_19107_2003>>
+
+===== standalone quality report
+
+free text document providing fully detailed information about data
+quality evaluations, results and measures used
+
+[.source]
+<<ISO_19157_2013>>
+
+===== surface current
+
+the horizontal motion of water at a navigationally significant *depth*,
+or the vertical average over a *depth*, represented as a velocity
+*vector* (that is, speed and direction). *Depths* may extend from
+the *sea surface* down to 25 metres
+
+NOTE: IHO Hydrographic Dictionary: Current, surface: A current that
+does not extend more than a few (2-3) metres below the surface.
+
+===== surface current direction
+
+the direction toward which the surface current flows. Units are arc-degrees
+
+NOTE: Measured clockwise from true north. AKA set.
+
+===== surface current speed
+
+the speed (rate of change of position over time) of a {{surface current}}.
+Units are knots
+
+===== tessellation
+
+partitioning of a space into a set of conterminous geometric objects
+having the same dimension as the space being partitioned
+
+[.source]
+<<ISO_19123_2005>>
+
+NOTE: A tessellation composed of congruent regular polygons or polyhedra
+is a regular tessellation; One composed of regular, but non-congruent
+polygons or polyhedra is semi-regular. Otherwise the tessellation
+is irregular
+
+===== temporal series
+
+collection of datasets with data for the same geographical area at
+different times or for successive periods
+
+===== timestamp
+
+value of time at which an object's state is measured and recorded
+
+[.source]
+<<ISO_19132_2007>>
+
+===== uncertainty
+
+the interval (stem:[u]) about a given value (stem:[x]) that will contain
+the true value (stem:[v]) at a given *confidence level (CL)*.
+
+Thus, CL is the probability that stem:[x - u <= v <= x + u]
+
+NOTE: For practical purposes, the {{confidence level}} is taken to
+be 95% and the *uncertainty* is defined herein as either (a) twice
+the standard deviation of the differences between observed and predicted
+values (cf. <<S_44>>. _IHO Standards for Hydrographic Surveys_, 5th
+Edition, February 2008), or (b) the interval (that is, stem:[u]) about
+the mean containing 95% of the differences.
+
+===== ungeorectified grid
+
+grid with non-uniform point spacing in any coordinate system. Includes
+triangular and curvilinear coordinate grids whose node positions cannot
+be calculated from the positions of other nodes
+
+===== vertical coordinate system
+
+one-dimensional coordinate system used for gravity-related height
+or depth measurements
+
+[.source]
+<<ISO_19111_2003>>
+
+===== vertical datum
+
+datum describing the relation of gravity-related heights or depths
+to the Earth
+
+NOTE: In most cases the vertical datum will be related to mean sea
+level. Ellipsoidal heights are treated as related to a three-dimensional
+ellipsoidal coordinate system referenced to a geodetic datum. Vertical
+datums include sounding datums (used for hydrographic purposes), in
+which case the heights may be negative heights or depths
+
+[.source]
+<<ISO_19111_2003>>
+
+[[sec_1.4.2]]
+==== Abbreviations
+
+This Product Specification adopts the following convention for symbols
+and abbreviated terms:
+
+DQWG:: Data Quality Working Group
+
+ECDIS:: Electronic Chart Display Information System
+
+ENC:: Electronic Navigational Chart
+
+HDF:: Hierarchical Data Format
+
+IEEE:: Institute of Electrical and Electronics Engineers
+
+IHO:: International Hydrographic Organization
+
+ISO:: International Organization for Standardization
+
+NetCDF:: Network Common Data Form
+
+TWCWG:: Tides, Water Level and Currents Working Group
+
+UML:: Unified Modelling Language
+
+UTC:: Coordinated Universal Time
+
+[[sec_1.5]]
+=== Use of language
+
+Within this document:
+
+* "Must" indicates a mandatory requirement.
+* "Should" indicates an optional requirement, that is the recommended
+process to be followed, but is not mandatory.
+* "May" means "allowed to" or "could possibly", and is not mandatory.
+
+[[sec_1.6]]
+=== General data product description
+
+NOTE: This clause provides general information regarding the data
+product.
+
+*Title:*:: Surface Currents
+
+*Abstract:*:: Encodes information and parameters for use with surface
+current data.
+
+*Content:*:: A conformant dataset may contain features associated
+with surface currents. The specific content is defined by the Feature
+Catalogue and the Application Schema.
+
+*Spatial Extent:*:: *Description:* Global, marine areas only.
+
+*East Bounding Longitude:*:: 180
+
+*West Bounding Longitude:*:: -180
+
+*North Bounding Latitude:*:: 90
+
+*South Bounding Latitude:*:: -90
+
+*Purpose:*:: The data shall be collected/produced for the purpose
+of providing information about navigationally significant surface
+currents to ECDIS and other applications.
+
+[[sec_1.7]]
+=== Data Product Specification metadata and maintenance
+
+[[sec_1.7.1]]
+==== Product Specification metadata
+
+This information uniquely identifies this Product Specification and
+provides information about its creation and maintenance. For further
+information on dataset metadata see the metadata clause.
+
+*Title:*:: Surface Currents
+
+*S-100 Version:*:: 5.2.0
+
+*S-111 Version:*:: 2.0.0
+
+*Date:*:: December 2024
+
+*Language:*:: English
+
+*Classification:*:: Unclassified
+
+*Contact:*::
++
+--
+International Hydrographic Organization. +
+4 quai Antoine 1er, +
+B.P.445 MC 98011 MONACO CEDEX +
+Telephone: +377 93 10 81 00 +
+B.P. 445 Fax: + 377 93 10 81 40 +
+Email: mailto:info@iho.int[info@iho.int]
+--
+
+*Role:*:: Owner
+
+*URL:*:: https://registry.iho.int/[https://registry.iho.int]
+
+*Identifier:*:: S-111
+
+*Maintenance:*:: Changes to this Product Specification are coordinated
+by Tides, Water Level and Currents Working Group (TWCWG) of the IHO
+and made available via the IHO Publications website. Maintenance of
+the Product Specification must conform to IHO Technical Resolution
+2/2007 (revised 2010). For reporting issues which need correction,
+use the contact information.
+
+[[sec_1.7.2]]
+==== IHO Product Specification maintenance
+
+[[sec_1.7.2.1]]
+===== Introduction
+
+Changes to S-111 will be released by the IHO as a New Edition, revision,
+or clarification.
+
+[[sec_1.7.2.2]]
+===== New Edition
+
+_New Editions_ of S-111 introduce significant changes. _New Editions_
+enable new concepts, such as the ability to support new functions
+or applications, or the introduction of new constructs or data types.
+_New Editions_ are likely to have a significant impact on either existing
+users or future users of S-111. All cumulative _revisions_ and _clarifications_
+must be included with the release of approved New Editions.
+
+[[sec_1.7.2.3]]
+===== Revision
+
+_Revisions_ are defined as substantive semantic changes to S-111.
+Typically, __revision__s will change S-111 to correct factual errors;
+introduce necessary changes that have become evident as a result of
+practical experience or changing circumstances. A _revision_ must
+not be classified as a clarification. _Revisions_ could have an impact
+on either existing users or future users of S-111. All cumulative
+_clarifications_ must be included with the release of approved corrections
+revisions.
+
+Changes in a revision are minor and ensure backward compatibility
+with the previous versions within the same Edition. Newer revisions,
+for example, introduce new features and attributes. Within the same
+Edition, a dataset of one version could always be processed with a
+later version of the Feature and Portrayal Catalogues. In most cases
+a new Feature or Portrayal Catalogue will result in a revision of
+S-111.
+
+[[sec_1.7.2.4]]
+===== Clarification
+
+_Clarifications_ are non-substantive changes to S-111. Typically,
+_clarifications_: remove ambiguity; correct grammatical and spelling
+errors; amend or update cross references; and insert improved graphics.
+A _clarification_ must not cause any substantive semantic change to
+S-111.
+
+Changes in a _clarification_ are minor and ensure backward compatibility
+with the previous versions within the same Edition.
+
+[[sec_1.7.2.5]]
+===== Version numbers
+
+The associated version control numbering to identify changes (n) to
+S-111 must be as follows:
+
+New Editions denoted as *n*.0.0
+
+Revisions denoted as n.*n*.0
+
+Clarifications denoted as n.n.*n*

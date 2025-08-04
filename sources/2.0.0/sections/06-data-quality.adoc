@@ -1,0 +1,302 @@
+
+[[sec_6]]
+== Data Quality
+
+[[sec_6.1]]
+=== Introduction
+
+Quality of surface current data for navigation consists of quality
+of the observed/predicted/forecast data, quality of the positional
+data and quality of the time stamp.
+
+[[sec_6.1.1]]
+==== Data quality indication within datasets
+
+Data quality may be indicated within datasets in the form of a single
+uncertainty value applicable to an entire grid or in the data values
+record as uncertainty values at individual grid points. <<sec_10>>
+(Data Product Format) and <<sec_12.3>> (Carrier Metadata) describe
+the encoding of quality indicators within datasets.
+
+[[sec_6.1.2]]
+==== Data quality elements and data quality measures (informative)
+
+Data quality allows users and user systems to assess fitness for use
+of the provided data. Data quality measures and the associated evaluation
+are reported as metadata of a data product. This metadata improves
+interoperability with other data products and provides usage by user
+groups that the data product was not originally intended for. The
+secondary users can make assessments of the data product usefulness
+in their application based on the reported data quality measures.
+
+For S-111 the following Data Quality Elements have been included :
+
+* Conformance to this Product Specification;
+* Intended purpose of the data product;
+* Completeness of the data product in terms of coverage;
+* Logical Consistency;
+* Positional Uncertainty and Accuracy;
+* Thematic Accuracy;
+* Temporal Quality;
+* Aggregation measures;
+* Validation checks or conformance checks including:
+
+** General tests for dataset integrity;
+** Specific tests for a specific data model.
+
+[[sec_6.1.3]]
+==== Description of quality elements (informative)
+
+The description of data quality measures in this clause is based on
+<<S_97>> Edition 1.1. While this clause describes data quality elements
+in general, not all of them may be applicable to S-111 data. <<sec_6.1.4>>
+indicates the applicability and scope of the data quality elements
+for this Product Specification.
+
+[[sec_6.1.3.1]]
+===== Completeness
+
+Completeness is defined as the presence and absence of features, their
+attributes and relationships. It consists of two data quality elements:
+
+* Commission -- excess data present in a dataset;
+* Omission -- data absent from a dataset.
+
+[[sec_6.1.3.2]]
+===== Logical consistency
+
+Logical Consistency is defined as the degree of adherence to logical
+rules of data structure, attribution and relationships (data structure
+can be conceptual, logical or physical). If these logical rules are
+documented elsewhere (for example in a Product Specification) then
+the source should be referenced (for example in the data quality evaluation).
+It consists of four data quality elements:
+
+* Conceptual consistency -- adherence to rules of the conceptual schema;
+* Domain consistency -- adherence of values to the value domains;
+* Format consistency -- degree to which data is stored in accordance
+with the physical structure of the dataset;
+* Topological consistency -- correctness of the explicitly encoded
+topological characteristics of a dataset.
+
+[[sec_6.1.3.3]]
+===== Positional Accuracy
+
+Positional Accuracy is defined as the accuracy of the position of
+features within a spatial reference system. It consists of three data
+quality elements:
+
+* Absolute or external accuracy -- closeness of reported coordinate
+values to values accepted as or being true;
+* Relative or internal accuracy -- closeness of the relative positions
+of features in a dataset to their respective relative positions accepted
+as or being true;
+* Gridded data positional accuracy -- closeness of gridded data spatial
+position values to values accepted as or being true.
+
+[[sec_6.1.3.4]]
+===== Thematic accuracy
+
+Thematic Accuracy is defined as the accuracy of quantitative attributes
+and the correctness of non-quantitative attributes and of the classifications
+of features and their relationships. It consists of three data quality
+elements:
+
+* Classification correctness -- comparison of the classes assigned
+to features or their attributes to a Universe of Discourse (for example
+ground truth or reference data);
+* Non-quantitative attribute correctness -- measure of whether a non-quantitative attribute is correct or incorrect;
+* Quantitative attribute accuracy -- closeness of the value of a quantitative
+attribute to a value accepted as or known to be true.
+
+The data quality information provided within datasets may include
+the following:
+
+For Single station data product:
+
+. Sigma confidence of predictions/models; or
+
+. Instrument measuring accuracy for observed.
+
+For Gridded data product:
+
+[start=3]
+. Sigma confidence of predictions/model.
+
+[[sec_6.1.3.5]]
+===== Temporal quality
+
+Temporal Quality is defined as the quality of the temporal attributes
+and temporal relationships of features. It consists of three data
+quality elements:
+
+* Accuracy of a time measurement -- closeness of reported time measurements
+to values accepted as or known to be true;
+* Temporal consistency -- correctness of the order of events;
+* Temporal validity -- validity of data with respect to time.
+
+Temporal accuracy for observational data is normally available in
+field survey reports or quality controlled analyses. Temporal accuracy
+for predicted/forecast data is normally described in technical reports.
+
+[[sec_6.1.3.6]]
+===== Aggregation
+
+The aggregated Data Quality result provides a result indicating if
+the dataset has passed conformance to the Data Product Specification.
+It consists of a single data quality element:
+
+* Aggregation Measures -- a pass/fail indicator and a numeric ratio
+of the proportion of Product Specification requirements not passed.
+
+[[sec_6.1.4]]
+==== Applicable quality measures
+
+<<table_6-1>> below indicates which of the data quality measures recommended
+in <<S_97,part=C>> have been identified as applicable to S-111. Columns
+1-4 are taken as-is from <<S_97>>; the contents of column 5 are from
+<<S_97>> footnote:[The exception is _Usability_, measures for which
+are necessarily defined in terms of requirements specific to the data
+product.], annotated with whether the measure applies to S-111, and
+the scope if it applies. Note that for attributes which allow fill
+values (see <<sec_10.2>>) the presence of a fill value is not counted
+as an error for the purposes of the data quality measures.
+
+[[table_6-1]]
+.Quality measures applicable to S-111 (from <<S_97,part=C,clause=7>>)
+[cols="19,19,34,13,15"]
+|===
+h| Data Quality Measure h| Definition h| DQ measure / description h| Evaluation scope h| S-111 Applicability
+
+| Completeness / Commission | Excess data present in a dataset, as described by the scope. | numberOfExcessItems / This data quality measure indicates the number of items in the dataset, that should not have been present in the dataset. | dataset/dataset series | Yes(dataset)
+
+| Completeness / Commission | Excess data present in a dataset, as described by the scope. | numberOfDuplicateFeatureInstances / This data quality measure indicates the total number of exact duplications of feature instances within the data. | dataset/dataset series | Yes(dataset)
+| Completeness / Omission | Data absent from the dataset, as described by the scope. | numberOfMissingItems / This data quality measure is an indicator that shows that a specific item is missing in the data. | dataset/dataset series/spatial object type | Yes(dataset)See <<sec_6.2>> below
+| Logical Consistency / Conceptual Consistency | Adherence to the rules of a conceptual schema. | numberOfInvalidSurfaceOverlaps / This data quality measure is a count of the total number of erroneous overlaps within the data. Which surfaces may overlap and which must not is application dependent. Not all overlapping surfaces are necessarily erroneous. | spatial object / spatial object type | No(S111 does not define vector surface features)
+| Logical Consistency / Domain Consistency | Adherence of the values to the value domains. | numberOfNonconformantItems / This data quality measure is a count of all items in the dataset that are not in conformance with their value domain. | spatial object / spatial object type | Yes(dataset)
+| Logical Consistency / Format Consistency | Degree to which data is stored in accordance with the physical structure of the dataset, as described by the scope. | physicalStructureConflictsNumber / This data quality measure is a count of all items in the dataset that are stored in conflict with the physical structure of the dataset. | dataset/dataset series | Yes(dataset)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | rateOfFaultyPointCurveConnections / This data quality measure indicates the number of faulty link-node connections in relation to the number of supposed link-node connections. This data quality measure gives the erroneous point-curve connections in relation to the total number of point-curve connections. | spatial object / spatial object type | No(Applies only for PS with curves)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | numberOfMissingConnectionsUndershoots / This data quality measure is a count of items in the dataset within the parameter tolerance that are mismatched due to undershoots. | spatial object / spatial object type | No(Applies only for PS with curves)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | numberOfMissingConnectionsOvershoots / This data quality measure is a count of items in the dataset within the parameter tolerance that are mismatched due to overshoots. | spatial object / spatial object type | No(Applies only for PS with curves)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | numberOfInvalidSlivers / This data quality measure is a count of all items in the dataset that are invalid sliver surfaces. A sliver is an unintended area that occurs when adjacent surfaces are not digitised properly. The borders of the adjacent surfaces may unintentionally gap or overlap to cause a topological error. | dataset / dataset series | No(Applies to PS with geometric surfaces)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | numberOfInvalidSelfIntersects / This data quality measure is a count of all items in the dataset that illegally intersect with themselves. | spatial object / spatial object type | No(Applies to PS with curves / geometric surfaces)
+| Logical Consistency / Topological Consistency | Correctness of the explicitly encoded topological characteristics of the dataset, as described by the scope. | numberOfInvalidSelfOverlap / This data quality measure is a count of all items in the dataset that illegally self-overlap. | spatial object / spatial object type | No(Applies to PS with curves / geometric surfaces)
+| Positional Accuracy / Absolute or External Accuracy | Closeness of reported coordinative values to values accepted as or being true. | RMSError / Standard deviation, where the true value is not estimated from the observations but known a priori. | spatial object / spatial object type | Yes, for data coding formats 1 and 8
+| Positional Accuracy / Vertical Position Accuracy | Closeness of reported coordinative values to values accepted as or being true. | linearMapAccuracy2Sigma / Half length of the interval defined by an upper and lower limit in which the true value lies with probability 95%. | spatial object / spatial object type | No. S-111 does not contain vertical positions(Layer depth is nominal, not a measured value)
+| Positional Accuracy / Horizontal Position Accuracy | Closeness of reported coordinative values to values accepted as or being true. | linearMapAccuracy2Sigma / Half length of the interval defined by an upper and lower limit in which the true value lies with probability 95%. | spatial object / spatial object type | Yes, for data coding formats 1 and 8
+| Positional Accuracy / Gridded Data Position Accuracy | Closeness of reported coordinative values to values accepted as or being true. | RMSErrorPlanimetry / Radius of a circle around the given point, in which the true value lies with probability P. | spatial object / spatial object type | Yes, for data coding formats 2, 3
+| Temporal Quality / Temporal Consistency | Consistency with time. | Correctness of ordered events or sequences, if reported. | dataset/dataset series/spatial object type | Yes, for features with time attributes and timestamps
+| Thematic Accuracy / ThematicClassificationCorrectness | Comparison of the classes assigned to features or their attributes to a universe of discourse. | miscalculationRate / This data quality measure indicates the number of incorrectly classified features in relation to the number of features that are supposed to be there. [Adapted from <<ISO_19157_2013>>] This is a RATE which is a ratio, and is expressed as a REAL number representing the rational fraction corresponding to the numerator and denominator of the ratio. For example, if there are 1 items that are classified incorrectly and there are 100 of the items in the dataset then the ratio is 1/100 and the reported rate = 0.01. | dataset/dataset series/spatial object type | Yes(dataset)
+| Thematic Accuracy / Quantitative Attribute Accuracy | Accuracy of a quantitative attribute | One of attributeValueUncertaintyMean, attributeValueUncertainty68.3, attributeValueUncertainty90, attributeValueUncertainty95, attributeValueUncertainty99, or attributeValueUncertainty99.8 / This data quality measure indicates the attribute value of uncertainty where half the length of the interval defined by an upper and lower limit in which the true value for the quantitative attribute lies with with a probability of 50%, 68.3%, 90%, 95%, 99%, or 99.8% respectively footnote:[Names of measures other than _attributeValueUncertaintyMean_ are planned corrections by the DQWG to the names listed in <<S_100>> Edition 5.2.0 Part 4c.].
+ | dataset / dataset series / spatial object type | Yes(dataset / spatial object)
+| Aggregation Measures / AggregationMeasures | In a data Product Specification, several requirements are set up for a product to conform to the Specification. | DataProductSpecificationPassed / This data quality measure is a boolean indicating that all requirements in the referred data Product Specification are fulfilled. | dataset/dataset series/spatial object type | Yes(dataset)
+| Aggregation Measures / AggregationMeasures | In a data Product Specification, several requirements are set up for a product to conform to the Specification. | DataProductSpecificationFailRate / This data quality measure is a number indicating the number of data Product Specification requirements that are not fulfilled by the current product/dataset in relation to the total number of data Product Specification requirements. | dataset/dataset series/spatial object type | Yes(dataset)
+
+|===
+
+[[sec_6.2]]
+=== Additional components of data quality
+
+A time series is complete when there is a value or a null indicator
+at every time in the series. A surface current coverage data set is
+complete when the grid or point set coverage value matrix contains
+speed and direction values or fill (missing) values for every vertex
+point defined in the grid, and when all of the mandatory associated
+metadata is provided. See <<S_158_111>>
+(Validation Checks -- Surface Currents) for related checks.
+
+[[sec_6.3]]
+=== Assessment of data quality
+
+Data quality allows users and user systems to assess fitness for use
+of the provided data. Data quality measures and the associated evaluation
+are reported as metadata of a data product. This metadata improves
+interoperability with other data products and provides usage by user
+groups that the data product was not originally intended for. The
+secondary users can make assessments of the data product usefulness
+in their application based on the reported data quality measures.
+
+The prescribed precision (see <<annex-a,style=full%>> -- Data Classification and
+Encoding Guide) of current speed (stem:[0.01 "unitsml(kn)"]) and direction
+(0.1 arc-deg) is close to the perceived accuracy of the data, but
+the increased precision is useful for time integration of current
+vectors and for the computation of spatial gradients (that is, non-navigational
+uses).
+
+Important factors in the quality of surface current data for navigation
+consists of the quality of
+
+* The observed data;
+* The predicted/forecast data;
+* The positional data; and
+* The time stamp.
+
+Factors determining the accuracy of the data are shown in <<table_6-2>>.
+Information of the quality of the components of the data is normally
+available in field survey reports, QC analyses, or other technical
+reports.
+
+[[table_6-2]]
+.Data types and accuracy factors
+[cols="183,188"]
+|===
+h| Type of Data h| Factors Influencing Accuracy
+
+| Observed Current | Accuracy of the sensorsProcessing techniques
+| Predicted/forecast Current | Quality of input dataTimeliness of input dataMathematical modelling techniquesAccuracy of harmonic constants
+| Horizontal Position | Accuracy of geolocation techniquesModel grid accuracy
+| Vertical Position | Accuracy of vertical datum
+| Time stamp | Sensor accuracyData time tagging accuracy
+
+|===
+
+Data quality measures for the entire data set are described in <<sec_10.2.2.3>>
+and <<table_12-3>>. These include _horizontalPositionUncertainty_,
+_verticalUncertainty_ and _timeUncertainty_. The additional data quality
+measures for uncertainty for the dataset as a whole in _surfaceCurrentSpeed_
+and _surfaceCurrentDirection_ are described in <<sec_10.2.2.4>>. This
+Product Specification also provides for encoding of uncertainty in
+speed and direction at individual nodes or points using the _speedUncertainty_
+and _directionUncertainty_ attributes in values records.
+
+[[sec_6.4]]
+=== Validation checks
+
+Validation checks are intended for production systems designed to
+produce S-111 Surface Currents datasets. Validation checks apply to
+either datasets (HDF5 dataset files) or exchange sets. Validation
+checks for S-111 datasets and exchange sets are defined in two locations:
+
+* General validation checks for all S-100-based product specifications
+intended for use on navigation systems are defined in <<S_158_100>>
+(Validation Checks -- Universal Hydrographic Data Model).
+
+* Product-specific validation checks are defined in <<S_158_111>>
+(Validation Checks -- Surface Currents).
+
+In addition, there are cross-product compatibility checks intended
+to verify suitability of combinations of products for use together
+on ECDIS. These checks will be defined in <<S_158_98>> (Validation
+Checks -- Interoperability).
+
+Validation checks can be administered at any time during the production
+phase. They can also be applied downstream in the distribution and
+end user systems to test the conformance of a dataset to the format
+rules specified in <<S_100,part=10c>> and the S-111 Product Specification.
+
+For example, checks will be made for: inclusion of mandated variables;
+variable values being within accepted ranges; inclusion of optional
+values when required; matches between number of array elements and
+array dimension specifications; timeliness of data; etc. Error severity
+may be, for example, that the dataset unusable, that the dataset is
+of degraded utility but otherwise safe to use, or that the dataset
+has one or more small and inconsequential inconsistencies.
+
+Fill values must be considered as allowed values for attributes which
+allow them (see <<sec_10.2.2>>), even though the fill value will be
+outside the allowed range in the Feature Catalogue.
+
+Cross-product compatibility checks, if any, need to be administered
+to combinations of S-111 and S-1XX datasets belonging to other products,
+as indicated in the check specification. Their administration should
+be coordinated with producers of the S-1XX dataset.

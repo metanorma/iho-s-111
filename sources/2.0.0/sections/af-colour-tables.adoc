@@ -1,0 +1,91 @@
+
+[[annex-f]]
+[appendix,obligation="informative"]
+== Colour Tables (Informative)
+
+Below are typical colour tables for the day, dusk, and night conditions
+(<<table_F-1;and!table_F-2;and!table_F-3>>). The estimates for dusk
+and night were obtained by first converting the values for RGB colours
+for day conditions (see <<sec_9.2.3>>) to stem:[xyL] values, where
+stem:[L] is luminance. The conversion assumes the colours are the
+standard RGB (sRGB) and the calculations follow the explanation in
+IEC 61966 (<<IEC_61966_2_1_1999>> -- _Multimedia systems and equipment
+- Colour measurement and management - Part 2-1: Colour management
+- Default RGB colour space - sRGB_). Note that in S-52 colours, the
+conversion from stem:[xyY] to stem:[xyL] requires that stem:[L = 100Y].
+
+Existing stem:[xyL] data for dusk and night conditions for approximately
+50 S-52 colours (_S-52 Presentation Library Edition 4.0.0, Part 1,
+Appx. A_) demonstrate that for the lower light conditions luminance
+is reduced while the x and y values remain approximately constant.
+Here, for each S-111 colour, the closest (that is, smallest root mean
+square of the sum of the squares of the difference in x values and
+y values) S-52 colour for day conditions was identified, and that
+colour's luminance reduction factors for the other light conditions
+were used to calculate the new S-111 stem:[xyL] values. Finally, the
+new stem:[xyL] values were converted to RGB values and their hexadecimal
+equivalents.
+
+NOTE: The contents of this Annex are "as of publication" and may be
+revised for usability and interoperability based on user testing and
+ECDIS requirements in <<S_98>> and applicable IMO/IEC standards. The
+content of the S-111 Portrayal Catalogue should prevail in case of
+conflict between the latest formal release of the Portrayal Catalogue
+and the contents of this Annex.
+
+[[table_F-1]]
+.Colour parameters for DAY conditions for each speed band. The last row (Band 'All') shows the colour for the arrow border
+[cols="28,69,72,42,42,37,40,40,40,49"]
+|===
+h| Band h| Token h| Colour h| x h| y h| L h| R h| G h| B h| RGB Hex
+
+| 1   | SCBN1 | purple       | 0.21 | 0.14 | 15 | 118 | 82  | 226 | 7652E2
+| 2   | SCBN2 | dark blue    | 0.21 | 0.24 | 29 | 72  | 152 | 211 | 4898D3
+| 3   | SCBN3 | light blue   | 0.23 | 0.29 | 51 | 97  | 203 | 229 | 61CBE5
+| 4   | SCBN4 | dark green   | 0.33 | 0.52 | 40 | 109 | 188 | 69  | 6DBC45
+| 5   | SCBN5 | light green  | 0.39 | 0.53 | 61 | 180 | 220 | 0   | B4DC00
+| 6   | SCBN6 | yellow-green | 0.43 | 0.50 | 51 | 205 | 193 | 0   | CDC100
+| 7   | SCBN7 | orange       | 0.49 | 0.45 | 48 | 248 | 167 | 24  | F8A718
+| 8   | SCBN8 | pink         | 0.40 | 0.33 | 48 | 247 | 162 | 157 | F7A29D
+| 9   | SCBN9 | red          | 0.64 | 0.33 | 21 | 255 | 30  | 30  | FF1E1E
+| All | CHBLK | black        | 0.28 | 0.31 | 0  | 0   | 0   | 0   | 000000
+
+|===
+
+[[table_F-2]]
+.Colour parameters for DUSK conditions for each speed band. The last row (Band 'All') shows the colour for the arrow border
+[cols="28,71,81,40,40,36,39,39,39,48"]
+|===
+h| Band h| Token h| Colour h| x h| y h| L h| R h| G h| B h| RGB Hex
+
+| 1   | SCBN1 | purple       | 0.21 | 0.14 | 7  | 81  | 55  | 159 | 51379F
+| 2   | SCBN2 | dark blue    | 0.21 | 0.24 | 3  | 20  | 52  | 76  | 14344C
+| 3   | SCBN3 | light blue   | 0.23 | 0.29 | 3  | 19  | 51  | 58  | 13333A
+| 4   | SCBN4 | dark green   | 0.33 | 0.52 | 13 | 64  | 114 | 39  | 407227
+| 5   | SCBN5 | light green  | 0.39 | 0.53 | 21 | 110 | 136 | 0   | 6E8800
+| 6   | SCBN6 | yellow-green | 0.43 | 0.50 | 18 | 126 | 119 | 0   | 7E7700
+| 7   | SCBN7 | orange       | 0.49 | 0.45 | 15 | 147 | 97  | 1   | 936101
+| 8   | SCBN8 | pink         | 0.40 | 0.33 | 5  | 86  | 53  | 51  | 563533
+| 9   | SCBN9 | red          | 0.64 | 0.33 | 9  | 178 | 1   | 1   | B20101
+| All | CHBLK | black        | 0.28 | 0.31 | 20 | 107 | 127 | 137 | 6B7F89
+
+|===
+
+[[table_F-3]]
+.Colour parameters for NIGHT conditions for each speed band. The last row (Band 'All') shows the colour for the arrow border
+[cols="28,71,80,41,41,35,37,38,38,58"]
+|===
+h| Band h| Token h| Colour h| x h| y h| L h| R h| G h| B h| RGB Hex
+
+| 1   | SCBN1 | purple       | 0.21 | 0.14 | 1   | 26 | 15 | 59 | 1A0F3B
+| 2   | SCBN2 | dark blue    | 0.21 | 0.24 | 1   | 4  | 17 | 28 | 04111C
+| 3   | SCBN3 | light blue   | 0.23 | 0.29 | 0   | 3  | 14 | 17 | 030E11
+| 4   | SCBN4 | dark green   | 0.33 | 0.52 | 2   | 19 | 40 | 8  | 132808
+| 5   | SCBN5 | light green  | 0.39 | 0.53 | 3   | 38 | 49 | 0  | 263100
+| 6   | SCBN6 | yellow-green | 0.43 | 0.50 | 2   | 45 | 42 | 0  | 2D2A00
+| 7   | SCBN7 | orange       | 0.49 | 0.45 | 2   | 54 | 33 | 0  | 362100
+| 8   | SCBN8 | pink         | 0.40 | 0.33 | 1   | 33 | 17 | 17 | 211111
+| 9   | SCBN9 | red          | 0.64 | 0.33 | 1   | 63 | 0  | 0  | 3F0000
+| All | CHBLK | black        | 0.28 | 0.31 | 2.5 | 37 | 45 | 49 | 252D31
+
+|===

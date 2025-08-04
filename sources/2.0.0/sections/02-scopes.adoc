@@ -1,0 +1,14 @@
+
+[[sec_2]]
+== Specification Scopes
+
+This Product Specification outlines the flow of data from inception,
+through the national Hydrographic Office (HO), to the end user. The
+data may be observed or modelled. Requirements for data and metadata
+are provided. This document does not include product delivery mechanisms.
+
+*Scope ID*:: Global
+
+*Level*:: 006 — series
+
+*Level name*:: Surface Current Dataset

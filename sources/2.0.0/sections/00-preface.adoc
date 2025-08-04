@@ -1,0 +1,153 @@
+
+[.preface]
+== Document History
+
+Changes to this Specification are coordinated by the Tides, Water
+Levels and Currents Working Group (TWCWG). New editions will be made
+available via the IHO web site. Maintenance of the Specification shall
+conform to IHO Resolution 2/2007 (as amended).
+
+[cols="79,99,128,237",options="unnumbered"]
+|===
+h| Version Number h| Date h| Author/Editor h| Purpose
+| Draft 1.0 | December 2012 | D. O'Brien, Auth. | Demonstration Version.
+| Draft 1.1 | April 2014 | L. Maltais, Ed. | Revision for currents.
+| Draft 1.2 | August 2014 | L. Maltais, Ed | Additional revision of previous version.
+| Draft 1.3 | December 2014 | L. Maltais, Ed | Additional revision of previous version.
+| Draft 1.4 | March 2015 | L. Maltais, Ed | Additional revision of previous version.
+| Draft 1.5 | March 2015 | K. Hess, B. Sullivan, C. Kammerer, E. Mong, Eds. | Put into template format, numerous changes.
+| Draft 1.6 | September 2015 | SCWG members, Eds. | Changes as result of SCWG3 discussions.
+| Draft 1.7 | December 2015 | K. Hess, Ed. | Changes per review of Draft 1.6.
+| Draft 1.8 | February 2016 | K. Hess, Ed. | Changes per review of Draft 1.7.
+| Draft 1.9 | September 2016 | K. Hess, TWCWG members, Eds. | Changes as result of TWCWG1 discussions.
+| Draft 1.10 | January 2017 | K. Hess, TWCWG members, Eds.  |
+
+| Draft 1.11 | October 2017 | K. Hess, TWCWG members, Eds. | Changes as result of TWCWG2 discussions.
+| Draft 1.12 | April 2018 | K. Hess, TWCWG, DQWG members, Eds. | Changes per review of v1.11.
+| Edition 1.0.0 | December 2018 | K. Hess, TWCWG, Eds. | Changes per review of v1.12and TWCWG3.
+| Edition 1.0.1 | June 2019 | K, Hess, TWCWG, Eds. | Changes per TWCWG, review of test HDF5 files.
+| Edition 1.1.0 | September 2020 | K, Hess, TWCWG, Eds | Edits after JPN, others review. Use enumerations in Tables 12.1, 12.2, 12,3. Add dataCodingFormat=8.
+| Edition 1.1.1 | February 2021 | G. Seroka, TWCWG, Eds.  |
+| Edition 1.2.0-20220831 | August 2022 | R. Malyankar | Aligned with S-100 5.0.0; harmonized document structure and content with S-104 1.1.0 (Aug. 2022); new enumeration dictionary material
+| Edition 1.2.0-20230131 | February 2023
+| R. Malyankar, G. Seroka
+| Added attribute surfaceCurrentTime for DCF 8; specified datatype
+size for HDF5 attributes; harmonized structure and text with S-104
+1.1.0; updated references; updated rules for dataset and support file
+names; guidance on (optional) ISO metadata; adjusted language on use
+of Schematron and digital signatures; added emphasis for differences
+between S-100 and S-111 exchange catalogues; added productIdentifier
+metadata attribute; new remarks for depth type index; clarification
+of attribute dimension in feature type metadata; added Res. 3/1919
+as a separate reference; harmonized attribute multiplicity and remarks
+with S-104 in feature instance metadata (<<table_12-3;and!table_12-4>>).
+Figures in <<annex-e>> removed.
+| Edition 1.2.0 | April 2023 | R. Malyankar
+| Removed DCF4 from DCEG remarks for surface current time; added remark
+for number of times attribute in values table overriding similar instance
+attribute; corrected S-100 error in digital signature types in metadata;
+applied feedback from TWCWG.
+| Edition 2.0.0 Draft 1 | February 2024 | R. Malyankar
+| Provide for non-uniform time series with moving platforms (DCF4);
+update references; registry producer code URL replaced with main page
+URL; citation of S-100 WG7 paper removed and usage sentences updated
+(register is now active in the GI registry); date fill value updated
+(table 10.3); Annex B (add. Terms) removed, selected terms added in
+1.4; deleted 4.5.3 (summary of ISO/S-100 spatial types); added new
+WGS84 realizations and UTM codes (clause 5); aligned to S-100 5.2.0
+(esp. Parts 17, 15, 8); added verticalCoordinateBase embedded metadata
+for S-100 consistency; updated validation check Annex for consistency
+with S-100 validation group; added information about digital signatures;
+added material on producing series datasets (7.4); clarifications
+for S-98 compliance (7.7); fileless cancellation (8.4); increased
+minimum speed in size formula for portrayal; guidelines for portrayal
+of time series point data and ungeorectified grids; updated portrayal
+catalogue structure (9.9); new fill value for date-time attribute;
+described encoding for optional data value attributes; removed ISO
+metadata files; added restriction on length of string attributes in
+metadata (12.3); added use case (Annex F); added paragraph about propelled
+platforms (G-4); new sample SVG (for new 5.2.0 SVG schema); added
+tabular pick report outline (J-7); updated UML diagrams.
+| Ed. 2.0.0 Draft 2 | June 2024 | R. Malyankar
+| Alignment with S-100 5.2.0; removed Annexes for additional terms,
+sample datasets, and validation, and updated numbering accordingly,
+added speed and direction uncertainty attributes, added data offset
+code for data points in cell centres, feature identification guidance,
+updated SVG sample arrow, updated data quality section, updated fileless
+cancellation.
+| Ed. 2.0.0 Draft 3 | July 2024 | R. Malyankar 
+| Applied PT comments; applied DQWG feedback for clause 6; removed
+requirement for dynamic harmonization of currents and water levels;
+relaxed portrayal stringencies for colors and SVG; align principles
+for classification as new dataset with S-104; citation for portrayal
+catalogue
+| Ed. 2.0.0 HSSC draft | September 2024 | R. Malyankar
+| Changed threshold for arrow size to 2.0 knots; removed provision
+for omitting optional attributes in Group_F for S-100 5.2.0 conformance;
+requirement that speed and direction must both be present if one is
+present; removed "DateTime" as UoM name for surface current time attribute
+in Group_F; locale constraints corrected (12.2.4).
+| Ed. 2.0.0 MS draft 1 | October 2024 | R. Malyankar
+| Applied HSSC comments (removed unused otherLocale (12.2.4); changed
+name in S100_Product­Specification to align with GI Registry); updated
+S-98 reference; updated date in PS metadata (1.7.1).
+
+|===
+
+[.preface]
+== Summary of Substantive Changes in Edition 2.0.0
+
+Bold references in the Clauses Affected column indicate the principal
+sections/clauses that are affected by the described change.
+
+[cols="467,127",options="unnumbered"]
+|===
+h| Change Summary h| Clauses Affected
+
+| Aligned with Edition 5.2.0
+| 1.3.1, 1.7, 4.3.5, *4.5*, 7.2.5 (new), 7.5, 7.6, 8.2.1, 8.2.4, 11.2.1,
+12.1, *12.2*, *12.3*, Annex B (C in Ed. 1.2.0), *Annex G (J in Ed. 1.2.0)*
+| Provided for non-uniform time series in moving platform data, including
+propelled platforms | 10.2.2.9, *12.3.4*, *E.4 (Ed. 2.0.0)*
+| Removed Annex B (Additional terms...) and added selected terms from
+deleted Annex to clause 1.4 | *1.4.1*, *Annex B (Ed. 1.2.0)*, 12.3
+| Added directionUncertainty and speedUncertainty to the values record
+as optional attributes | *4.1*, 6.1.1, *10.2.2.1*, 10.2.2.5, *Annex
+A*, Annex B (Ed. 2.0.0), *Annex C (Ed. 2.0.0)*
+| Adopted fileless cancellation method for cancelling datasets | *8.2.4*,
+12.2.4
+| Annex E (Sample HDF5 Encoding) removed. Sample datasets and screen
+captures will be provided on the Web instead. | *Annex E (Ed. 1.2.0)*
+| Annex F (Validation) removed. S-158:111 will replace this, as part
+of the S-158 series of standards currently under development. | 1.3.2,
+6.4, *Annex F (Ed. 1.2.0)*, 7.2, 7.2.4
+| Updated data quality to add descriptions of quality elements from
+S-97 Ed. 1.1 | *6*
+| Added UTM zones and newer WGS84 epochs | 1.3, *5.1*
+| Added material on identification of features | *10.2.2.11* (new)
+| Added provision for data points in grid cell centres | *7.9* (new),
+*12.3.2*, Annex B (Fig. B-7 - C-7 in Ed. 1.2.0)
+| Removed ISO metadata files | 7.2.1, 8.2.6, 11.2.1, *11.2.4*, 11.2.5,
+*12.1*
+| Guidance on producing series datasets | *7.4* (new)
+| Clarifications for S-98 compliance | 7.5, 7.6, *7.7*, 9.6
+| Portrayal: change to parameter in arrow size formula | *9.2.4*
+| Portrayal: guidelines for portrayal of time series point data and
+ungeorectified grids | *9.2.9*, *9.3.3*, *H-7* (new)
+| New use case | *Annex D* (Ann. F in Ed. 1.2.0)
+| Additional production guidance | *7*
+| Designate color tables and SVG code as informative to avoid over-constraining
+portrayal
+| 9.2.1, 9.2.3, 9.2.5, 9.2.7, 9.5, Annex F, *Annex G*, H.2
+| Revised threshold for arrow size calculation to 2.00 knots.                              | *9.2.4*, *H-3*
+| Updated language about omitting unused optional attributes from Group_F                  | *10.2.2.2*
+| Added requirement that speed must be populated if direction is populated, and vice versa | *4.1*
+|===
+
+[.preface]
+== FOREWORD
+
+The International Hydrographic Organization Tides, Water Level and
+Currents Working Group (TWCWG) remembers Kurt Hess, and acknowledges
+his invaluable and significant contributions in developing this Product
+Specification within the TWCWG.

@@ -1,0 +1,154 @@
+
+[[annex-a]]
+[appendix,obligation="informative"]
+== Data Classification and Encoding Guide
+
+[[sec_A-1]]
+=== Features
+
+*Surface Current (_SurfaceCurrent_)*
+
+[cols="229,190,34,77",options="unnumbered"]
+|===
+4+h| [underline]#IHO Definition:# FEATURE: *SURFACE CURRENT:* A current
+that does not extend more than a few (2-3) metres below the surface.
+4+| *S-111 Geo Feature: Surface Current*
+4+| *Primitives: pointSet, coverage* 
+h| S-111 Attribute h| Allowable Encoding Values h| Type h| Multiplicity
+
+| Surface Current Speed     | Must be in decimal knots, maximum resolution 0.01 knot            | RE | 1
+| Surface Current Direction | Must be in decimal arc-degrees, maximum resolution 0.1 arc-degree | RE | 1
+| Surface Current Time      | YYYYMMDDTHHMMSSZ                                                  | DT | 0..1
+| Speed Uncertainty         | Must be in decimal knots, maximum resolution of 0.01 knot         | RE | 0..1
+| Direction Uncertainty     | Must be in decimal arc-degrees, maximum resolution 0.1 arc-degree | RE | 0..1
+
+|===
+
+[[sec_A-2]]
+=== Feature Attributes
+
+*1. Surface Current Speed (_surfaceCurrentSpeed_)*
+
+[cols="a",options="unnumbered,noheader"]
+|===
+| *Surface Current Speed:* Rate of motion. The terms speed and velocity
+are often used interchangeably, but speed is a scalar, having magnitude
+only, while velocity is a vector quantity, having both magnitude and
+direction. Speed may either be the ship's speed through water, or
+the speed made good over ground.
+
+[underline]#Unit:# knot (kn)
+
+[underline]#Maximum Resolution:# stem:[0.01 "unitsml(kn)"]
+
+[underline]#Format:# xxx.xx
+
+[example]
+*2.54*
+
+[underline]#Remarks:#
+
+* Valid speed always non-negative.
+* Negative number denotes land mask or missing value.
+* stem:[0.01 "unitsml(kn)"] equals stem:[0.5144 "unitsml(cm/s)"].
+* Must be populated with a non-fill value if _surfaceCurrentDirection_
+is populated with a non-fill value at the same point.
+
+|===
+
+*2. Surface Current Direction (_surfaceCurrentDirection_)*
+
+[cols="a",options="unnumbered"]
+|===
+| *Surface Current Direction:* The direction toward which a surface
+current is flowing, called the set of the surface current.
+
+[underline]#Unit:# degree (˚)
+
+[underline]#Maximum Resolution:# 0.1 ˚
+
+[underline]#Format:# xxx.x
+
+[example]
+*298.3*
+
+[underline]#Remarks:#
+
+* Direction clockwise from true north.
+* Valid direction always non-negative.
+* Negative number denotes land mask or missing value.
+* Must be populated with a non-fill value if _surfaceCurrentSpeed_
+is populated with a non-fill value at the same point
+
+|===
+
+*3. Surface Current Time (_surfaceCurrentTime_)*
+
+[cols="a",options="unnumbered"]
+|===
+| *Surface Current Time:* The time of the surface current data, expressed
+in <<ISO_8601_2004>> Date-time format.
+
+[underline]#Unit:# Years, months, days, hours, minutes, seconds
+
+[underline]#Resolution:# 1 second
+
+[underline]#Format:# YYYYMMDDTHHMMSSZ, where Y is year, M is month,
+D is day, H is hour, M is minute, and S is second
+
+[example]
+*19850412T101530Z* denotes 10 hours, 15 minutes, and 30 seconds, Universal
+Time on 12 April 1985.
+
+[underline]#Remarks:#
+
+* Required only for fixed station (stationwise) time series data
+(_dataCodingFormat_ = 8) with non-uniform time intervals and moving
+platform time series (_dataCodingFormat_ = 4) with non-uniform time
+intervals.
+* All times are in UTC (Universal Time Coordinated).
+
+|===
+
+*4. Direction Uncertainty (_directionUncertainty_)*
+
+[cols="a",options="unnumbered"]
+|===
+| *Direction Uncertainty:* The best estimate of the accuracy of a
+bearing.
+
+[underline]#Unit:# degree (˚)
+
+[underline]#Maximum Resolution:# 0.1 ˚
+
+[underline]#Format:# xx.x
+
+[example]
+*10.0* for an uncertainty of 10 degrees.
+
+[underline]#Remarks:# No remarks
+
+|===
+
+*5. Speed Uncertainty (_speedUncertainty_)*
+
+[cols="a",options="unnumbered"]
+|===
+| *Speed Uncertainty:* Estimate characterising the accuracy of a speed
+value, or of the magnitude component of a velocity.
+
+[underline]#Unit:# knot (kn)
+
+[underline]#Maximum Resolution:# 0.01 knots
+
+[underline]#Format:# xx.xx
+
+[example]
+*0.3* for an uncertainty of ± 0.3 knots.
+
+[underline]#Remarks:#
+
+* The estimate is as defined within a particular confidence level
+and expressed as a positive value.
+
+|===
